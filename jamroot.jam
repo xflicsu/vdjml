@@ -1,0 +1,128 @@
+## vdjml/jamroot.jam
+## part of VDJML project
+## Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
+## Author Mikhail K Levin 2013
+
+path-constant PROJ_ROOT : . ;
+path-constant INCLUDE : include ;
+path-constant OUT : out ;
+path-constant SMPL_DATA : sample_data ;
+path-constant TEMP_DIR : $(OUT)/temp ;
+make $(TEMP_DIR) : : @common.mkdir ;
+path-constant PYTHON_OUT : $(OUT)/binding/python ;
+
+import build/version ;
+constant VDJML_NAME : "VDJML" ;
+constant VDJML_VERSION : [ git_describe $(GIT_PATH) ] ;
+constant VDJML_DESCRIPTION : "todo: add description" ;
+
+constant LIB_REQUIREMENTS :
+   <toolset>gcc,<target-os>linux:<cflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+   <toolset>msvc:<cxxflags>/Gy
+;
+
+if ! $(BOOST) {
+   EXIT "
+   ERROR:
+   Please set variable BOOST in user-config.jam to location and version of Boost library.
+   " ; 
+}
+use-project /boost : $(BOOST[1]) ;
+
+project vdjml
+   : build-dir $(OUT)
+   : requirements
+      <include>$(BOOST[1])
+      <include>$(INCLUDE)
+   : usage-requirements
+      <include>$(INCLUDE)
+;
+
+alias test
+   : #sources
+      lib/test
+   : #requirements
+;
+
+alias test-py
+   : #sources
+      binding/python/test
+   : #requirements
+;
+
+explicit test test-py ;
+   
+use-project /vdjml : . ;
+alias apps : ./apps ;
+build-project lib ;
+
+alias vdjml-py : binding/python//install ;
+explicit vdjml-py ;
+
+if [ modules.peek doxygen : .initialized ] {
+   
+   local params = 
+      "PROJECT_NAME=$(VDJML_NAME)"
+      "PROJECT_NUMBER=$(VDJML_VERSION)"
+      "PROJECT_BRIEF=\"$(VDJML_DESCRIPTION)\""
+      "WARN_IF_UNDOCUMENTED=NO"
+      "QUIET=YES"
+      "EXAMPLE_PATH=. apps"
+      "BUILTIN_STL_SUPPORT=YES"
+      "EXTRACT_STATIC=YES"
+      "ALIASES=\"decision=\\xrefitem decision \\\"Decision\\\" \\\"Decisions\\\" \""
+   ;
+    
+   local params_complete = 
+      "EXTRACT_ALL=YES"
+      "EXTRACT_PRIVATE=YES"
+      "EXTRACT_ANON_NSPACES=YES"
+      "ENABLED_SECTIONS=DEV"
+   ;
+
+   import path ;
+   doxygen complete.html
+      :
+         [ path.glob-tree $(PROJ_ROOT)/include $(PROJ_ROOT)/apps $(PROJ_ROOT)/lib : *.?pp ]
+      :
+         <doxygen:param>$(params)
+         <doxygen:param>$(params_complete)
+   ;
+   
+   local params_api = 
+      "EXTRACT_ALL=NO"
+      "EXTRACT_PRIVATE=NO"
+      "EXTRACT_ANON_NSPACES=NO"
+   ;
+   
+   doxygen api.html
+      :
+         [ glob 
+               include/vdjml/*.hpp
+               include/vdjml/*/*.hpp
+               lib/*/test/*.?pp
+               apps/*.cpp
+               : include/owlcpp/detail/* 
+         ]
+         $(doc_api) $(doc_apps)
+      :
+         <doxygen:param>$(params)
+         <doxygen:param>$(params_api)
+   ;
+   
+   alias autodoc : complete.html api.html ;
+   explicit complete.html api.html ;
+} else {
+   import message ;
+   alias autodoc : [ message msg : "
+      To generate documentation with rule \"autodoc\","
+      "please configure Doxygen in user-config.jam file
+" ] ;
+}
+explicit autodoc ;
+
+import feature : feature ;
+import toolset ;
+feature pic : off on : propagated ;
+toolset.flags gcc.compile.c USER_OPTIONS <pic>on : -fPIC : unchecked ;
+toolset.flags gcc.compile.c++ USER_OPTIONS <pic>on : -fPIC : unchecked ;

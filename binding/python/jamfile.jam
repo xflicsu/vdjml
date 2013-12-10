@@ -1,0 +1,37 @@
+## vdjml/binding/python/jamfile.jam
+## part of VDJML project.
+## Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
+## Author Mikhail K Levin 2011-3
+
+project vdjml/binding/python
+    : build-dir $(PYTHON_OUT)
+    : requirements 
+      <library>/boost/python//boost_python 
+      <library>/vdjml//lib
+;
+
+import python ;
+
+python-extension _vdjml 
+   : 
+      [ glob *.cpp ]
+   : 
+;
+
+install install
+   : 
+      _vdjml
+   : 
+      <location>$(PYTHON_OUT)/vdjml
+      <install-dependencies>on
+      <install-type>LIB
+      <dependency>__init__.py
+;
+
+make __init__.py : : @init_py : <location>$(PYTHON_OUT)/vdjml ;
+actions init_py {
+    @($(STDOUT):E=#!/usr/bin/env python
+from _vdjml import *
+) > "$(<)"
+echo $(<)
+}

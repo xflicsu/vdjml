@@ -1,0 +1,40 @@
+## file vdjml/lib/test/jamfile.jam
+## Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
+## Author Mikhail K Levin 2013
+
+import path ;
+local smpl_dir = [ path.native $(SMPL_DATA) ] ;
+local tmp_dir = [ path.native $(TEMP_DIR) ] ;
+project vdjml/lib/test
+   : 
+   : requirements
+      <include>../
+      <library>/boost//unit_test_framework
+      <define>SAMPLE_DATA_DIR="\"$(smpl_dir:T)\""
+      <define>TEMPORARY_DIR="\"$(tmp_dir:T)\""
+;
+
+import testing ;
+
+rule run-all ( sources * : requirements * )
+{
+   for local source in $(sources)
+   {
+       return [ run $(source) : : : $(requirements) ] ;
+   }
+}
+
+local auto_run_src =  ;
+
+test-suite simple_tests
+    :
+        [ 
+         run-all [ glob *_run.cpp ] 
+            : <library>/vdjml/lib
+        ]
+;
+
+test-suite all_tests
+   :
+#      [ run test_01.cpp ]
+;

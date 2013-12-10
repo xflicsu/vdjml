@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+targetNamespace="http://vdjserver.org/xml/schema/vdjml/"
+xmlns:vdj="http://vdjserver.org/xml/schema/vdjml/"
+elementFormDefault="qualified" attributeFormDefault="unqualified"
+version="v0.1">
+
+</xsd:schema>

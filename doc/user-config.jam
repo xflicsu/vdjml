@@ -1,0 +1,55 @@
+# File user-config.jam
+# Describes tools and libraries available on your system.  
+#
+# 1. Copy this file, "doc/user-config.jam", to your HOME folder.
+#     On MS Windows, HOME folder is usually
+#    "C:\Documents and Settings\your_user_name".
+#
+# 2. Uncomment lines for the compilers and other tools that you are going to use.
+#
+# 3. For each library, make sure it is available on the system, 
+#    uncomment "constant" statement, and specify its full path and version.
+#    
+# IMPORTANT: Use forward slashes '/'.
+# IMPORTANT: Put spaces around colons and semicolons.
+#
+# See also:
+# http://www.boost.org/boost-build2/doc/html/bbv2/overview/configuration.html
+# http://www.boost.org/boost-build2/doc/html/bbv2/reference/tools.html
+
+################################################################################
+## Compilers and other tools
+
+## Microsoft Visual C++
+# using msvc ;
+
+## GCC (under Linux of MS Windows MinGW)
+# using gcc ;
+
+## Mac OS X
+# using darwin ;
+
+## Python (for generating python bindings)
+## For more details see 
+## http://www.boost.org/doc/libs/1_55_0/libs/python/doc/building.html
+## Alternatives:
+# using python ;
+# using python : 2.7 : /usr/bin/python ;
+# using python : 2.7 : "C:/Program Files/Python" ;
+
+## Doxygen (generating documentation from source code, optional)
+## http://www.stack.nl/~dimitri/doxygen/
+## Specifying Doxygen location may be required. For example
+## using doxygen : "c:/Program Files/doxygen/bin/doxygen.exe" ;
+# using doxygen ;
+
+## Path for GIT client executable (optional)
+## http://git-scm.com/
+# constant GIT_PATH : "c:/Program Files (x86)/Git/bin/git.exe" ;
+
+################################################################################
+## Libraries
+
+## Boost library source
+## http://www.boost.org/
+# constant BOOST : "C:/Program Files/boost/boost_1_55_0" 1.55.0 ;

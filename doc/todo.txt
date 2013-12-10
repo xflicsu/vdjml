@@ -1,0 +1,3 @@
+TODO:
+
+- Optional disk-based results store

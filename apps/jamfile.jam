@@ -1,0 +1,16 @@
+## vdjml/apps/jamfile.jam
+## Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
+## Author Mikhail K Levin 2013
+
+project vdjml/apps
+   : build-dir $(OUT)/bin
+   : requirements
+;
+
+#exe app_name
+#   : #sources
+#      app_src.cpp
+#   : #requirements
+#      <link>static
+#      <library>/vdjml/lib
+#;
