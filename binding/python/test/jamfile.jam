@@ -1,7 +1,7 @@
 ## vdjml/binding/python/test/jamfile.jam
 ## part of VDJML project.
 ## Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
-## Author Mikhail K Levin 2011-3
+## Author Mikhail K Levin 2013
 
 project vdjml/binding/python/test
     : requirements

@@ -14,7 +14,9 @@ namespace vdjml{
 class Read_result {
 public:
 
-   explicit Read_result(std::string const& id);
+   explicit Read_result(std::string const& id)
+   : id_(id)
+   {}
 
    std::string const& id() const {return id_;}
 

@@ -31,3 +31,14 @@ obj lib_info
    :  #usage requirements
       <link>shared:<define>VDJML_DYN_LINK
 ;
+
+lib vdjml
+   :  #sources
+      [ glob *.cpp : lib_info.cpp ] lib_info
+   :  #requirements
+      $(LIB_REQUIREMENTS)
+      <link>shared:<define>VDJML_DYN_LINK
+   :  #default build options
+   :  #usage requirements
+      <link>shared:<define>VDJML_DYN_LINK
+;

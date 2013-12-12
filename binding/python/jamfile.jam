@@ -1,13 +1,14 @@
 ## vdjml/binding/python/jamfile.jam
 ## part of VDJML project.
 ## Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
-## Author Mikhail K Levin 2011-3
+## Author Mikhail K Levin 2013
+
+alias boost_python_dyn : /boost/python//boost_python : <link>static <pic>on ;
+alias libvdjml_dyn : /vdjml//libvdjml : <link>static <pic>on ;
 
 project vdjml/binding/python
     : build-dir $(PYTHON_OUT)
     : requirements 
-      <library>/boost/python//boost_python 
-      <library>/vdjml//lib
 ;
 
 import python ;
@@ -15,6 +16,8 @@ import python ;
 python-extension _vdjml 
    : 
       [ glob *.cpp ]
+      boost_python_dyn
+      libvdjml_dyn
    : 
 ;
 
@@ -23,7 +26,6 @@ install install
       _vdjml
    : 
       <location>$(PYTHON_OUT)/vdjml
-      <install-dependencies>on
       <install-type>LIB
       <dependency>__init__.py
 ;

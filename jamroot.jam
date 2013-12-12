@@ -54,7 +54,7 @@ explicit test test-py ;
    
 use-project /vdjml : . ;
 alias apps : ./apps ;
-build-project lib ;
+alias libvdjml : lib//vdjml ;
 
 alias vdjml-py : binding/python//install ;
 explicit vdjml-py ;
@@ -126,3 +126,5 @@ import toolset ;
 feature pic : off on : propagated ;
 toolset.flags gcc.compile.c USER_OPTIONS <pic>on : -fPIC : unchecked ;
 toolset.flags gcc.compile.c++ USER_OPTIONS <pic>on : -fPIC : unchecked ;
+toolset.flags clang-linux.compile.c USER_OPTIONS <pic>on : -fPIC : unchecked ;
+toolset.flags clang-linux.compile.c++ USER_OPTIONS <pic>on : -fPIC : unchecked ;
