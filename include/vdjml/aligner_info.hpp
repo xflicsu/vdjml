@@ -1,0 +1,57 @@
+/** @file "/vdjml/include/vdjml/aligner_info.hpp" 
+part of vdjml project.
+@n @n Distributed under GNU General Public License, Version 3;
+see doc/license.txt.
+@n Copyright Mikhail K Levin 2014
+*******************************************************************************/
+#ifndef ALIGNER_INFO_HPP_
+#define ALIGNER_INFO_HPP_
+#include <string>
+#include "vdjml/detail/object_id_base.hpp"
+
+namespace vdjml{
+class Aligner_map;
+
+/**@brief
+*******************************************************************************/
+class Aligner_id : public detail::Base_id<Aligner_id> {
+public:
+   explicit Aligner_id(const value_type x) : base(x) {}
+   Aligner_id() : base(0) {}
+};
+
+/**@brief 
+*******************************************************************************/
+class Aligner_info {
+   friend class Aligner_map;
+
+public:
+
+   Aligner_info(
+            std::string const& name,
+            std::string const& version,
+            std::string const& parameters,
+            const unsigned run_id
+   )
+   : id_(),
+     name_(name),
+     version_(version),
+     parameters_(parameters),
+     run_id_(run_id)
+   {}
+
+   std::string const& name() const {return name_;}
+   std::string const& version() const {return version_;}
+   std::string const& parameters() const {return parameters_;}
+   unsigned run_id() const {return run_id_;}
+
+private:
+   Aligner_id id_;
+   std::string name_;
+   std::string version_;
+   std::string parameters_;
+   unsigned run_id_;
+};
+
+}//namespace vdjml
+#endif /* ALIGNER_INFO_HPP_ */

@@ -1,7 +1,7 @@
 /** @file "/vdjml/include/vdjml/exception.hpp"
 part of VDJML project.
-@n @n Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
-@n Author Mikhail K Levin 2013
+@n Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
+@date 2013 @author Mikhail K Levin
 *******************************************************************************/
 #ifndef EXCEPTION_HPP_
 #define EXCEPTION_HPP_

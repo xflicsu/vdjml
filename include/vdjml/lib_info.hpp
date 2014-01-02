@@ -12,7 +12,8 @@ Main doxygen page and library info API.
 #include "vdjml/config.hpp"
 
 /**
-@mainpage %VDJML -- \\TODO: project info
+@mainpage %VDJML -- serializes and parses results of immune receptor sequence
+alignment in VDJML format
 
 @namespace vdjml
 @brief Main namespace of %VDJML library
@@ -21,8 +22,6 @@ Main doxygen page and library info API.
 @brief Namespace for unit-tests
 
 */
-
-
 
 namespace vdjml{
 

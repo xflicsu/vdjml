@@ -1,7 +1,7 @@
 ## vdjml/jamroot.jam
 ## part of VDJML project
 ## Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
-## Author Mikhail K Levin 2013
+## Author Mikhail K Levin 2013-4
 
 path-constant PROJ_ROOT : . ;
 path-constant INCLUDE : include ;
@@ -14,7 +14,7 @@ path-constant PYTHON_OUT : $(OUT)/binding/python ;
 import build/version ;
 constant VDJML_NAME : "VDJML" ;
 constant VDJML_VERSION : [ git_describe $(GIT_PATH) ] ;
-constant VDJML_DESCRIPTION : "todo: add description" ;
+constant VDJML_DESCRIPTION : "serializes and parses results of immune receptor sequence alignment in VDJML format" ;
 
 constant LIB_REQUIREMENTS :
    <toolset>gcc,<target-os>linux:<cflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
