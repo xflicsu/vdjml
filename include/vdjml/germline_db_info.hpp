@@ -41,6 +41,7 @@ public:
      url_(url)
    {}
 
+   Gdb_id id() const {return id_;}
    std::string const& name() const {return name_;}
    std::string const& version() const {return version_;}
    std::string const& num_system() const {return num_system_;}

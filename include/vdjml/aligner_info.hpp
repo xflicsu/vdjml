@@ -1,8 +1,7 @@
 /** @file "/vdjml/include/vdjml/aligner_info.hpp" 
 part of vdjml project.
-@n @n Distributed under GNU General Public License, Version 3;
-see doc/license.txt.
-@n Copyright Mikhail K Levin 2014
+@n Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
+@date 2014 @author Mikhail K Levin
 *******************************************************************************/
 #ifndef ALIGNER_INFO_HPP_
 #define ALIGNER_INFO_HPP_
@@ -40,6 +39,7 @@ public:
      run_id_(run_id)
    {}
 
+   Aligner_id id() const {return id_;}
    std::string const& name() const {return name_;}
    std::string const& version() const {return version_;}
    std::string const& parameters() const {return parameters_;}
