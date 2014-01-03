@@ -9,6 +9,8 @@ path-constant OUT : out ;
 path-constant SMPL_DATA : sample_data ;
 path-constant TEMP_DIR : $(OUT)/temp ;
 make $(TEMP_DIR) : : @common.mkdir ;
+path-constant GENERATED_INCLUDE : $(OUT)/include ;
+path-constant GENERATED_LIB : $(OUT)/lib ;
 path-constant PYTHON_OUT : $(OUT)/binding/python ;
 
 import build/version ;
@@ -53,6 +55,10 @@ alias test-py
 explicit test test-py ;
    
 use-project /vdjml : . ;
+
+import build/singleton-target ;
+alias libxml2 : external//libxml2 ;
+
 alias apps : ./apps ;
 alias libvdjml : lib//vdjml ;
 

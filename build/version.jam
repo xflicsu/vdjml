@@ -1,5 +1,9 @@
-# vdjml/build/version.jam
-# part of VDJML project
+## vdjml/build/version.jam
+## part of VDJML project.
+## Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
+## Author Mikhail K Levin 2013-4
+
+import read_file ;
 
 # construct build version from date and time numbers; n=[1-6]
 rule build_version ( n ? ) {
@@ -9,15 +13,6 @@ rule build_version ( n ? ) {
    b = $(b[1-$(n)]) ;
    return $(b:J) ;
 }
-
-# trim whitespace from ends
-rule trim_whitespace ( str ) {
-   import string ;
-   local re = "^[ \n\t]*([^\n\t]*[^ \n\t])[ \n\t]*$" ;
-   local match = [ MATCH "$(re)" : $(str) ] ;
-   if $(match) { return $(match[1]) ; }
-   else { return $(str) ; }
-} 
 
 # return version based on a git tag
 rule git_describe ( git_path ? ) {

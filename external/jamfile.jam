@@ -1,0 +1,21 @@
+## vdjml/external/jamfile.jam
+## part of VDJML project.
+## Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
+## Author Mikhail K Levin 2013-4
+
+project external ;
+
+## libxml2 is built from source.
+## On MS Windows, this requires pre-built iconv library.
+## On Linux, iconv is integrated into the system and is expected to be available.
+
+if ! $(LIBXML2) { 
+   EXIT "
+   ERROR:
+   Please set variable LIBXML2 to location of libxml2 library source.
+   See doc/user-config.jam
+   " ;
+}
+
+using ext/libxml2 : $(LIBXML2[2]) : $(LIBXML2[1]) ;
+alias libxml2 : /ext/libxml2//libxml2 ;

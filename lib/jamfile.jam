@@ -1,6 +1,6 @@
 ## vdjml/lib/jamfile.jam
 ## Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
-## Author Mikhail K Levin 2013
+## Author Mikhail K Levin 2013-4
 
 project vdjml/lib
    : build-dir $(OUT)/bin
@@ -37,6 +37,7 @@ lib vdjml
       [ glob *.cpp : lib_info.cpp ] lib_info
    :  #requirements
       $(LIB_REQUIREMENTS)
+      <library>/vdjml//libxml2
       <link>shared:<define>VDJML_DYN_LINK
    :  #default build options
    :  #usage requirements
