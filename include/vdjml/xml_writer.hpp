@@ -5,28 +5,48 @@ part of vdjml project.
 *******************************************************************************/
 #ifndef XML_WRITER_HPP_
 #define XML_WRITER_HPP_
-#include <iosfwd>
+#include <iostream>
 #include "vdjml/config.hpp"
+#include "boost/lexical_cast.hpp"
+
+typedef struct _xmlBuffer xmlBuffer;
+typedef xmlBuffer *xmlBufferPtr;
+typedef struct _xmlTextWriter xmlTextWriter;
+typedef xmlTextWriter *xmlTextWriterPtr;
 
 namespace vdjml{
-class Aligner_info;
-class Germline_db_info;
-class Result_store;
 
 /**@brief 
 *******************************************************************************/
 class VDJML_DECL Xml_writer {
 public:
-   explicit Xml_writer(const unsigned version)
-   : version_(version)
-   {}
+   explicit Xml_writer(
+            std::ostream& os,
+            const std::size_t buff_size = 1024
+   );
+	~Xml_writer();
+	void open(std::string const& name, const bool is_attr);
+	void open(
+	         std::string const& name,
+	         const bool is_attr,
+	         std::string const& ns,
+	         std::string const& pref = ""
+	);
 
-	void put(Result_store const& rs);
-	void put(Aligner_info const& ai);
-	void put(Germline_db_info const& gdi);
+	void close();
+
+	void value(std::string const& val);
+
+	template<class T> void value(T const& t) {
+	   value(boost::lexical_cast<std::string>(t));
+	}
 
 private:
-	unsigned version_;
+	std::ostream& os_;
+	xmlBufferPtr buff_;
+	xmlTextWriterPtr writer_;
+
+	void flush();
 };
 
 }//namespace vdjml

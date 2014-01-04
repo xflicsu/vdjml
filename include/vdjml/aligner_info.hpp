@@ -7,9 +7,12 @@ part of vdjml project.
 #define ALIGNER_INFO_HPP_
 #include <string>
 #include "vdjml/detail/object_id_base.hpp"
+#include "vdjml/config.hpp"
 
 namespace vdjml{
 class Aligner_map;
+class Xml_reader;
+class Xml_writer;
 
 /**@brief
 *******************************************************************************/
@@ -52,6 +55,21 @@ private:
    std::string parameters_;
    unsigned run_id_;
 };
+
+/**@brief
+*******************************************************************************/
+VDJML_DECL Aligner_info read(
+         Xml_reader& xr,
+         const unsigned version
+);
+
+/**@brief
+*******************************************************************************/
+VDJML_DECL void write(
+         Xml_writer& xw,
+         Aligner_info const& ai,
+         const unsigned version = 0
+);
 
 }//namespace vdjml
 #endif /* ALIGNER_INFO_HPP_ */
