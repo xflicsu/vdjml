@@ -8,6 +8,7 @@ part of vdjml project.
 #include <string>
 #include "vdjml/detail/object_id_base.hpp"
 #include "vdjml/config.hpp"
+#include "vdjml/format_version.hpp"
 
 namespace vdjml{
 class Aligner_map;

@@ -8,6 +8,8 @@ part of vdjml project.
 #endif
 #include "vdjml/result_store.hpp"
 #include "vdjml/read_result.hpp"
+#include "vdjml/xml_writer.hpp"
+#include "vdjml/lib_info.hpp"
 
 namespace vdjml {
 
@@ -43,6 +45,69 @@ Read_result const* Result_store::find_id(std::string const* id) const {
 *******************************************************************************/
 void Result_store::insert(Read_result const& rr) {
    //todo:
+}
+
+/*
+*******************************************************************************/
+Result_store read(
+         Xml_reader& xr,
+         const unsigned version
+) {
+
+}
+
+namespace {
+
+/*
+*******************************************************************************/
+void write_0(
+         Xml_writer& xw,
+         Result_store const& rs
+) {
+   xw.open("meta", ELEM);
+   xw.open("generator", ELEM);
+
+   xw.open("name", ATTR);
+   xw.value(Lib_info::name());
+   xw.close();
+
+   xw.open("version", ATTR);
+   xw.value(Lib_info::version());
+   xw.close();
+
+   xw.open("time_gmt", ATTR);
+   xw.value(boost::date_time::second_clock::now());
+   xw.close();
+
+   xw.close();
+}
+
+}//anonymous namespace
+
+/*
+*******************************************************************************/
+void write(
+         Xml_writer& xw,
+         Result_store const& rs,
+         const unsigned version
+) {
+   xw.open("vdjml_results", ELEM, "http://vdjserver.org/xml/schema/vdjml/");
+   xw.open("version", ATTR);
+   xw.value(version_to_string(version));
+
+   switch (version) {
+      case 0:
+         write_0(xw, rs);
+         break;
+      default:
+         BOOST_THROW_EXCEPTION(
+                  base_exception()
+                  << base_exception::msg_t("unsupported format version")
+                  << base_exception::int1_t(version)
+         );
+   }
+
+   xw.close();
 }
 
 

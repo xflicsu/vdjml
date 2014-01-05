@@ -84,5 +84,12 @@ private:
 	void flush();
 };
 
+inline std::string version_to_string(const unsigned version) {
+   return
+            boost::lexical_cast<std::string>(version / 1000) + '.' +
+            boost::lexical_cast<std::string>(version % 1000)
+            ;
+}
+
 }//namespace vdjml
 #endif /* XML_WRITER_HPP_ */

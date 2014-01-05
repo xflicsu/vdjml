@@ -11,13 +11,18 @@ part of vdjml project.
 #include "vdjml/read_result.hpp"
 #include "vdjml/aligner_map.hpp"
 #include "vdjml/germline_db_map.hpp"
+#include "vdjml/format_version.hpp"
+#include "vdjml/exception.hpp"
 
 namespace vdjml{
+class Xml_reader;
+class Xml_writer;
 
 /**@brief Store and search analysis results of many sequencing reads
 *******************************************************************************/
 class VDJML_DECL Result_store {
 public:
+   struct Err : public base_exception {};
    typedef void* /*todo:*/ iterator;
    typedef void* /*todo:*/ const_iterator;
    typedef boost::iterator_range<const_iterator> range;
@@ -36,6 +41,26 @@ public:
 private:
 
 };
+
+/**@brief
+@param xr
+@param version format version
+*******************************************************************************/
+VDJML_DECL Result_store read(
+         Xml_reader& xr,
+         const unsigned version = current_version
+);
+
+/**@brief
+@param xw
+@param rs
+@param version format version
+*******************************************************************************/
+VDJML_DECL void write(
+         Xml_writer& xw,
+         Result_store const& rs,
+         const unsigned version = current_version
+);
 
 }//namespace vdjml
 #endif /* RESULT_STORE_HPP_ */

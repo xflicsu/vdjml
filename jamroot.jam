@@ -14,7 +14,7 @@ path-constant GENERATED_LIB : $(OUT)/lib ;
 path-constant PYTHON_OUT : $(OUT)/binding/python ;
 
 import build/version ;
-constant VDJML_NAME : "VDJML" ;
+constant VDJML_NAME : "libVDJML" ;
 constant VDJML_VERSION : [ git_describe $(GIT_PATH) ] ;
 constant VDJML_DESCRIPTION : "serializes and parses results of immune receptor sequence alignment in VDJML format" ;
 constant VDJML_LICENSE : "the Boost Software License, Version 1.0" ;
