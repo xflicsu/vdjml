@@ -15,9 +15,20 @@ BOOST_GLOBAL_FIXTURE( Exception_fixture );
 /**@test 
 *******************************************************************************/
 BOOST_AUTO_TEST_CASE( case01 ) {
-   Xml_writer xw(std::cout, 1);
+   Xml_writer xw(std::cout);
+   xw.open("element1", ELEM, "http://some.uri.com", "pref");
+   xw.open("element2", ELEM);
+   xw.value("val1");
+   xw.close();
+   xw.open("element3", ELEM);
+   xw.open("atr1", ATTR, "", "pref");
+   xw.value("val2");
+   xw.close();
+   xw.value("val3");
+   xw.close();
+   xw.close();
 
-   BOOST_ERROR("");
+//   BOOST_ERROR("");
 }
 
 }//namespace test
