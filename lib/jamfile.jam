@@ -14,6 +14,8 @@ local defs =
    "VDJML_BUILD=$(bv)"
    "VDJML_NAME=$(VDJML_NAME)"
    "VDJML_DESCRIPTION=\"$(VDJML_DESCRIPTION)\""
+#   "VDJML_COPYRIGHT='\"$(VDJML_COPYRIGHT)\"'"
+   "VDJML_LICENSE='\"$(VDJML_LICENSE)\"'"
    "VDJML_VERSION_1=$(v[1])"
    "VDJML_VERSION_2=$(v[2])"
    "VDJML_VERSION_3=$(v[3])"
@@ -25,7 +27,8 @@ obj lib_info
    : #sources
       lib_info.cpp 
    : #requirements
-      <define>$(defs) 
+      <define>$(defs)
+      <include>$(GENERATED_INCLUDE)
       <link>shared:<define>VDJML_DYN_LINK
    :  #default build options
    :  #usage requirements

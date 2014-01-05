@@ -10,6 +10,8 @@ Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
 #include "vdjml/lib_info.hpp"
 #include <sstream>
 #include "boost/preprocessor/stringize.hpp"
+#include "boost/version.hpp"
+#include "libxml/xmlversion.h"
 
 #ifndef VDJML_NAME
 #define VDJML_NAME VDJML
@@ -55,6 +57,18 @@ std::string make_version_str() {
    if( VDJML_VERSION_DIRTY ) str << '~';
    return str.str();
 }
+
+std::string make_other_libs() {
+   std::ostringstream str;
+   str
+   << "Boost v" << BOOST_VERSION / 100000 << '.' << BOOST_VERSION / 100 % 1000
+   << '.' << BOOST_VERSION % 100 << ", "
+   << "libxml2 v" << LIBXML_VERSION / 10000 << '.' << LIBXML_VERSION / 100 % 100
+   << '.' << LIBXML_VERSION % 100
+   ;
+   return str.str();
+}
+
 }//namespace anonymous
 
 
@@ -76,6 +90,27 @@ std::string const& Lib_info::version() {
 *******************************************************************************/
 std::string const& Lib_info::description() {
    static const std::string s = std::string(BOOST_PP_STRINGIZE(VDJML_DESCRIPTION));
+   return s;
+}
+
+/*
+std::string const& Lib_info::copyright() {
+   static const std::string s = std::string(VDJML_COPYRIGHT);
+   return s;
+}
+*******************************************************************************/
+
+/*
+*******************************************************************************/
+std::string const& Lib_info::license() {
+   static const std::string s = std::string(VDJML_LICENSE);
+   return s;
+}
+
+/*
+*******************************************************************************/
+std::string const& Lib_info::other_libs() {
+   static const std::string s = make_other_libs();
    return s;
 }
 
