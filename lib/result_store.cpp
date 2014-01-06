@@ -19,46 +19,11 @@ part of vdjml project.
 
 namespace vdjml {
 
-/*
-*******************************************************************************/
-std::size_t Result_store::size() const {
-   //todo:
-   return 0;
-}
-
-/*
-*******************************************************************************/
-Result_store::const_iterator Result_store::begin() const {
-   //todo:
-   return 0;
-}
-
-/*
-*******************************************************************************/
-Result_store::const_iterator Result_store::end() const {
-   //todo:
-   return 0;
-}
-
-/*
-*******************************************************************************/
-Read_result const* Result_store::find_id(std::string const* id) const {
-   //todo:
-   return 0;
-}
-
-/*
-*******************************************************************************/
-void Result_store::insert(Read_result const& rr) {
-   //todo:
-}
-
-/*
-*******************************************************************************/
-Result_store read(
-         Xml_reader& xr,
-         const unsigned version
-) {
+Result_store::Result_store(
+            Xml_reader& xr,
+            const unsigned version
+)
+{
 
 }
 
@@ -71,41 +36,8 @@ void write_0(
          Result_store const& rs,
          const unsigned version
 ) {
-   xw.open("meta", ELEM);
-   xw.open("generator", ELEM);
+   write(xw, rs.meta(), version);
 
-   xw.open("name", ATTR);
-   xw.value(Lib_info::name());
-   xw.close();
-
-   xw.open("version", ATTR);
-   xw.value(Lib_info::version());
-   xw.close();
-
-   xw.open("time_gmt", ATTR);
-   xw.value(boost::posix_time::second_clock::universal_time());
-   xw.close();
-
-   xw.open("aligners", ELEM);
-   BOOST_FOREACH(Aligner_info const& ai, rs.aligner_map()) {
-      write(xw, ai, version);
-   }
-   xw.close();
-
-   xw.open("germline_dbs", ELEM);
-   BOOST_FOREACH(Germline_db_info const& gdi, rs.germline_db_map()) {
-      write(xw, gdi, version);
-   }
-   xw.close();
-   xw.close();
-
-   xw.open("read_results", ELEM);
-   BOOST_FOREACH(Read_result const& rr, rs) {
-      write(xw, rr, version);
-   }
-   xw.close();
-
-   xw.close();
 }
 
 }//anonymous namespace

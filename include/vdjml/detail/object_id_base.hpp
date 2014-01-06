@@ -36,6 +36,22 @@ protected:
    value_type val_;
 };
 
+/**
+*******************************************************************************/
+template<class ChT, class Tr, class S, class V> inline
+std::basic_ostream<ChT,Tr>& operator<<(
+      std::basic_ostream<ChT,Tr>& os,
+      Base_id<S,V> const& id
+) {
+   return os << id();
+}
+
+/**
+*******************************************************************************/
+template<class S,class V> inline std::size_t hash_value(Base_id<S,V> const& id) {
+   return id();
+}
+
 }//namespace detail
 }//namespace vdjml
 #endif /* OBJECT_ID_BASE_HPP_ */

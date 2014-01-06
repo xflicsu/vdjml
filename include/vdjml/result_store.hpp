@@ -6,13 +6,12 @@ part of vdjml project.
 #ifndef RESULT_STORE_HPP_
 #define RESULT_STORE_HPP_
 #include <string>
+#include <memory>
+#include "boost/ptr_container/ptr_vector.hpp"
 #include "boost/range.hpp"
 #include "vdjml/config.hpp"
 #include "vdjml/read_result.hpp"
-#include "vdjml/aligner_map.hpp"
-#include "vdjml/germline_db_map.hpp"
-#include "vdjml/format_version.hpp"
-#include "vdjml/exception.hpp"
+#include "vdjml/results_meta.hpp"
 
 namespace vdjml{
 class Xml_reader;
@@ -21,10 +20,11 @@ class Xml_writer;
 /**@brief Store and search analysis results of many sequencing reads
 *******************************************************************************/
 class VDJML_DECL Result_store {
+   typedef boost::ptr_vector<Read_result> store_t;
 public:
    struct Err : public base_exception {};
-   typedef void* /*todo:*/ iterator;
-   typedef void* /*todo:*/ const_iterator;
+   typedef store_t::iterator iterator;
+   typedef store_t::const_iterator const_iterator;
    typedef boost::iterator_range<const_iterator> range;
 
    Result_store() {}
@@ -34,23 +34,25 @@ public:
    @param version format version of the results;
    the version found in the stream has precedence
    */
-   explicit Result_store(Xml_reader& xr,
+   explicit Result_store(
+            Xml_reader& xr,
             const unsigned version = current_version
    );
 
-   std::size_t size() const;
-   const_iterator begin() const;
-   const_iterator end() const;
-   Read_result const* find_id(std::string const* id) const;
-   void insert(Read_result const& rr);
+   std::size_t size() const {return v_.size();}
+   const_iterator begin() const {return v_.begin();}
+   const_iterator end() const {return v_.end();}
 
-   Aligner_map const & aligner_map() const;
-   Aligner_map       & aligner_map();
-   Germline_db_map const   & germline_db_map() const;
-   Germline_db_map         & germline_db_map();
+//   Read_result const* find_id(std::string const* id) const;
+
+   void insert(std::auto_ptr<Read_result> rr);
+
+   Results_meta const& meta() const {return rm_;}
+   Results_meta& meta() {return rm_;}
 
 private:
-
+   Results_meta rm_;
+   store_t v_;
 };
 
 /**@brief

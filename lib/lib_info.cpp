@@ -49,7 +49,7 @@ namespace vdjml{ namespace{
 std::string make_version_str() {
    std::ostringstream str;
    str
-   << 'v' << VDJML_VERSION_1 << '.'
+   << VDJML_VERSION_1 << '.'
    << VDJML_VERSION_2 << '.' << VDJML_VERSION_3
    ;
    const std::string e = std::string(BOOST_PP_STRINGIZE(VDJML_VERSION_EXTRA));

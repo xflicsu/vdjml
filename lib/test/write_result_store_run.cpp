@@ -20,6 +20,19 @@ BOOST_GLOBAL_FIXTURE( Exception_fixture );
 BOOST_AUTO_TEST_CASE( case01 ) {
    Xml_writer xw(std::cout);
    Result_store rs;
+
+   rs.meta().germline_db_map().insert(
+            Germline_db_info("IGHV", "123-0", "Homo Sapiens", "http://www.imgt.org")
+   );
+
+   rs.meta().germline_db_map().insert(
+            Germline_db_info("IGHV", "123-0", "Mus musculus", "http://www.imgt.org")
+   );
+
+   rs.meta().aligner_map().insert(
+            Aligner_info("IMGT", "42-13", "", 0)
+   );
+
    write(xw, rs);
 
    BOOST_ERROR("");

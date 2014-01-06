@@ -76,6 +76,16 @@ public:
 	   value(boost::lexical_cast<std::string>(t));
 	}
 
+	template<class T> void node(
+	         std::string const& name,
+	         const Node_type et,
+	         T const& val
+	) {
+	   open(name, et);
+	   value(val);
+	   close();
+	}
+
 private:
 	std::ostream& os_;
 	xmlBufferPtr buff_;

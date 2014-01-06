@@ -1,4 +1,4 @@
-/** @file "/vdjml/lib/aligner_info.cpp" 
+/** @file "/vdjml/lib/germline_db_info.cpp" 
 part of vdjml project.
 @n Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
 @date 2014 @author Mikhail K Levin
@@ -6,7 +6,7 @@ part of vdjml project.
 #ifndef VDJML_SOURCE
 #define VDJML_SOURCE
 #endif
-#include "vdjml/aligner_info.hpp"
+#include "vdjml/germline_db_info.hpp"
 
 #include "vdjml/xml_writer.hpp"
 
@@ -14,7 +14,7 @@ namespace vdjml {
 
 /*
 *******************************************************************************/
-Aligner_info::Aligner_info(
+Germline_db_info::Germline_db_info(
             Xml_reader& xr,
             const unsigned version
 )
@@ -26,18 +26,18 @@ Aligner_info::Aligner_info(
 *******************************************************************************/
 void write(
          Xml_writer& xw,
-         Aligner_info const& ai,
+         Germline_db_info const& gdi,
          const unsigned version
 ) {
-   xw.open("aligner", ELEM);
+   xw.open("germline_db", ELEM);
 
-   xw.node("id", ATTR, ai.id());
-   xw.node("name", ATTR, ai.name());
-   xw.node("version", ATTR, ai.version());
-   xw.node("run_id", ATTR, ai.run_id());
-   if( ai.parameters().size() ) xw.node("parameters", ELEM, ai.parameters());
+   xw.node("id", ATTR, gdi.id());
+   xw.node("name", ATTR, gdi.name());
+   xw.node("species", ATTR, gdi.species());
+   xw.node("version", ATTR, gdi.version());
+   if( gdi.uri().size() ) xw.node("uri", ATTR, gdi.uri());
 
-   xw.close(); //aligner ELEM
+   xw.close(); //germline_db ELEM
 }
 
 }//namespace vdjml

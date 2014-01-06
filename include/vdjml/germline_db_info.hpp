@@ -6,8 +6,10 @@ part of vdjml project.
 #ifndef GERMLINE_DB_INFO_HPP_
 #define GERMLINE_DB_INFO_HPP_
 #include <string>
+#include "boost/functional/hash.hpp"
 #include "vdjml/detail/object_id_base.hpp"
 #include "vdjml/format_version.hpp"
+#include "vdjml/config.hpp"
 
 namespace vdjml{
 class Germline_db_map;
@@ -32,16 +34,14 @@ public:
    Germline_db_info(
             std::string const& name,
             std::string const& version,
-            std::string const& num_system,
             std::string const& species,
             std::string const& url
    )
    : id_(),
      name_(name),
      version_(version),
-     num_system_(num_system),
      species_(species),
-     url_(url)
+     uri_(url)
    {}
 
    explicit Germline_db_info(
@@ -52,18 +52,36 @@ public:
    Gdb_id id() const {return id_;}
    std::string const& name() const {return name_;}
    std::string const& version() const {return version_;}
-   std::string const& num_system() const {return num_system_;}
    std::string const& species() const {return species_;}
-   std::string const& url() const {return url_;}
+   std::string const& uri() const {return uri_;}
+
+   bool operator==(Germline_db_info const& ai) const {
+      return
+               name() == ai.name() &&
+               version() == ai.version() &&
+               species() == ai.species()
+               ;
+   }
+
+   bool operator!= (Germline_db_info const& ai) const {return !(*this == ai);}
 
 private:
    Gdb_id id_;
    std::string name_;
    std::string version_;
-   std::string num_system_;
    std::string species_;
-   std::string url_;
+   std::string uri_;
 };
+
+/**@brief
+*******************************************************************************/
+inline std::size_t hash_value(Germline_db_info const& ai) {
+   std::size_t h = 0;
+   boost::hash_combine(h, ai.name());
+   boost::hash_combine(h, ai.version());
+   boost::hash_combine(h, ai.species());
+   return h;
+}
 
 /**@brief
 *******************************************************************************/

@@ -49,7 +49,7 @@ struct VDJML_DECL Lib_info {
    template<class Ch, class Tr> static std::basic_ostream<Ch,Tr>&
    print_version(std::basic_ostream<Ch,Tr>& os) {
       os
-      << version()
+      << 'v' << version()
       << ", " << other_libs()
       << ", build:" << build()
       ;
