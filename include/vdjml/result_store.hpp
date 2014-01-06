@@ -27,6 +27,17 @@ public:
    typedef void* /*todo:*/ const_iterator;
    typedef boost::iterator_range<const_iterator> range;
 
+   Result_store() {}
+
+   /**@brief Read VDJ alignment results from XML reader stream
+   @param xr XML writer
+   @param version format version of the results;
+   the version found in the stream has precedence
+   */
+   explicit Result_store(Xml_reader& xr,
+            const unsigned version = current_version
+   );
+
    std::size_t size() const;
    const_iterator begin() const;
    const_iterator end() const;
@@ -43,17 +54,8 @@ private:
 };
 
 /**@brief
-@param xr
-@param version format version
-*******************************************************************************/
-VDJML_DECL Result_store read(
-         Xml_reader& xr,
-         const unsigned version = current_version
-);
-
-/**@brief
-@param xw
-@param rs
+@param xw XML writer
+@param rs result store
 @param version format version
 *******************************************************************************/
 VDJML_DECL void write(

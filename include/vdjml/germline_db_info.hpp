@@ -7,9 +7,12 @@ part of vdjml project.
 #define GERMLINE_DB_INFO_HPP_
 #include <string>
 #include "vdjml/detail/object_id_base.hpp"
+#include "vdjml/format_version.hpp"
 
 namespace vdjml{
 class Germline_db_map;
+class Xml_reader;
+class Xml_writer;
 
 /**@brief
 *******************************************************************************/
@@ -21,7 +24,7 @@ public:
 
 /**@brief 
 *******************************************************************************/
-class Germline_db_info {
+class VDJML_DECL Germline_db_info {
    friend class Germline_db_map;
 
 public:
@@ -41,6 +44,11 @@ public:
      url_(url)
    {}
 
+   explicit Germline_db_info(
+            Xml_reader& xr,
+            const unsigned version
+   );
+
    Gdb_id id() const {return id_;}
    std::string const& name() const {return name_;}
    std::string const& version() const {return version_;}
@@ -56,6 +64,14 @@ private:
    std::string species_;
    std::string url_;
 };
+
+/**@brief
+*******************************************************************************/
+VDJML_DECL void write(
+         Xml_writer& xw,
+         Germline_db_info const& gdi,
+         const unsigned version = current_version
+);
 
 }//namespace vdjml
 #endif /* GERMLINE_DB_INFO_HPP_ */

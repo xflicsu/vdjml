@@ -9,6 +9,7 @@ part of vdjml project.
 #include "vdjml/detail/object_id_base.hpp"
 #include "vdjml/config.hpp"
 #include "vdjml/format_version.hpp"
+#include "boost/functional/hash.hpp"
 
 namespace vdjml{
 class Aligner_map;
@@ -25,7 +26,7 @@ public:
 
 /**@brief 
 *******************************************************************************/
-class Aligner_info {
+class VDJML_DECL Aligner_info {
    friend class Aligner_map;
 
 public:
@@ -43,11 +44,26 @@ public:
      run_id_(run_id)
    {}
 
+   explicit Aligner_info(
+            Xml_reader& xr,
+            const unsigned version
+   );
+
    Aligner_id id() const {return id_;}
    std::string const& name() const {return name_;}
    std::string const& version() const {return version_;}
    std::string const& parameters() const {return parameters_;}
    unsigned run_id() const {return run_id_;}
+
+   bool operator==(Aligner_info const& ai) const {
+      return
+               name() == ai.name() &&
+               version() == ai.version() &&
+               parameters() == ai.parameters()
+               ;
+   }
+
+   bool operator!= (Aligner_info const& ai) const {return !(*this == ai);}
 
 private:
    Aligner_id id_;
@@ -59,17 +75,20 @@ private:
 
 /**@brief
 *******************************************************************************/
-VDJML_DECL Aligner_info read(
-         Xml_reader& xr,
-         const unsigned version
-);
+inline std::size_t hash_value(Aligner_info const& ai) {
+   std::size_t h = 0;
+   boost::hash_combine(h, ai.name());
+   boost::hash_combine(h, ai.version());
+   boost::hash_combine(h, ai.parameters());
+   return h;
+}
 
 /**@brief
 *******************************************************************************/
 VDJML_DECL void write(
          Xml_writer& xw,
          Aligner_info const& ai,
-         const unsigned version = 0
+         const unsigned version = current_version
 );
 
 }//namespace vdjml

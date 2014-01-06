@@ -7,9 +7,15 @@ part of vdjml project.
 #define VDJML_SOURCE
 #endif
 #include "vdjml/result_store.hpp"
+
+#include "boost/date_time/posix_time/posix_time.hpp"
+#include "boost/foreach.hpp"
+
 #include "vdjml/read_result.hpp"
 #include "vdjml/xml_writer.hpp"
 #include "vdjml/lib_info.hpp"
+#include "vdjml/aligner_info.hpp"
+#include "vdjml/germline_db_info.hpp"
 
 namespace vdjml {
 
@@ -62,7 +68,8 @@ namespace {
 *******************************************************************************/
 void write_0(
          Xml_writer& xw,
-         Result_store const& rs
+         Result_store const& rs,
+         const unsigned version
 ) {
    xw.open("meta", ELEM);
    xw.open("generator", ELEM);
@@ -76,7 +83,26 @@ void write_0(
    xw.close();
 
    xw.open("time_gmt", ATTR);
-   xw.value(boost::date_time::second_clock::now());
+   xw.value(boost::posix_time::second_clock::universal_time());
+   xw.close();
+
+   xw.open("aligners", ELEM);
+   BOOST_FOREACH(Aligner_info const& ai, rs.aligner_map()) {
+      write(xw, ai, version);
+   }
+   xw.close();
+
+   xw.open("germline_dbs", ELEM);
+   BOOST_FOREACH(Germline_db_info const& gdi, rs.germline_db_map()) {
+      write(xw, gdi, version);
+   }
+   xw.close();
+   xw.close();
+
+   xw.open("read_results", ELEM);
+   BOOST_FOREACH(Read_result const& rr, rs) {
+      write(xw, rr, version);
+   }
    xw.close();
 
    xw.close();
@@ -97,7 +123,7 @@ void write(
 
    switch (version) {
       case 0:
-         write_0(xw, rs);
+         write_0(xw, rs, version);
          break;
       default:
          BOOST_THROW_EXCEPTION(

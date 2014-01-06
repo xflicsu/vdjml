@@ -6,8 +6,9 @@ part of vdjml project.
 #ifndef XML_WRITER_HPP_
 #define XML_WRITER_HPP_
 #include <iostream>
-#include "vdjml/config.hpp"
 #include "boost/lexical_cast.hpp"
+#include "boost/noncopyable.hpp"
+#include "vdjml/config.hpp"
 
 typedef struct _xmlBuffer xmlBuffer;
 typedef xmlBuffer *xmlBufferPtr;
@@ -46,7 +47,7 @@ struct Xml_writer_options {
 
 /**@brief
 *******************************************************************************/
-class VDJML_DECL Xml_writer {
+class VDJML_DECL Xml_writer : boost::noncopyable {
 public:
 
    explicit Xml_writer(

@@ -1,4 +1,4 @@
-/** @file "/vdjml/lib/aligner_info.cpp" 
+/** @file "/vdjml/lib/read_result.cpp" 
 part of vdjml project.
 @n Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
 @date 2014 @author Mikhail K Levin
@@ -6,18 +6,17 @@ part of vdjml project.
 #ifndef VDJML_SOURCE
 #define VDJML_SOURCE
 #endif
-#include "vdjml/aligner_info.hpp"
-
-#include "vdjml/xml_writer.hpp"
+#include "vdjml/read_result.hpp"
 
 namespace vdjml {
 
 /*
 *******************************************************************************/
-Aligner_info::Aligner_info(
-            Xml_reader& xr,
-            const unsigned version
+Read_result::Read_result(
+         Xml_reader& xr,
+         const unsigned version
 )
+: id_()
 {
 
 }
@@ -26,7 +25,7 @@ Aligner_info::Aligner_info(
 *******************************************************************************/
 void write(
          Xml_writer& xw,
-         Aligner_info const& ai,
+         Read_result const& rr,
          const unsigned version
 ) {
 
