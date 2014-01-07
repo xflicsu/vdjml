@@ -6,10 +6,11 @@ part of vdjml project.
 #ifndef NUCLEOTIDE_INDEX_HPP_
 #define NUCLEOTIDE_INDEX_HPP_
 #include "boost/assert.hpp"
-#include "vdj_pipe/exception.hpp"
 
 namespace vdj_pipe{
 
+/**@brief
+*******************************************************************************/
 enum Nucleotide {
    Adenine = 0, Cytosine = 1, Guanine = 2, Thymine = 3,
    Any = 4,
