@@ -7,6 +7,7 @@ part of vdjml project.
 #define VDJML_SOURCE
 #endif
 #include "vdjml/read_result.hpp"
+#include "vdjml/xml_writer.hpp"
 
 namespace vdjml {
 
@@ -28,7 +29,14 @@ void write(
          Read_result const& rr,
          const unsigned version
 ) {
+   xw.open("read", ELEM);
+   xw.node("id", ATTR, rr.id());
 
+   xw.open("alignment", ELEM);
+
+   xw.close(); //alignment ELEM
+
+   xw.close(); //read ELEM
 }
 
 }//namespace vdjml

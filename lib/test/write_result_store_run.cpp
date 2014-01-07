@@ -33,6 +33,9 @@ BOOST_AUTO_TEST_CASE( case01 ) {
             Aligner_info("IMGT", "42-13", "", 0)
    );
 
+   rs.insert(Read_result("xyz123"));
+   rs.insert(Read_result("wer089dfl"));
+
    write(xw, rs);
 
    BOOST_ERROR("");

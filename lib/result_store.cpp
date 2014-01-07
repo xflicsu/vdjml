@@ -37,7 +37,11 @@ void write_0(
          const unsigned version
 ) {
    write(xw, rs.meta(), version);
-
+   xw.open("read_results", ELEM);
+   BOOST_FOREACH(Read_result const& rr, rs) {
+      write(xw, rr, version);
+   }
+   xw.close(); //read_results ELEM
 }
 
 }//anonymous namespace
@@ -50,8 +54,7 @@ void write(
          const unsigned version
 ) {
    xw.open("vdjml_results", ELEM, "http://vdjserver.org/xml/schema/vdjml/");
-   xw.open("version", ATTR);
-   xw.value(version_to_string(version));
+   xw.node("version", ATTR, version_to_string(version));
 
    switch (version) {
       case 0:
