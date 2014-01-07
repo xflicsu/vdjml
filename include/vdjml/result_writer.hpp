@@ -1,8 +1,7 @@
 /** @file "/vdjml/include/vdjml/result_writer.hpp" 
 part of vdjml project.
-@n @n Distributed under GNU General Public License, Version 3;
-see doc/license.txt.
-@n Copyright Mikhail K Levin 2014
+@n Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
+@date 2014 @author Mikhail K Levin
 *******************************************************************************/
 #ifndef RESULT_WRITER_HPP_
 #define RESULT_WRITER_HPP_

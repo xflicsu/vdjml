@@ -7,22 +7,14 @@ part of vdjml project.
 #define GERMLINE_DB_INFO_HPP_
 #include <string>
 #include "boost/functional/hash.hpp"
-#include "vdjml/detail/object_id_base.hpp"
 #include "vdjml/format_version.hpp"
 #include "vdjml/config.hpp"
+#include "vdjml/germline_db_id.hpp"
 
 namespace vdjml{
 class Germline_db_map;
 class Xml_reader;
 class Xml_writer;
-
-/**@brief
-*******************************************************************************/
-class Gdb_id : public detail::Base_id<Gdb_id> {
-public:
-   explicit Gdb_id(const value_type x) : base(x) {}
-   Gdb_id() : base(0) {}
-};
 
 /**@brief 
 *******************************************************************************/

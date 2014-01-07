@@ -6,23 +6,15 @@ part of vdjml project.
 #ifndef ALIGNER_INFO_HPP_
 #define ALIGNER_INFO_HPP_
 #include <string>
-#include "vdjml/detail/object_id_base.hpp"
-#include "vdjml/config.hpp"
-#include "vdjml/format_version.hpp"
 #include "boost/functional/hash.hpp"
+#include "vdjml/config.hpp"
+#include "vdjml/aligner_id.hpp"
+#include "vdjml/format_version.hpp"
 
 namespace vdjml{
 class Aligner_map;
 class Xml_reader;
 class Xml_writer;
-
-/**@brief
-*******************************************************************************/
-class Aligner_id : public detail::Base_id<Aligner_id> {
-public:
-   explicit Aligner_id(const value_type x) : base(x) {}
-   Aligner_id() : base(0) {}
-};
 
 /**@brief 
 *******************************************************************************/

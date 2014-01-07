@@ -6,6 +6,7 @@ part of vdjml project.
 #ifndef NUM_SYSTEM_HPP_
 #define NUM_SYSTEM_HPP_
 #include <string>
+#include <iosfwd>
 #include "vdjml/detail/object_id_base.hpp"
 
 namespace vdjml{
@@ -25,6 +26,16 @@ struct Num_system {
    Numsys_id id_;
    std::string name_;
 };
+
+/**
+*******************************************************************************/
+template<class ChT, class Tr> inline
+std::basic_ostream<ChT,Tr>& operator<<(
+      std::basic_ostream<ChT,Tr>& os,
+      Num_system const& ns
+) {
+   return os << ns.name_;
+}
 
 }//namespace vdjml
 #endif /* NUM_SYSTEM_HPP_ */

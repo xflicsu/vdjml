@@ -10,6 +10,7 @@ part of vdjml project.
 #include "boost/ptr_container/ptr_vector.hpp"
 #include "boost/range.hpp"
 #include "vdjml/config.hpp"
+#include "vdjml/exception.hpp"
 #include "vdjml/read_result.hpp"
 #include "vdjml/results_meta.hpp"
 
