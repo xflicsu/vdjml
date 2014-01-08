@@ -44,7 +44,7 @@ public:
    const_iterator end() const {return map_.end();}
    bool empty() const {return ! size();}
 
-   /**@param gdi accept by value to change the ID */
+   /**@param ai accept by value to change the ID */
    Aligner_id insert(Aligner_info ai) {
       typedef map_t::index<identity_tag>::type index;
       index& ind = map_.get<identity_tag>();

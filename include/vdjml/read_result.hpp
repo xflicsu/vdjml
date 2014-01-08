@@ -6,8 +6,10 @@ part of vdjml project.
 #ifndef READ_RESULT_HPP_
 #define READ_RESULT_HPP_
 #include <string>
+#include <string>
 #include "vdjml/config.hpp"
 #include "vdjml/format_version.hpp"
+#include "vdjml/segment_match.hpp"
 
 namespace vdjml{
 class Xml_reader;
@@ -26,6 +28,10 @@ public:
             Xml_reader& xr,
             const unsigned version
    );
+
+   Sm_id insert(Read_segment_match const& rsm) {
+
+   }
 
    std::string const& id() const {return id_;}
 

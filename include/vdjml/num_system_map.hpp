@@ -68,7 +68,7 @@ public:
       );
    }
 
-   /**@param gdi accept by value to change the ID */
+   /**@param name accept by value to change the ID */
    Numsys_id insert(std::string const& name) {
       typedef map_t::index<name_tag>::type index;
       index& ind = map_.get<name_tag>();

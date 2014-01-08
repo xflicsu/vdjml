@@ -7,14 +7,16 @@ part of vdjml project.
 #define SEGMENT_MATCH_HPP_
 #include <string>
 #include <vector>
-#include "vdjml/config.hpp"
-#include "vdjml/btop.hpp"
 #include "vdjml/aligner_id.hpp"
-#include "vdjml/segment_match_id.hpp"
-#include "vdjml/gene_segment_type.hpp"
-#include "vdjml/interval.hpp"
-#include "vdjml/germline_db_id.hpp"
+#include "vdjml/btop.hpp"
+#include "vdjml/config.hpp"
 #include "vdjml/detail/vector_set.hpp"
+#include "vdjml/format_version.hpp"
+#include "vdjml/gene_segment_type.hpp"
+#include "vdjml/germline_db_id.hpp"
+#include "vdjml/germline_segment_id.hpp"
+#include "vdjml/interval.hpp"
+#include "vdjml/segment_match_id.hpp"
 
 namespace vdjml{
 class Read_result;
@@ -66,62 +68,73 @@ struct Aa_substitution {
 
 /**@brief
 *******************************************************************************/
-struct Germline_segment {
-   Gdb_id gdb_id_;
-   Numsys_id num_sys_id_;
-   short_interval range_;
-   std::string gene_;
-};
-
-/**@brief
-*******************************************************************************/
-struct VDJML_DECL Segment_match {
-   Segment_match()
-   : gs_type_(V_gs),
-     score_(0),
-     identity_(0.0),
-     is_inverted_(false),
-     stop_codon_(false),
-     mutated_invariant_(false)
+struct Germline_segment_match {
+   Germline_segment_match(
+            const Gdb_id gdb,
+            const Numsys_id numsys,
+            const Aligner_id aligner,
+            short_interval const& range,
+            const Gls_id germline_segment,
+            const int score,
+            const float identity
+   )
+   : gdb_(gdb),
+     numsys_(numsys),
+     aligner_(aligner),
+     range_(range),
+     gl_segment_(germline_segment),
+     score_(score),
+     identity_(identity)
    {}
 
-   Segment_match(
-            const Aligner_id aligner_id,
-            const Gs_type segment_type,
+   bool operator==(Germline_segment_match const& gsm) const {
+//      return
+   }
+
+   Gdb_id gdb_;
+   Numsys_id numsys_;
+   Aligner_id aligner_;
+   short_interval range_;
+   Gls_id gl_segment_;
+   int score_;
+   float identity_;
+};
+
+
+
+/**@brief Alignment results for a read segment
+@details
+*******************************************************************************/
+class VDJML_DECL Read_segment_match {
+   friend class Read_result;
+
+public:
+   Read_segment_match(
             Btop const& btop,
-            const int score,
-            const float identity,
             short_interval const& read_range
    )
-   : aligner_id_(aligner_id),
-     gs_type_(segment_type),
-     btop_(btop),
-     score_(score),
-     identity_(identity),
+   : btop_(btop),
      r_range_(read_range),
      is_inverted_(false),
      stop_codon_(false),
      mutated_invariant_(false)
    {}
 
+private:
    Sm_id id_;
-   Aligner_id aligner_id_;
-   Gs_type gs_type_;
    Btop btop_;
-   int score_;
-   float identity_;
    short_interval r_range_;
    bool is_inverted_;
    bool stop_codon_;
    bool mutated_invariant_;
-   std::vector<Germline_segment> gsv_;
+   detail::Vector_set<Germline_segment_match> gsv_;
 };
 
 /**@brief
 *******************************************************************************/
 VDJML_DECL void write(
          Xml_writer& xw,
-         Segment_match const& sm,
+         Read_segment_match const& sm,
          const unsigned version = current_version
 );
 

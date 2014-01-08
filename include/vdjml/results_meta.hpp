@@ -11,6 +11,7 @@ part of vdjml project.
 #include "vdjml/num_system_map.hpp"
 #include "vdjml/format_version.hpp"
 #include "vdjml/exception.hpp"
+#include "vdjml/germline_segment_map.hpp"
 
 namespace vdjml{
 
@@ -38,11 +39,14 @@ public:
    Germline_db_map         & germline_db_map() {return gm_;}
    Num_system_map const & num_system_map() const {return nsm_;}
    Num_system_map       & num_system_map() {return nsm_;}
+   Germline_segment_map const & germline_segment_map() const {return gsm_;}
+   Germline_segment_map       & germline_segment_map() {return gsm_;}
 
 private:
    Aligner_map am_;
    Germline_db_map gm_;
    Num_system_map nsm_;
+   Germline_segment_map gsm_;
 };
 
 /**@brief
