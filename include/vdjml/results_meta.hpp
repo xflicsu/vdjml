@@ -12,6 +12,7 @@ part of vdjml project.
 #include "vdjml/format_version.hpp"
 #include "vdjml/exception.hpp"
 #include "vdjml/germline_segment_map.hpp"
+#include "vdjml/gene_region_type_map.hpp"
 
 namespace vdjml{
 
@@ -35,18 +36,25 @@ public:
 
    Aligner_map const & aligner_map() const {return am_;}
    Aligner_map       & aligner_map() {return am_;}
+
    Germline_db_map const   & germline_db_map() const {return gm_;}
    Germline_db_map         & germline_db_map() {return gm_;}
+
    Num_system_map const & num_system_map() const {return nsm_;}
    Num_system_map       & num_system_map() {return nsm_;}
+
    Germline_segment_map const & germline_segment_map() const {return gsm_;}
    Germline_segment_map       & germline_segment_map() {return gsm_;}
+
+   Gene_region_map const & gene_region_map() const {return grm_;}
+   Gene_region_map       & gene_region_map() {return grm_;}
 
 private:
    Aligner_map am_;
    Germline_db_map gm_;
    Num_system_map nsm_;
    Germline_segment_map gsm_;
+   Gene_region_map grm_;
 };
 
 /**@brief

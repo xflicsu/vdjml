@@ -173,6 +173,31 @@ public:
       return std::make_pair(id, true);
    }
 
+   void insert(const id_type id, obj_type const& obj) {
+      if( id < id0_ ) BOOST_THROW_EXCEPTION(
+               Err()
+               << Err::msg_t("invalid ID")
+               << Err::int1_t(id())
+      );
+
+      if( id_type const* id0 = find(obj) ) {
+         if( *id0 == id ) return;
+         BOOST_THROW_EXCEPTION(
+                  Err()
+                  << Err::msg_t("object already mapped to different ID")
+                  << Err::int1_t(id())
+                  << Err::int2_t((*id0)())
+         );
+      }
+      //ignore erased_
+      const std::size_t n = vpos(id);
+      if( n >= vid_.size() ) {
+         vid_.resize(n + 1);
+      }
+      vid_[n] = obj;
+      map_.insert(id);
+   }
+
    void erase(const id_type id) {
       BOOST_ASSERT( vpos(id) < vid_.size() );
       const std::size_t pos = vpos(id);

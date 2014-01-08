@@ -1,8 +1,7 @@
 /** @file "/vdjml/include/vdjml/object_ids.hpp" 
 part of vdjml project.
-@n @n Distributed under GNU General Public License, Version 3;
-see doc/license.txt.
-@n Copyright Mikhail K Levin 2014
+@n Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
+@date 2013 @author Mikhail K Levin
 *******************************************************************************/
 #ifndef OBJECT_IDS_HPP_
 #define OBJECT_IDS_HPP_
@@ -10,11 +9,23 @@ see doc/license.txt.
 
 namespace vdjml{
 
+/** Aligner software ID */
 VDJML_OBJECT_ID(Aligner_id);
+
+/** Germline database ID */
 VDJML_OBJECT_ID(Gdb_id);
+
+/** Numbering system ID */
 VDJML_OBJECT_ID(Numsys_id);
+
+/** Segment match ID */
 VDJML_OBJECT_ID(Sm_id);
+
+/** Germline segment ID */
 VDJML_OBJECT_ID(Gls_id);
+
+/** Gene region type ID */
+VDJML_OBJECT_ID(Region_id);
 
 }//namespace vdjml
 #endif /* OBJECT_IDS_HPP_ */
