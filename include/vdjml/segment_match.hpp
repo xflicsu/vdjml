@@ -7,16 +7,13 @@ part of vdjml project.
 #define SEGMENT_MATCH_HPP_
 #include <string>
 #include <vector>
-#include "vdjml/aligner_id.hpp"
+#include "vdjml/object_ids.hpp"
 #include "vdjml/btop.hpp"
 #include "vdjml/config.hpp"
 #include "vdjml/detail/vector_set.hpp"
 #include "vdjml/format_version.hpp"
 #include "vdjml/gene_segment_type.hpp"
-#include "vdjml/germline_db_id.hpp"
-#include "vdjml/germline_segment_id.hpp"
 #include "vdjml/interval.hpp"
-#include "vdjml/segment_match_id.hpp"
 
 namespace vdjml{
 class Read_result;
@@ -70,7 +67,6 @@ struct Aa_substitution {
 *******************************************************************************/
 struct Germline_segment_match {
    Germline_segment_match(
-            const Gdb_id gdb,
             const Numsys_id numsys,
             const Aligner_id aligner,
             short_interval const& range,
@@ -78,24 +74,37 @@ struct Germline_segment_match {
             const int score,
             const float identity
    )
-   : gdb_(gdb),
-     numsys_(numsys),
+   : numsys_(numsys),
      aligner_(aligner),
-     range_(range),
      gl_segment_(germline_segment),
+     range_(range),
      score_(score),
      identity_(identity)
    {}
 
    bool operator==(Germline_segment_match const& gsm) const {
-//      return
+      return
+               numsys_ == gsm.numsys_ &&
+               aligner_ == gsm.aligner_ &&
+               gl_segment_ == gsm.gl_segment_ &&
+               range_ == gsm.range_
+               ;
    }
 
-   Gdb_id gdb_;
+   bool operator<(Germline_segment_match const& gsm) const {
+      if( numsys_ < gsm.numsys_ ) return true;
+      if( gsm.numsys_ < numsys_ ) return false;
+      if( aligner_ < gsm.aligner_ ) return true;
+      if( gsm.aligner_ < aligner_ ) return false;
+      if( gl_segment_ < gsm.gl_segment_ ) return true;
+      if( gsm.gl_segment_ < gl_segment_ ) return false;
+      return range_ < gsm.range_;
+   }
+
    Numsys_id numsys_;
    Aligner_id aligner_;
-   short_interval range_;
    Gls_id gl_segment_;
+   short_interval range_;
    int score_;
    float identity_;
 };
@@ -105,11 +114,11 @@ struct Germline_segment_match {
 /**@brief Alignment results for a read segment
 @details
 *******************************************************************************/
-class VDJML_DECL Read_segment_match {
+class VDJML_DECL Segment_match {
    friend class Read_result;
 
 public:
-   Read_segment_match(
+   Segment_match(
             Btop const& btop,
             short_interval const& read_range
    )
@@ -134,7 +143,7 @@ private:
 *******************************************************************************/
 VDJML_DECL void write(
          Xml_writer& xw,
-         Read_segment_match const& sm,
+         Segment_match const& sm,
          const unsigned version = current_version
 );
 

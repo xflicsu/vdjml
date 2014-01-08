@@ -9,7 +9,7 @@ part of vdjml project.
 #include "boost/functional/hash.hpp"
 #include "vdjml/format_version.hpp"
 #include "vdjml/config.hpp"
-#include "vdjml/germline_db_id.hpp"
+#include "vdjml/object_ids.hpp"
 
 namespace vdjml{
 class Germline_db_map;

@@ -8,7 +8,7 @@ part of vdjml project.
 #include <string>
 #include "boost/functional/hash.hpp"
 #include "vdjml/config.hpp"
-#include "vdjml/aligner_id.hpp"
+#include "vdjml/object_ids.hpp"
 #include "vdjml/format_version.hpp"
 
 namespace vdjml{

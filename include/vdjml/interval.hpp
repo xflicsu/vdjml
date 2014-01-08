@@ -57,6 +57,16 @@ public:
    std::size_t last() const {return len_ ? (std::size_t)pos_ + len_ - 1 : pos_;}
    std::size_t length() const {return len_;}
 
+   bool operator==(Interval const& i) const {
+      return pos_ == i.pos_ && len_ == i.len_;
+   }
+
+   bool operator<(Interval const& i) const {
+      if( pos_ < i.pos_ ) return true;
+      if( i.pos_ < pos_ ) return false;
+      return len_ < i.len_;
+   }
+
 private:
    value_type pos_;
    value_type len_;

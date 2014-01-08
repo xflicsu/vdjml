@@ -36,7 +36,6 @@ inline Gs_type segment_type(const char c) {
             base_exception()
             << base_exception::msg_t(s)
    );
-   return 0;
 }
 
 /**@brief Gene segment types

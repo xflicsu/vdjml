@@ -6,7 +6,7 @@ part of vdjml project.
 #ifndef GERMLINE_SEGMENT_INFO_HPP_
 #define GERMLINE_SEGMENT_INFO_HPP_
 #include <string>
-#include "vdjml/germline_db_id.hpp"
+#include "vdjml/object_ids.hpp"
 #include "vdjml/gene_segment_type.hpp"
 
 namespace vdjml{

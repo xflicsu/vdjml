@@ -11,7 +11,12 @@ namespace vdjml{
 
 /**@brief 
 *******************************************************************************/
+class Segment_match_map {
+public:
 
+private:
+
+};
 
 }//namespace vdjml
 #endif /* SEGMENT_MATCH_MAP_HPP_ */

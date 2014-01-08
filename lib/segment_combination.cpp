@@ -10,8 +10,14 @@ part of vdjml project.
 
 namespace vdjml {
 
-/**
+/*
 *******************************************************************************/
+void write(
+         Xml_writer& xw,
+         Segment_combination const& sc,
+         const unsigned version
+) {
 
+}
 
 }//namespace vdjml

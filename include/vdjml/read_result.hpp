@@ -9,7 +9,9 @@ part of vdjml project.
 #include <string>
 #include "vdjml/config.hpp"
 #include "vdjml/format_version.hpp"
-#include "vdjml/segment_match.hpp"
+#include "vdjml/segment_match_map.hpp"
+#include "vdjml/segment_match_map.hpp"
+#include "vdjml/segment_combination_map.hpp"
 
 namespace vdjml{
 class Xml_reader;
@@ -29,14 +31,20 @@ public:
             const unsigned version
    );
 
-   Sm_id insert(Read_segment_match const& rsm) {
+   Sm_id insert(Segment_match const& rsm) {
+      return smm_.insert(rsm);
+   }
 
+   void insert(Segment_combination const& sc) {
+      scm_.insert(sc);
    }
 
    std::string const& id() const {return id_;}
 
 private:
    std::string id_;
+   Segment_match_map smm_;
+   Segment_combination_map scm_;
 };
 
 /**@brief

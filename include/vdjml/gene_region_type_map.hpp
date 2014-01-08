@@ -1,22 +1,22 @@
-/** @file "/vdjml/include/vdjml/aligner_id.hpp" 
+/** @file "/vdjml/include/vdjml/gene_region_type_map.hpp" 
 part of vdjml project.
 @n Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
 @date 2014 @author Mikhail K Levin
 *******************************************************************************/
-#ifndef ALIGNER_ID_HPP_
-#define ALIGNER_ID_HPP_
-#include "vdjml/detail/object_id_base.hpp"
+#ifndef GENE_REGION_TYPE_MAP_HPP_
+#define GENE_REGION_TYPE_MAP_HPP_
+#include "vdjml/detail/id_bimap.hpp"
 
 namespace vdjml{
 
-/**@brief
+/**@brief 
 *******************************************************************************/
-class Aligner_id : public detail::Base_id<Aligner_id> {
+class Gene_region_map {
 public:
-   explicit Aligner_id(const value_type x) : base(x) {}
-   Aligner_id() : base(0) {}
+
+private:
+
 };
 
-
 }//namespace vdjml
-#endif /* ALIGNER_ID_HPP_ */
+#endif /* GENE_REGION_TYPE_MAP_HPP_ */

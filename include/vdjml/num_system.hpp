@@ -7,18 +7,10 @@ part of vdjml project.
 #define NUM_SYSTEM_HPP_
 #include <string>
 #include <iosfwd>
-#include "vdjml/detail/object_id_base.hpp"
+#include "vdjml/object_ids.hpp"
 
 namespace vdjml{
 class Num_system_map;
-
-/**@brief
-*******************************************************************************/
-class Numsys_id : public detail::Base_id<Numsys_id> {
-public:
-   explicit Numsys_id(const value_type x) : base(x) {}
-   Numsys_id() : base(0) {}
-};
 
 /**@brief 
 *******************************************************************************/

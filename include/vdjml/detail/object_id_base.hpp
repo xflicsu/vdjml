@@ -52,6 +52,13 @@ template<class S,class V> inline std::size_t hash_value(Base_id<S,V> const& id) 
    return id();
 }
 
+#define VDJML_OBJECT_ID(name)                               \
+   struct name : public ::vdjml::detail::Base_id<name> {    \
+   explicit name(const value_type x) : base(x) {}           \
+   name() : base(0) {}                                      \
+   }                                                        \
+/* */
+
 }//namespace detail
 }//namespace vdjml
 #endif /* OBJECT_ID_BASE_HPP_ */

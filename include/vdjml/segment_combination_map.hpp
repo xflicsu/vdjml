@@ -10,7 +10,12 @@ namespace vdjml{
 
 /**@brief 
 *******************************************************************************/
+class Segment_combination_map {
+public:
 
+private:
+
+};
 
 }//namespace vdjml
 #endif /* SEGMENT_COMBINATION_MAP_HPP_ */
