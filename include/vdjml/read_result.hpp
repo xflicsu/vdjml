@@ -31,7 +31,7 @@ public:
             const unsigned version
    );
 
-   Sm_id insert(Segment_match const& rsm) {
+   Seg_match_id insert(Segment_match const& rsm) {
       return smm_.insert(rsm);
    }
 

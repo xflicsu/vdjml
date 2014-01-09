@@ -130,7 +130,7 @@ public:
    {}
 
 private:
-   Sm_id id_;
+   Seg_match_id id_;
    Btop btop_;
    short_interval r_range_;
    bool is_inverted_;

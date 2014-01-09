@@ -19,7 +19,7 @@ VDJML_OBJECT_ID(Gdb_id);
 VDJML_OBJECT_ID(Numsys_id);
 
 /** Segment match ID */
-VDJML_OBJECT_ID(Sm_id);
+VDJML_OBJECT_ID(Seg_match_id);
 
 /** Germline segment ID */
 VDJML_OBJECT_ID(Gls_id);

@@ -5,6 +5,7 @@ part of vdjml project.
 *******************************************************************************/
 #ifndef SEGMENT_COMBINATION_MAP_HPP_
 #define SEGMENT_COMBINATION_MAP_HPP_
+#include "vdjml/segment_combination.hpp"
 
 namespace vdjml{
 

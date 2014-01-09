@@ -5,29 +5,57 @@ part of vdjml project.
 *******************************************************************************/
 #ifndef SEGMENT_COMBINATION_HPP_
 #define SEGMENT_COMBINATION_HPP_
-#include <vector>
 #include "vdjml/config.hpp"
 #include "vdjml/format_version.hpp"
-#include "vdjml/segment_match_id.hpp"
+#include "vdjml/object_ids.hpp"
+#include "vdjml/interval.hpp"
+#include "vdjml/detail/vector_set.hpp"
+#include "vdjml/match_metrics.hpp"
 
 namespace vdjml{
 class Xml_writer;
 
 /**@brief 
 *******************************************************************************/
-class Gene_region {
-public:
+struct Gene_region : public Match_metrics {
+   Gene_region(
+            const Numsys_id num_system,
+            const Region_id region,
+            short_interval const& range,
+            Match_metrics const& mm
+   )
+   : Match_metrics(mm),
+     num_system_(num_system),
+     region_(region),
+     range_(range)
+   {}
 
-private:
+   Numsys_id num_system_;
+   Region_id region_;
+   short_interval range_;
 };
 
 /**@brief
 *******************************************************************************/
-class Segment_combination {
-public:
+struct Segment_combination {
+   explicit Segment_combination(
+            const Seg_match_id id1,
+            const Seg_match_id id2 = Seg_match_id(),
+            const Seg_match_id id3 = Seg_match_id(),
+            const Seg_match_id id4 = Seg_match_id(),
+            const Seg_match_id id5 = Seg_match_id()
+   )
+   : smv_()
+   {
+      if( id1 ) smv_.insert(id1);
+      if( id2 ) smv_.insert(id2);
+      if( id3 ) smv_.insert(id3);
+      if( id4 ) smv_.insert(id4);
+      if( id5 ) smv_.insert(id5);
+   }
 
-private:
-   std::vector<Sm_id> smv_;
+   detail::Vector_set<Seg_match_id> smv_;
+   std::vector<Gene_region> grv_;
 };
 
 /**@brief
