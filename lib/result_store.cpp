@@ -39,7 +39,7 @@ void write_0(
    write(xw, rs.meta(), version);
    xw.open("read_results", ELEM);
    BOOST_FOREACH(Read_result const& rr, rs) {
-      write(xw, rr, version);
+      write(xw, rr, rs.meta(), version);
    }
    xw.close(); //read_results ELEM
 }

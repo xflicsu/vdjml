@@ -14,6 +14,7 @@ part of vdjml project.
 #include "vdjml/format_version.hpp"
 #include "vdjml/gene_segment_type.hpp"
 #include "vdjml/interval.hpp"
+#include "vdjml/match_metrics.hpp"
 
 namespace vdjml{
 class Read_result;

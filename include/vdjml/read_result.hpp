@@ -6,20 +6,21 @@ part of vdjml project.
 #ifndef READ_RESULT_HPP_
 #define READ_RESULT_HPP_
 #include <string>
-#include <string>
+#include <vector>
 #include "vdjml/config.hpp"
 #include "vdjml/format_version.hpp"
 #include "vdjml/segment_match_map.hpp"
-#include "vdjml/segment_match_map.hpp"
-#include "vdjml/segment_combination_map.hpp"
+#include "vdjml/segment_combination.hpp"
 
 namespace vdjml{
 class Xml_reader;
 class Xml_writer;
+class Results_meta;
 
 /**@brief Analysis results of a single sequencing read
 *******************************************************************************/
 class VDJML_DECL Read_result {
+   typedef std::vector<Segment_combination> seg_comb_store;
 public:
 
    explicit Read_result(std::string const& id)
@@ -36,7 +37,7 @@ public:
    }
 
    void insert(Segment_combination const& sc) {
-      scm_.insert(sc);
+      scm_.push_back(sc);
    }
 
    std::string const& id() const {return id_;}
@@ -44,7 +45,7 @@ public:
 private:
    std::string id_;
    Segment_match_map smm_;
-   Segment_combination_map scm_;
+   seg_comb_store scm_;
 };
 
 /**@brief
@@ -52,6 +53,7 @@ private:
 VDJML_DECL void write(
          Xml_writer& xw,
          Read_result const& rr,
+         Results_meta const& rm,
          const unsigned version = current_version
 );
 

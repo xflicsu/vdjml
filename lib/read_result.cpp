@@ -8,6 +8,7 @@ part of vdjml project.
 #endif
 #include "vdjml/read_result.hpp"
 #include "vdjml/xml_writer.hpp"
+#include "vdjml/results_meta.hpp"
 
 namespace vdjml {
 
@@ -27,6 +28,7 @@ Read_result::Read_result(
 void write(
          Xml_writer& xw,
          Read_result const& rr,
+         Results_meta const& rm,
          const unsigned version
 ) {
    xw.open("read", ELEM);
