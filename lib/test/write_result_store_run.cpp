@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE( case01 ) {
    Xml_writer xw(std::cout);
    write(xw, rs);
 
-   BOOST_ERROR("");
+//   BOOST_ERROR("");
 
 }
 
