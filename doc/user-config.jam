@@ -53,3 +53,11 @@
 ## Boost library source
 ## http://www.boost.org/
 # constant BOOST : "C:/Program Files/boost/boost_1_55_0" 1.55.0 ;
+
+## libxml2 library source
+## http://xmlsoft.org/
+# constant LIBXML2 : "$(utils)/libxml2-2.9.0" 2.9.0 ;
+
+## pre-built iconv library (required under MS Windows)
+## http://www.zlatkovic.com/libxml.en.html
+# constant ICONV : "$(utils)/cpp/iconv-1.9.2.win32" 1.9.2 ;
