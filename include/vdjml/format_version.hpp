@@ -1,21 +1,16 @@
-/** @file "/vdjml/include/vdjml/germline_db.hpp" 
+/** @file "/vdjml/include/vdjml/format_version.hpp" 
 part of vdjml project.
 @n Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
-@date 2013 @author Mikhail K Levin
+@date 2014 @author Mikhail K Levin
 *******************************************************************************/
-#ifndef GERMLINE_DB_HPP_
-#define GERMLINE_DB_HPP_
+#ifndef FORMAT_VERSION_HPP_
+#define FORMAT_VERSION_HPP_
 
 namespace vdjml{
 
 /**@brief 
 *******************************************************************************/
-class Germline_db {
-public:
-
-private:
-
-};
+static const unsigned current_version = 0;
 
 }//namespace vdjml
-#endif /* GERMLINE_DB_HPP_ */
+#endif /* FORMAT_VERSION_HPP_ */

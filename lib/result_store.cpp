@@ -7,42 +7,68 @@ part of vdjml project.
 #define VDJML_SOURCE
 #endif
 #include "vdjml/result_store.hpp"
+
+#include "boost/date_time/posix_time/posix_time.hpp"
+#include "boost/foreach.hpp"
+
 #include "vdjml/read_result.hpp"
+#include "vdjml/xml_writer.hpp"
+#include "vdjml/lib_info.hpp"
+#include "vdjml/aligner_info.hpp"
+#include "vdjml/germline_db_info.hpp"
 
 namespace vdjml {
 
-/*
-*******************************************************************************/
-std::size_t Result_store::size() const {
-   //todo:
-   return 0;
+Result_store::Result_store(
+            Xml_reader& xr,
+            const unsigned version
+)
+{
+
 }
+
+namespace {
 
 /*
 *******************************************************************************/
-Result_store::const_iterator Result_store::begin() const {
-   //todo:
-   return 0;
+void write_0(
+         Xml_writer& xw,
+         Result_store const& rs,
+         const unsigned version
+) {
+   write(xw, rs.meta(), version);
+   xw.open("read_results", ELEM);
+   BOOST_FOREACH(Read_result const& rr, rs) {
+      write(xw, rr, rs.meta(), version);
+   }
+   xw.close(); //read_results ELEM
 }
+
+}//anonymous namespace
 
 /*
 *******************************************************************************/
-Result_store::const_iterator Result_store::end() const {
-   //todo:
-   return 0;
-}
+void write(
+         Xml_writer& xw,
+         Result_store const& rs,
+         const unsigned version
+) {
+   xw.open("vdjml_results", ELEM, "http://vdjserver.org/xml/schema/vdjml/");
+   xw.node("version", ATTR, version_to_string(version));
 
-/*
-*******************************************************************************/
-Read_result const* Result_store::find_id(std::string const* id) const {
-   //todo:
-   return 0;
-}
+   switch (version) {
+      case 0:
+         write_0(xw, rs, version);
+         break;
+      default:
+         BOOST_THROW_EXCEPTION(
+                  base_exception()
+                  << base_exception::msg_t("unsupported format version")
+                  << base_exception::int1_t(version)
+         );
+   }
 
-/*
-*******************************************************************************/
-void Result_store::insert(Read_result const& rr) {
-   //todo:
+   xw.close();
 }
 
 
