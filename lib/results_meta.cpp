@@ -45,7 +45,7 @@ void write(
       write(xw, ai, version);
    }
 
-   BOOST_FOREACH(Germline_db_info const& gdi, rs.germline_db_map()) {
+   BOOST_FOREACH(Gl_db_info const& gdi, rs.germline_db_map()) {
       write(xw, gdi, version);
    }
 

@@ -5,9 +5,11 @@ part of vdjml project.
 *******************************************************************************/
 #ifndef MATCH_METRICS_HPP_
 #define MATCH_METRICS_HPP_
-#include <bitset>
+#include "vdjml/config.hpp"
+#include "vdjml/format_version.hpp"
 
 namespace vdjml{
+class Xml_writer;
 
 /**@brief 
 *******************************************************************************/
@@ -60,6 +62,14 @@ private:
    unsigned char substitutions_;
    unsigned char v_;
 };
+
+/**@brief
+*******************************************************************************/
+VDJML_DECL void write(
+         Xml_writer& xw,
+         Match_metrics const& mm,
+         const unsigned version = current_version
+);
 
 }//namespace vdjml
 #endif /* MATCH_METRICS_HPP_ */

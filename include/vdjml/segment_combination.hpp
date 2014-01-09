@@ -14,6 +14,7 @@ part of vdjml project.
 
 namespace vdjml{
 class Xml_writer;
+class Results_meta;
 
 /**@brief 
 *******************************************************************************/
@@ -32,7 +33,7 @@ struct Gene_region : public Match_metrics {
 
    Numsys_id num_system_;
    Region_id region_;
-   short_interval range_;
+   short_interval range_; ///< read positions aligned
 };
 
 /**@brief
@@ -63,6 +64,16 @@ struct Segment_combination {
 VDJML_DECL void write(
          Xml_writer& xw,
          Segment_combination const& sc,
+         Results_meta const& rm,
+         const unsigned version = current_version
+);
+
+/**@brief
+*******************************************************************************/
+VDJML_DECL void write(
+         Xml_writer& xw,
+         Gene_region const& gr,
+         Results_meta const& rm,
          const unsigned version = current_version
 );
 

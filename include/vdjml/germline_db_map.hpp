@@ -21,28 +21,28 @@ namespace vdjml{
 class VDJML_DECL Germline_db_map {
 
    typedef boost::multi_index_container<
-      Germline_db_info,
+      Gl_db_info,
       boost::multi_index::indexed_by<
          boost::multi_index::hashed_unique<
             boost::multi_index::tag<struct identity_tag>,
-            boost::multi_index::identity<Germline_db_info>
+            boost::multi_index::identity<Gl_db_info>
          >,
          boost::multi_index::hashed_unique<
             boost::multi_index::tag<struct id_tag>,
             boost::multi_index::const_mem_fun<
-               Germline_db_info, Gdb_id, &Germline_db_info::id
+               Gl_db_info, Gl_db_id, &Gl_db_info::id
             >
          >,
          boost::multi_index::ordered_non_unique<
             boost::multi_index::tag<struct name_tag>,
             boost::multi_index::const_mem_fun<
-               Germline_db_info, std::string const&, &Germline_db_info::name
+               Gl_db_info, std::string const&, &Gl_db_info::name
             >
          >,
          boost::multi_index::ordered_non_unique<
             boost::multi_index::tag<struct species_tag>,
             boost::multi_index::const_mem_fun<
-               Germline_db_info, std::string const&, &Germline_db_info::species
+               Gl_db_info, std::string const&, &Gl_db_info::species
             >
          >
       >
@@ -58,14 +58,14 @@ public:
    bool empty() const {return ! size();}
 
    /**@param gdi accept by value to change the ID */
-   Gdb_id insert(Germline_db_info gdi) {
+   Gl_db_id insert(Gl_db_info gdi) {
       typedef map_t::index<identity_tag>::type index;
       index& ind = map_.get<identity_tag>();
       index::const_iterator iter = ind.find(gdi);
       if( iter != ind.end() ) {
          return iter->id();
       }
-      const Gdb_id id(size() + 1);
+      const Gl_db_id id(size() + 1);
       gdi.id_ = id;
       ind.insert(gdi);
       return id;

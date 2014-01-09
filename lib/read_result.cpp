@@ -7,6 +7,9 @@ part of vdjml project.
 #define VDJML_SOURCE
 #endif
 #include "vdjml/read_result.hpp"
+
+#include "boost/foreach.hpp"
+
 #include "vdjml/xml_writer.hpp"
 #include "vdjml/results_meta.hpp"
 
@@ -35,6 +38,14 @@ void write(
    xw.node("id", ATTR, rr.id());
 
    xw.open("alignment", ELEM);
+
+   BOOST_FOREACH(Segment_match const& sm, rr.segment_match_map()) {
+      write(xw, sm, rm, version);
+   }
+
+   BOOST_FOREACH(Segment_combination const& sc, rr.segment_combinations()) {
+      write(xw, sc, rm, version);
+   }
 
    xw.close(); //alignment ELEM
 

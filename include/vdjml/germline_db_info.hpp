@@ -18,12 +18,12 @@ class Xml_writer;
 
 /**@brief 
 *******************************************************************************/
-class VDJML_DECL Germline_db_info {
+class VDJML_DECL Gl_db_info {
    friend class Germline_db_map;
 
 public:
 
-   Germline_db_info(
+   Gl_db_info(
             std::string const& name,
             std::string const& version,
             std::string const& species,
@@ -36,18 +36,18 @@ public:
      uri_(url)
    {}
 
-   explicit Germline_db_info(
+   explicit Gl_db_info(
             Xml_reader& xr,
             const unsigned version
    );
 
-   Gdb_id id() const {return id_;}
+   Gl_db_id id() const {return id_;}
    std::string const& name() const {return name_;}
    std::string const& version() const {return version_;}
    std::string const& species() const {return species_;}
    std::string const& uri() const {return uri_;}
 
-   bool operator==(Germline_db_info const& ai) const {
+   bool operator==(Gl_db_info const& ai) const {
       return
                name() == ai.name() &&
                version() == ai.version() &&
@@ -55,10 +55,10 @@ public:
                ;
    }
 
-   bool operator!= (Germline_db_info const& ai) const {return !(*this == ai);}
+   bool operator!= (Gl_db_info const& ai) const {return !(*this == ai);}
 
 private:
-   Gdb_id id_;
+   Gl_db_id id_;
    std::string name_;
    std::string version_;
    std::string species_;
@@ -67,11 +67,11 @@ private:
 
 /**@brief
 *******************************************************************************/
-inline std::size_t hash_value(Germline_db_info const& ai) {
+inline std::size_t hash_value(Gl_db_info const& gdi) {
    std::size_t h = 0;
-   boost::hash_combine(h, ai.name());
-   boost::hash_combine(h, ai.version());
-   boost::hash_combine(h, ai.species());
+   boost::hash_combine(h, gdi.name());
+   boost::hash_combine(h, gdi.version());
+   boost::hash_combine(h, gdi.species());
    return h;
 }
 
@@ -79,7 +79,7 @@ inline std::size_t hash_value(Germline_db_info const& ai) {
 *******************************************************************************/
 VDJML_DECL void write(
          Xml_writer& xw,
-         Germline_db_info const& gdi,
+         Gl_db_info const& gdi,
          const unsigned version = current_version
 );
 

@@ -9,11 +9,14 @@ part of vdjml project.
 #include "boost/cstdint.hpp"
 #include "vdjml/detail/comparison_operators_macro.hpp"
 
-namespace vdjml{ namespace detail{
+namespace vdjml{
+template<class Id> class Id_iterator;
+namespace detail{
 
 /**@brief 
 *******************************************************************************/
 template<class Super, class Val = boost::uint_least32_t> class Base_id {
+   friend class Id_iterator<Super>;
    typedef Base_id self_type;
 protected:
    typedef Base_id base;

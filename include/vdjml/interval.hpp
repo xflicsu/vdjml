@@ -8,6 +8,7 @@ part of vdjml project.
 #include <limits>
 #include "boost/cstdint.hpp"
 #include "vdjml/exception.hpp"
+#include "vdjml/detail/comparison_operators_macro.hpp"
 
 namespace vdjml{
 
@@ -16,6 +17,7 @@ namespace vdjml{
 template<class T> class Interval {
 public:
    typedef T value_type;
+   struct Err : public base_exception {};
 
 private:
    Interval(const std::size_t pos, const std::size_t len)
@@ -23,18 +25,17 @@ private:
    {
       if( std::numeric_limits<value_type>::max() < pos ) BOOST_THROW_EXCEPTION(
                Err()
-               << Err::msg_t("position out of range")
-               << Err::int1_t(pos)
+               << typename Err::msg_t("position out of range")
+               << typename Err::int1_t(pos)
       );
       if( std::numeric_limits<value_type>::max() < len ) BOOST_THROW_EXCEPTION(
                Err()
-               << Err::msg_t("length out of range")
-               << Err::int1_t(len)
+               << typename Err::msg_t("length out of range")
+               << typename Err::int1_t(len)
       );
    }
 
 public:
-   struct Err : public base_exception {};
 
    static Interval first_length(const std::size_t first, const std::size_t len) {
       return Interval(first, len);
@@ -43,9 +44,9 @@ public:
    static Interval first_last(const std::size_t first, const std::size_t last) {
       if( last < first ) BOOST_THROW_EXCEPTION(
                Err()
-               << Err::msg_t("invalid interval: last < first")
-               << Err::int1_t(first)
-               << Err::int2_t(last)
+               << typename Err::msg_t("invalid interval: last < first")
+               << typename Err::int1_t(first)
+               << typename Err::int2_t(last)
       );
 
       return Interval(first, last - first + 1);
@@ -66,6 +67,8 @@ public:
       if( i.pos_ < pos_ ) return false;
       return len_ < i.len_;
    }
+
+   VDJML_COMPARISON_OPERATOR_MEMBERS(Interval)
 
 private:
    value_type pos_;

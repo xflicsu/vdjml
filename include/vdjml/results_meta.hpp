@@ -43,8 +43,8 @@ public:
    Num_system_map const & num_system_map() const {return nsm_;}
    Num_system_map       & num_system_map() {return nsm_;}
 
-   Germline_segment_map const & germline_segment_map() const {return gsm_;}
-   Germline_segment_map       & germline_segment_map() {return gsm_;}
+   Gl_segment_map const & germline_segment_map() const {return gsm_;}
+   Gl_segment_map       & germline_segment_map() {return gsm_;}
 
    Gene_region_map const & gene_region_map() const {return grm_;}
    Gene_region_map       & gene_region_map() {return grm_;}
@@ -53,7 +53,7 @@ private:
    Aligner_map am_;
    Germline_db_map gm_;
    Num_system_map nsm_;
-   Germline_segment_map gsm_;
+   Gl_segment_map gsm_;
    Gene_region_map grm_;
 };
 

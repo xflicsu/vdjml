@@ -20,11 +20,11 @@ BOOST_AUTO_TEST_CASE( case01 ) {
    Results_meta rm;
    Xml_writer xw(std::cout);
    rm.germline_db_map().insert(
-            Germline_db_info("IGHV", "123-0", "Homo Sapiens", "http://www.imgt.org")
+            Gl_db_info("IGHV", "123-0", "Homo Sapiens", "http://www.imgt.org")
    );
 
    rm.germline_db_map().insert(
-            Germline_db_info("IGHV", "123-0", "Mus musculus", "http://www.imgt.org")
+            Gl_db_info("IGHV", "123-0", "Mus musculus", "http://www.imgt.org")
    );
 
    rm.aligner_map().insert(

@@ -20,25 +20,106 @@ BOOST_GLOBAL_FIXTURE( Exception_fixture );
 BOOST_AUTO_TEST_CASE( case01 ) {
    Result_store rs;
 
-   rs.meta().germline_db_map().insert(
-            Germline_db_info("IGHV", "123-0", "Homo Sapiens", "http://www.imgt.org")
+   Gl_db_id dbid1 = rs.meta().germline_db_map().insert(
+            Gl_db_info("IGHV", "123-0", "Homo Sapiens", "http://www.imgt.org")
    );
 
    rs.meta().germline_db_map().insert(
-            Germline_db_info("IGHV", "123-0", "Mus musculus", "http://www.imgt.org")
+            Gl_db_info("IGHV", "123-0", "Mus musculus", "http://www.imgt.org")
    );
 
-   rs.meta().aligner_map().insert(
+   Aligner_id aid1 = rs.meta().aligner_map().insert(
             Aligner_info("IMGT", "42-13", "", 0)
    );
 
-   rs.insert(Read_result("xyz123"));
-   rs.insert(Read_result("wer089dfl"));
+   const Gl_segment_info seg1(dbid1, 'V', "IGHV3-21*01");
+   const Gl_seg_id seg_id1 = rs.meta().germline_segment_map().insert(seg1);
+
+   const Gl_segment_info seg2(dbid1, 'V', "IGHV3-21*02");
+   const Gl_seg_id seg_id2 = rs.meta().germline_segment_map().insert(seg2);
+
+   const Gl_segment_info seg3(dbid1, 'D', "IGHD3-22*01");
+   const Gl_seg_id seg_id3 = rs.meta().germline_segment_map().insert(seg3);
+
+   const Gl_segment_info seg4(dbid1, 'J', "IGHJ4*02");
+   const Gl_seg_id seg_id4 = rs.meta().germline_segment_map().insert(seg4);
+
+   Read_result rr1("Y14934");
+   Segment_match sm1(Btop("61AC10A-136"), short_interval::first_last(1, 275));
+   const Germline_segment_match gsm1(
+            Num_system_map::imgt().first,
+            aid1,
+            seg_id1,
+            short_interval::first_last(22, 296),
+            Match_metrics(264, 96.0, 0, 0, 11)
+   );
+   sm1.insert(gsm1);
+
+   const Germline_segment_match gsm2(
+            Num_system_map::imgt().first,
+            aid1,
+            seg_id2,
+            short_interval::first_last(22, 111),
+            Match_metrics(264, 96.0, 0, 0, 11)
+   );
+   sm1.insert(gsm2);
+   const Seg_match_id sm_id1 = rr1.insert(sm1);
+
+   Segment_match sm2(Btop("20"), short_interval::first_last(275, 295));
+   const Germline_segment_match gsm3(
+            Num_system_map::imgt().first,
+            aid1,
+            seg_id3,
+            short_interval::first_last(11, 31),
+            Match_metrics(22, 100, 0, 0, 0)
+   );
+   sm2.insert(gsm3);
+   const Seg_match_id sm_id2 = rr1.insert(sm2);
+
+   Segment_match sm3(Btop("5AC35"), short_interval::first_last(311, 351));
+   const Germline_segment_match gsm4(
+            Num_system_map::imgt().first,
+            aid1,
+            seg_id4,
+            short_interval::first_last(7, 47),
+            Match_metrics(40, 97.6, 0, 0, 1)
+   );
+   sm3.insert(gsm4);
+   const Seg_match_id sm_id3 = rr1.insert(sm3);
+
+   Segment_combination sc1(sm_id1, sm_id2, sm_id3);
+   sc1.grv_.push_back(
+            Gene_region(
+                     Num_system_map::imgt().first,
+                     Gene_region_map::fr1().first,
+                     short_interval::first_last(1,54),
+                     Match_metrics(54, 100, 0, 0, 0)
+            )
+   );
+   sc1.grv_.push_back(
+            Gene_region(
+                     Num_system_map::imgt().first,
+                     Gene_region_map::cdr1().first,
+                     short_interval::first_last(55,78),
+                     Match_metrics(24, 83.3, 0, 0, 4)
+            )
+   );
+   sc1.grv_.push_back(
+            Gene_region(
+                     Num_system_map::imgt().first,
+                     Gene_region_map::fr2().first,
+                     short_interval::first_last(79,129),
+                     Match_metrics(59, 98, 0, 0, 1)
+            )
+   );
+   rr1.insert(sc1);
+
+   rs.insert(rr1);
 
    Xml_writer xw(std::cout);
    write(xw, rs);
 
-//   BOOST_ERROR("");
+   BOOST_ERROR("");
 
 }
 

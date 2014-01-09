@@ -17,14 +17,19 @@ namespace vdjml{
 class Segment_match_map {
    typedef detail::Id_map<Seg_match_id, Segment_match> map_t;
 public:
-   typedef Id_iterator<Seg_match_id> iterator;
-   typedef iterator const_iterator;
+   typedef map_t::iterator iterator;
+   typedef map_t::const_iterator const_iterator;
    std::size_t size() const {return map_.size();}
-   const_iterator begin() const {return iterator(map_.min_id());}
-   const_iterator end() const {return iterator(map_.max_id());}
-   bool empty() const {return ! size();}
+   const_iterator begin() const {return map_.begin();}
+   const_iterator end() const {return map_.end();}
+   bool empty() const {return map_.empty();}
    Segment_match const& operator[](const Seg_match_id id) const {return map_[id];}
-   Seg_match_id insert(Segment_match const& sm) {return map_.insert(sm);}
+
+   Seg_match_id insert(Segment_match const& sm) {
+      const Seg_match_id id = map_.insert(sm);
+      map_[id].id_ = id;
+      return id;
+   }
 
 private:
    map_t map_;

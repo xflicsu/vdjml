@@ -13,7 +13,7 @@ namespace vdjml{
 VDJML_OBJECT_ID(Aligner_id);
 
 /** Germline database ID */
-VDJML_OBJECT_ID(Gdb_id);
+VDJML_OBJECT_ID(Gl_db_id);
 
 /** Numbering system ID */
 VDJML_OBJECT_ID(Numsys_id);
@@ -22,7 +22,7 @@ VDJML_OBJECT_ID(Numsys_id);
 VDJML_OBJECT_ID(Seg_match_id);
 
 /** Germline segment ID */
-VDJML_OBJECT_ID(Gls_id);
+VDJML_OBJECT_ID(Gl_seg_id);
 
 /** Gene region type ID */
 VDJML_OBJECT_ID(Region_id);

@@ -7,7 +7,6 @@ part of vdjml project.
 #define VDJML_SOURCE
 #endif
 #include "vdjml/aligner_info.hpp"
-
 #include "vdjml/xml_writer.hpp"
 
 namespace vdjml {

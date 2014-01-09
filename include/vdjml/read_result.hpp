@@ -42,6 +42,9 @@ public:
 
    std::string const& id() const {return id_;}
 
+   Segment_match_map const& segment_match_map() const {return smm_;}
+   seg_comb_store const& segment_combinations() const {return scm_;}
+
 private:
    std::string id_;
    Segment_match_map smm_;

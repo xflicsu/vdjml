@@ -14,7 +14,7 @@ namespace vdjml {
 
 /*
 *******************************************************************************/
-Germline_db_info::Germline_db_info(
+Gl_db_info::Gl_db_info(
             Xml_reader& xr,
             const unsigned version
 )
@@ -26,7 +26,7 @@ Germline_db_info::Germline_db_info(
 *******************************************************************************/
 void write(
          Xml_writer& xw,
-         Germline_db_info const& gdi,
+         Gl_db_info const& gdi,
          const unsigned version
 ) {
    xw.open("germline_db", ELEM);
