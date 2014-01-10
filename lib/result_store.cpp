@@ -23,8 +23,9 @@ Result_store::Result_store(
             Xml_reader& xr,
             const unsigned version
 )
+: rm_(new Results_meta())
 {
-
+   //todo:
 }
 
 namespace {

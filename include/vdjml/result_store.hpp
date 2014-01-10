@@ -8,6 +8,7 @@ part of vdjml project.
 #include <string>
 #include <memory>
 #include "boost/ptr_container/ptr_vector.hpp"
+#include "boost/shared_ptr.hpp"
 #include "boost/range.hpp"
 #include "vdjml/config.hpp"
 #include "vdjml/exception.hpp"
@@ -22,13 +23,18 @@ class Xml_writer;
 *******************************************************************************/
 class VDJML_DECL Result_store {
    typedef boost::ptr_vector<Read_result> store_t;
+   typedef boost::shared_ptr<Results_meta> results_meta_ptr;
 public:
    struct Err : public base_exception {};
    typedef store_t::iterator iterator;
    typedef store_t::const_iterator const_iterator;
    typedef boost::iterator_range<const_iterator> range;
 
-   Result_store() {}
+   Result_store(
+            boost::shared_ptr<Results_meta> rm = results_meta_ptr()
+   )
+   : rm_(rm ? rm : results_meta_ptr(new Results_meta()))
+   {}
 
    /**@brief Read VDJ alignment results from XML reader stream
    @param xr XML writer
@@ -50,11 +56,11 @@ public:
    void insert(std::auto_ptr<Read_result> rr) {v_.push_back(rr);}
    void insert(Read_result const& rr) {v_.push_back(new Read_result(rr));}
 
-   Results_meta const& meta() const {return rm_;}
-   Results_meta& meta() {return rm_;}
+   Results_meta const   & meta() const {return *rm_;}
+   Results_meta         & meta()       {return *rm_;}
 
 private:
-   Results_meta rm_;
+   results_meta_ptr rm_;
    store_t v_;
 };
 

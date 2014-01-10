@@ -15,6 +15,7 @@ part of vdjml project.
 #include "vdjml/gene_region_type_map.hpp"
 
 namespace vdjml{
+class Xml_writer;
 
 /**@brief 
 *******************************************************************************/
@@ -33,6 +34,28 @@ public:
             Xml_reader& xr,
             const unsigned version = current_version
    );
+
+   Gl_db_id add_gl_db(
+            std::string const& name,
+            std::string const& version,
+            std::string const& species,
+            std::string const& url = ""
+   ) {
+      return germline_db_map().insert(
+               Gl_db_info(name, version, species, url)
+      );
+   }
+
+   Aligner_id add_aligner(
+            std::string const& name,
+            std::string const& version,
+            std::string const& parameters,
+            const unsigned run_id
+   ) {
+      return aligner_map().insert(
+               Aligner_info(name, version, parameters, run_id)
+      );
+   }
 
    Aligner_map const & aligner_map() const {return am_;}
    Aligner_map       & aligner_map() {return am_;}
@@ -57,14 +80,14 @@ private:
    Gene_region_map grm_;
 };
 
-/**@brief
+/**
 @param xw XML writer
-@param rs result store
+@param rm metadata
 @param version format version
 *******************************************************************************/
 VDJML_DECL void write(
          Xml_writer& xw,
-         Results_meta const& rs,
+         Results_meta const& rm,
          const unsigned version = current_version
 );
 
