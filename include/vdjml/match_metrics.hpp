@@ -7,6 +7,7 @@ part of vdjml project.
 #define MATCH_METRICS_HPP_
 #include "vdjml/config.hpp"
 #include "vdjml/format_version.hpp"
+#include "vdjml/percent.hpp"
 
 namespace vdjml{
 class Xml_writer;
@@ -46,7 +47,7 @@ public:
    {}
 
    int score() const {return score_;}
-   float identity() const {return identity_;}
+   Percent identity() const {return identity_;}
    unsigned insertions() const {return insertions_;}
    unsigned deletions() const {return deletions_;}
    unsigned substitutions() const {return substitutions_;}
@@ -56,7 +57,7 @@ public:
 
 private:
    int score_;
-   float identity_;
+   Percent identity_;
    unsigned char insertions_;
    unsigned char deletions_;
    unsigned char substitutions_;

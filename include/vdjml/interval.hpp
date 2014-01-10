@@ -6,8 +6,8 @@ part of vdjml project.
 #ifndef INTERVAL_HPP_
 #define INTERVAL_HPP_
 #include <limits>
-#include "vdjml/config.hpp"
 #include "boost/cstdint.hpp"
+#include "vdjml/config.hpp"
 #include "vdjml/exception.hpp"
 #include "vdjml/detail/comparison_operators_macro.hpp"
 #include "vdjml/format_version.hpp"
