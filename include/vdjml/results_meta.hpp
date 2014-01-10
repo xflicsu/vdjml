@@ -57,6 +57,16 @@ public:
       );
    }
 
+   Gl_seg_id add_segment(
+            const Gl_db_id db,
+            const char vdj,
+            std::string const& name
+   ) {
+      return germline_segment_map().insert(
+               Gl_segment_info(db, vdj, name)
+      );
+   }
+
    Aligner_map const & aligner_map() const {return am_;}
    Aligner_map       & aligner_map() {return am_;}
 

@@ -10,6 +10,7 @@ project vdjml/lib/test
    : requirements
       <include>../
       <library>/boost//unit_test_framework
+      <library>/boost//filesystem
       <define>SAMPLE_DATA_DIR="\"$(smpl_dir:T)\""
       <define>TEMPORARY_DIR="\"$(tmp_dir:T)\""
 ;

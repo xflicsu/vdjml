@@ -6,9 +6,11 @@ part of vdjml project.
 #define BOOST_TEST_MODULE write_result_store_run
 #include "boost/test/unit_test.hpp"
 #include "test/exception_fixture.hpp"
+#include "test/sample_data.hpp"
 #include "vdjml/xml_writer.hpp"
 #include "vdjml/result_store.hpp"
 #include <iostream>
+#include <fstream>
 //#include "sample_data.hpp"
 
 namespace vdjml{ namespace test{
@@ -28,17 +30,10 @@ BOOST_AUTO_TEST_CASE( case01 ) {
 
    Aligner_id aid1 = rs.meta().add_aligner("V-QUEST", " 3.2.32", "", 0);
 
-   const Gl_segment_info seg1(dbid1, 'V', "IGHV3-21*01");
-   const Gl_seg_id seg_id1 = rs.meta().germline_segment_map().insert(seg1);
-
-   const Gl_segment_info seg2(dbid1, 'V', "IGHV3-21*02");
-   const Gl_seg_id seg_id2 = rs.meta().germline_segment_map().insert(seg2);
-
-   const Gl_segment_info seg3(dbid1, 'D', "IGHD3-22*01");
-   const Gl_seg_id seg_id3 = rs.meta().germline_segment_map().insert(seg3);
-
-   const Gl_segment_info seg4(dbid1, 'J', "IGHJ4*02");
-   const Gl_seg_id seg_id4 = rs.meta().germline_segment_map().insert(seg4);
+   const Gl_seg_id seg_id1 = rs.meta().add_segment(dbid1, 'V', "IGHV3-21*01");
+   const Gl_seg_id seg_id2 = rs.meta().add_segment(dbid1, 'V', "IGHV3-21*02");
+   const Gl_seg_id seg_id3 = rs.meta().add_segment(dbid1, 'D', "IGHD3-22*01");
+   const Gl_seg_id seg_id4 = rs.meta().add_segment(dbid1, 'J', "IGHJ4*02");
 
    Read_result rr1("Y14934");
    Segment_match sm1(Btop("61AC10A-136"), interval_65k::first_last_1(1, 275));
@@ -112,8 +107,12 @@ BOOST_AUTO_TEST_CASE( case01 ) {
 
    rs.insert(rr1);
 
-   Xml_writer xw(std::cout);
-   write(xw, rs);
+   Xml_writer xw1(std::cout);
+   write(xw1, rs);
+   const std::string out = temp_file_path("out1.vdjml");
+   std::ofstream ofs(out.c_str());
+   Xml_writer xw2(ofs);
+   write(xw2, rs);
 
 //   BOOST_ERROR("");
 

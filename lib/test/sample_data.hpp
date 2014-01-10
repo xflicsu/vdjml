@@ -28,8 +28,11 @@ inline std::string sample_file_path(const std::string& name = "") {
 /**@return full path to file in project's temporary directory
 *******************************************************************************/
 inline std::string temp_file_path(const std::string& name = "") {
-   static const boost::filesystem::path path(BOOST_PP_STRINGIZE(TEMPORARY_DIR));
-   return canonical(path / name).string();
+   static const boost::filesystem::path path =
+            canonical(
+                     boost::filesystem::path(BOOST_PP_STRINGIZE(TEMPORARY_DIR))
+            );
+   return (path / name).string();
 }
 
 }//namespace test
