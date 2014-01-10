@@ -6,56 +6,101 @@ part of vdjml project.
 #ifndef INTERVAL_HPP_
 #define INTERVAL_HPP_
 #include <limits>
+#include "vdjml/config.hpp"
 #include "boost/cstdint.hpp"
 #include "vdjml/exception.hpp"
 #include "vdjml/detail/comparison_operators_macro.hpp"
+#include "vdjml/format_version.hpp"
 
 namespace vdjml{
+class Xml_writer;
+
+struct Interval_err : public base_exception {};
 
 /**@brief 
 *******************************************************************************/
 template<class T> class Interval {
 public:
    typedef T value_type;
-   struct Err : public base_exception {};
 
 private:
    Interval(const std::size_t pos, const std::size_t len)
    : pos_(pos), len_(len)
    {
       if( std::numeric_limits<value_type>::max() < pos ) BOOST_THROW_EXCEPTION(
-               Err()
-               << typename Err::msg_t("position out of range")
-               << typename Err::int1_t(pos)
+               Interval_err()
+               << Interval_err::msg_t("position out of range")
+               << Interval_err::int1_t(pos)
       );
       if( std::numeric_limits<value_type>::max() < len ) BOOST_THROW_EXCEPTION(
-               Err()
-               << typename Err::msg_t("length out of range")
-               << typename Err::int1_t(len)
+               Interval_err()
+               << Interval_err::msg_t("length out of range")
+               << Interval_err::int1_t(len)
       );
    }
 
 public:
 
-   static Interval first_length(const std::size_t first, const std::size_t len) {
-      return Interval(first, len);
+   /**
+    @param pos0 zero-based interval starting position
+    @param len interval length
+    */
+   static Interval pos0_len(const std::size_t pos0, const std::size_t len) {
+      return Interval(pos0, len);
    }
 
-   static Interval first_last(const std::size_t first, const std::size_t last) {
-      if( last < first ) BOOST_THROW_EXCEPTION(
-               Err()
-               << typename Err::msg_t("invalid interval: last < first")
-               << typename Err::int1_t(first)
-               << typename Err::int2_t(last)
+   /**
+    @param first1 one-based interval starting position
+    @param last1 one-based last position of interval
+    */
+   static Interval first_last_1(const std::size_t first1, const std::size_t last1) {
+      if( first1 == 0 || last1 == 0 ) BOOST_THROW_EXCEPTION(
+               Interval_err()
+               << Interval_err::msg_t("one-based position is expected")
+               << Interval_err::int1_t(first1)
+               << Interval_err::int2_t(last1)
       );
 
-      return Interval(first, last - first + 1);
+      if( last1 < first1 ) BOOST_THROW_EXCEPTION(
+               Interval_err()
+               << Interval_err::msg_t("invalid interval: last < first")
+               << Interval_err::int1_t(first1)
+               << Interval_err::int2_t(last1)
+      );
+
+      return Interval(first1 - 1, last1 - first1 + 1);
+   }
+
+   /**
+    @param first1 zero-based interval starting position
+    @param last1 zero-based last position of interval
+    */
+   static Interval first_last_0(const std::size_t first0, const std::size_t last0) {
+      if( last0 < first0 ) BOOST_THROW_EXCEPTION(
+               Interval_err()
+               << Interval_err::msg_t("invalid interval: last < first")
+               << Interval_err::int1_t(first0)
+               << Interval_err::int2_t(last0)
+      );
+
+      return Interval(first0, last0 - first0 + 1);
    }
 
    Interval() : pos_(0), len_(0) {}
 
-   std::size_t first() const {return pos_;}
-   std::size_t last() const {return len_ ? (std::size_t)pos_ + len_ - 1 : pos_;}
+   /**@return zero-based start position of interval */
+   std::size_t pos_0() const {return pos_;}
+
+   /**@return one-based start position of interval */
+   std::size_t pos_1() const {return pos_ + 1;}
+
+   /**@return zero-based start position of interval */
+   std::size_t last_0() const {return len_ ? (std::size_t)pos_ + len_ - 1 : pos_;}
+
+   /**@return one-based start position of interval */
+   std::size_t last_1() const {return len_ ? (std::size_t)pos_ + len_ : pos_;}
+
+   /**@return interval length */
    std::size_t length() const {return len_;}
 
    bool operator==(Interval const& i) const {
@@ -75,7 +120,20 @@ private:
    value_type len_;
 };
 
-typedef Interval<boost::uint_least16_t> short_interval; //65,536 max
+/** interval with 65,536 max position and length */
+typedef Interval<boost::uint_least16_t> interval_65k;
+
+
+/**
+@param xw XML writer
+@param range interval
+@param version format version
+*******************************************************************************/
+VDJML_DECL void write(
+         Xml_writer& xw,
+         interval_65k const& range,
+         const unsigned version = current_version
+);
 
 }//namespace vdjml
 #endif /* INTERVAL_HPP_ */

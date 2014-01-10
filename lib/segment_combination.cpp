@@ -26,8 +26,7 @@ void write(
    xw.open("region", ELEM);
    xw.node("name", ATTR, rm.gene_region_map()[gr.region_]);
    xw.node("num_system", ATTR, rm.num_system_map()[gr.num_system_]);
-   xw.node("pos", ATTR, gr.range_.first());
-   xw.node("len", ATTR, gr.range_.length());
+   write(xw, gr.range_, version);
    write(xw, (Match_metrics const&)gr, version);
    xw.close(); //region, ELEM
 }

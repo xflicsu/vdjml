@@ -22,7 +22,7 @@ struct Gene_region : public Match_metrics {
    Gene_region(
             const Numsys_id num_system,
             const Region_id region,
-            short_interval const& range,
+            interval_65k const& range,
             Match_metrics const& mm
    )
    : Match_metrics(mm),
@@ -33,7 +33,7 @@ struct Gene_region : public Match_metrics {
 
    Numsys_id num_system_;
    Region_id region_;
-   short_interval range_; ///< read positions aligned
+   interval_65k range_; ///< read positions aligned
 };
 
 /**@brief
