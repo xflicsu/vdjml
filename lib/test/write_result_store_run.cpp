@@ -11,7 +11,6 @@ part of vdjml project.
 #include "vdjml/result_store.hpp"
 #include <iostream>
 #include <fstream>
-//#include "sample_data.hpp"
 
 namespace vdjml{ namespace test{
 

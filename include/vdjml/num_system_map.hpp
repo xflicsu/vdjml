@@ -13,6 +13,9 @@ part of vdjml project.
 
 namespace vdjml{
 
+const Numsys_id imgt;
+const Numsys_id kabat;
+
 /**@brief 
 *******************************************************************************/
 class Num_system_map {
