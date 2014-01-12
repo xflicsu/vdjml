@@ -21,7 +21,12 @@ BOOST_GLOBAL_FIXTURE( Exception_fixture );
 *******************************************************************************/
 BOOST_AUTO_TEST_CASE( case01 ) {
    Results_meta rm ;
-   Result_builder rb(rm, "Y14934");
+   Result_factory rf(rm);
+   rf.set_default_aligner("V-QUEST", " 3.2.32", "", 0);
+   rf.set_default_gl_database("IGHV", "123-0", "Homo Sapiens", "http://www.imgt.org");
+   rf.set_default_num_system(Num_system::imgt);
+
+   Result_builder rb1 = rf.new_result("Y14934");
 }
 
 }//namespace test

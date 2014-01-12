@@ -121,7 +121,7 @@ private:
 };
 
 /** interval with 65,536 max position and length */
-typedef Interval<boost::uint_least16_t> interval_65k;
+typedef Interval<boost::uint_least16_t> interval_short;
 
 
 /**
@@ -131,7 +131,7 @@ typedef Interval<boost::uint_least16_t> interval_65k;
 *******************************************************************************/
 VDJML_DECL void write(
          Xml_writer& xw,
-         interval_65k const& range,
+         interval_short const& range,
          const unsigned version = current_version
 );
 

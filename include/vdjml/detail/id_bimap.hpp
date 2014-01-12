@@ -145,6 +145,16 @@ public:
       return vid_[vpos(id)];
    }
 
+   obj_type const* find(const id_type id) const {
+      if( id < id0_ || vpos(id) >= vid_.size() ) return 0;
+      return &vid_[vpos(id)];
+   }
+
+   obj_type* find(const id_type id) {
+      if( id < id0_ || vpos(id) >= vid_.size() ) return 0;
+      return &vid_[vpos(id)];
+   }
+
    template<class ObjCompat>
    id_type const* find(ObjCompat const& obj) const {
       const const_iterator i = map_.find(

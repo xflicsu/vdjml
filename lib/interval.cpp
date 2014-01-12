@@ -15,7 +15,7 @@ namespace vdjml {
 *******************************************************************************/
 void write(
          Xml_writer& xw,
-         interval_65k const& range,
+         interval_short const& range,
          const unsigned version
 ) {
    xw.node("pos0", ATTR, range.pos_0());

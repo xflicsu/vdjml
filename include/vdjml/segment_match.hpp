@@ -73,7 +73,7 @@ struct Germline_segment_match : public Match_metrics {
             const Numsys_id numsys,
             const Aligner_id aligner,
             const Gl_seg_id germline_segment,
-            interval_65k const& range,
+            interval_short const& range,
             Match_metrics const& mm
    )
    : Match_metrics(mm),
@@ -107,7 +107,7 @@ struct Germline_segment_match : public Match_metrics {
    Numsys_id num_system_;
    Aligner_id aligner_;
    Gl_seg_id gl_segment_;
-   interval_65k range_;
+   interval_short range_;
 };
 
 
@@ -121,7 +121,7 @@ class VDJML_DECL Segment_match {
 public:
    Segment_match(
             Btop const& btop,
-            interval_65k const& read_range
+            interval_short const& read_range
    )
    : btop_(btop),
      range_(read_range)
@@ -129,14 +129,14 @@ public:
 
    Seg_match_id id() const {return id_;}
    Btop const& btop() const {return btop_;}
-   interval_65k const& range() const {return range_;}
+   interval_short const& range() const {return range_;}
    germline_segment_set const& germline_segments() const {return gsv_;}
    void insert(Germline_segment_match const& gsm) {gsv_.insert(gsm);}
 
 private:
    Seg_match_id id_; //may be removed to save space
    Btop btop_;
-   interval_65k range_;
+   interval_short range_;
    detail::Vector_set<Germline_segment_match> gsv_;
 };
 
