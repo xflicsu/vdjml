@@ -5,10 +5,12 @@ part of vdjml project.
 *******************************************************************************/
 #ifndef XML_WRITER_HPP_
 #define XML_WRITER_HPP_
+#include <string>
 #include <iostream>
 #include "boost/lexical_cast.hpp"
 #include "boost/noncopyable.hpp"
 #include "vdjml/config.hpp"
+#include "vdjml/xml_writer_options.hpp"
 
 typedef struct _xmlBuffer xmlBuffer;
 typedef xmlBuffer *xmlBufferPtr;
@@ -18,32 +20,6 @@ typedef xmlTextWriter *xmlTextWriterPtr;
 namespace vdjml{
 
 enum Node_type {ELEM, ATTR};
-
-/**@brief 
-*******************************************************************************/
-struct Xml_writer_options {
-
-   explicit Xml_writer_options(
-            std::string const& indent = "   ",
-            std::string const& encoding = "UTF-8",
-            char quote = '"',
-            std::string const& xml_version = "1.0",
-            const std::size_t buff_size = 1024
-   )
-   : indent_(indent),
-     encoding_(encoding),
-     quote_(quote),
-     xml_version_(xml_version),
-     buff_size_(buff_size)
-   {}
-
-   std::string indent_;
-   std::string encoding_;
-   char quote_;
-   std::string xml_version_;
-   std::size_t buff_size_;
-};
-
 
 /**@brief
 *******************************************************************************/
@@ -94,13 +70,6 @@ private:
 
 	void flush();
 };
-
-inline std::string version_to_string(const unsigned version) {
-   return
-            boost::lexical_cast<std::string>(version / 1000) + '.' +
-            boost::lexical_cast<std::string>(version % 1000)
-            ;
-}
 
 }//namespace vdjml
 #endif /* XML_WRITER_HPP_ */
