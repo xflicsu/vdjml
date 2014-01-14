@@ -7,6 +7,7 @@ part of vdjml project.
 #define RESULT_STORE_HPP_
 #include <string>
 #include <memory>
+#include <iosfwd>
 #include "boost/ptr_container/ptr_vector.hpp"
 #include "boost/shared_ptr.hpp"
 #include "boost/range.hpp"
@@ -16,6 +17,7 @@ part of vdjml project.
 #include "vdjml/read_result.hpp"
 #include "vdjml/results_meta.hpp"
 #include "vdjml/xml_writer_options.hpp"
+#include "vdjml/compression.hpp"
 
 namespace vdjml{
 class Xml_reader;
@@ -69,10 +71,26 @@ private:
 @param path output path
 @param rs result store
 @param version format version
+@param xwo XML writer options
 *******************************************************************************/
 VDJML_DECL void write_to_file(
          std::string const& path,
          Result_store const& rs,
+         const Compression compr = Unknown_compression,
+         const unsigned version = VDJML_CURRENT_VERSION,
+         Xml_writer_options const& xwo = Xml_writer_options()
+);
+
+/**@brief
+@param path output path
+@param rs result store
+@param version format version
+@param xwo XML writer options
+*******************************************************************************/
+VDJML_DECL void write(
+         std::ostream& os,
+         Result_store const& rs,
+         const Compression compr = Uncompressed,
          const unsigned version = VDJML_CURRENT_VERSION,
          Xml_writer_options const& xwo = Xml_writer_options()
 );

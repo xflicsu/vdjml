@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE( case01 ) {
    rf.set_default_gl_database("IGHV", "123-0", "Homo Sapiens", "http://www.imgt.org");
    rf.set_default_num_system(Num_system::imgt);
 
-   Result_builder rb1 = rf.new_result("Y14934");
+//   Result_builder rb1 = rf.new_result("Y14934");
 }
 
 }//namespace test

@@ -95,7 +95,8 @@ Read_result_writer::Read_result_writer(
   ofs_(0),
   fosb_(make_fosb(compr, os)),
   os_(fosb_ ? new std::ostream(&(*fosb_)) : 0),
-  xw_(os_ ? *os_ : os, opts)
+  xw_(os_ ? *os_ : os, opts),
+  version_(version)
 {
    init_xml();
 }

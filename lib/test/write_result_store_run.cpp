@@ -7,7 +7,6 @@ part of vdjml project.
 #include "boost/test/unit_test.hpp"
 #include "test/exception_fixture.hpp"
 #include "test/sample_data.hpp"
-#include "vdjml/xml_writer.hpp"
 #include "vdjml/result_store.hpp"
 #include <iostream>
 #include <fstream>
@@ -106,12 +105,9 @@ BOOST_AUTO_TEST_CASE( case01 ) {
 
    rs.insert(rr1);
 
-   Xml_writer xw1(std::cout);
-   write(xw1, rs);
+   write(std::cout, rs);
    const std::string out = temp_file_path("out1.vdjml");
-   std::ofstream ofs(out.c_str());
-   Xml_writer xw2(ofs);
-   write(xw2, rs);
+   write_to_file(out, rs);
 
 //   BOOST_ERROR("");
 

@@ -14,15 +14,11 @@ part of vdjml project.
 #include "vdjml/exception.hpp"
 #include "vdjml/xml_writer.hpp"
 #include "vdjml/vdjml_current_version.hpp"
+#include "vdjml/compression.hpp"
 
 namespace vdjml{
 class Read_result;
 class Results_meta;
-
-enum Compression {
-   Uncompressed, Unknown_compression, gzip,
-   bzip2, zlib
-};
 
 /**@brief Incrementally serialize VDJ alignment results
 *******************************************************************************/

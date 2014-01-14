@@ -29,34 +29,34 @@ Result_store::Result_store(
    //todo:
 }
 
-namespace {
-
 /*
 *******************************************************************************/
-void write_0(
-         Xml_writer& xw,
+void write_to_file(
+         std::string const& path,
          Result_store const& rs,
-         const unsigned version
+         const Compression compr,
+         const unsigned version,
+         Xml_writer_options const& xwo
 ) {
-   write(xw, rs.meta(), version);
-   xw.open("read_results", ELEM);
+   Read_result_writer rrw(path, rs.meta(), compr, version, xwo);
    BOOST_FOREACH(Read_result const& rr, rs) {
-      write(xw, rr, rs.meta(), version);
+      rrw(rr);
    }
-   xw.close(); //read_results ELEM
 }
-
-}//anonymous namespace
 
 /*
 *******************************************************************************/
 void write(
-         std::string const& path,
+         std::ostream& os,
          Result_store const& rs,
+         const Compression compr,
          const unsigned version,
          Xml_writer_options const& xwo
 ) {
-   Read_result_writer rrw()
+   Read_result_writer rrw(os, rs.meta(), compr, version, xwo);
+   BOOST_FOREACH(Read_result const& rr, rs) {
+      rrw(rr);
+   }
 }
 
 
