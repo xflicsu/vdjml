@@ -9,7 +9,7 @@ part of vdjml project.
 #include "vdjml/aligner_map.hpp"
 #include "vdjml/germline_db_map.hpp"
 #include "vdjml/num_system_map.hpp"
-#include "vdjml/format_version.hpp"
+#include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/exception.hpp"
 #include "vdjml/germline_segment_map.hpp"
 #include "vdjml/gene_region_type_map.hpp"
@@ -32,7 +32,7 @@ public:
    */
    explicit Results_meta(
             Xml_reader& xr,
-            const unsigned version = current_version
+            const unsigned version = VDJML_CURRENT_VERSION
    );
 
    Gl_db_id add_gl_db(
@@ -98,7 +98,7 @@ private:
 VDJML_DECL void write(
          Xml_writer& xw,
          Results_meta const& rm,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 }//namespace vdjml

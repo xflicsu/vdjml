@@ -12,7 +12,7 @@ part of vdjml project.
 #include "vdjml/config.hpp"
 #include "vdjml/detail/vector_set.hpp"
 #include "vdjml/detail/comparison_operators_macro.hpp"
-#include "vdjml/format_version.hpp"
+#include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/gene_segment_type.hpp"
 #include "vdjml/interval.hpp"
 #include "vdjml/match_metrics.hpp"
@@ -146,7 +146,7 @@ VDJML_DECL void write(
          Xml_writer& xw,
          Germline_segment_match const& gsm,
          Results_meta const& rm,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 /**@brief
@@ -155,7 +155,7 @@ VDJML_DECL void write(
          Xml_writer& xw,
          Segment_match const& sm,
          Results_meta const& rm,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 }//namespace vdjml

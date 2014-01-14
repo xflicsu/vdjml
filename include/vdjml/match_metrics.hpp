@@ -6,7 +6,7 @@ part of vdjml project.
 #ifndef MATCH_METRICS_HPP_
 #define MATCH_METRICS_HPP_
 #include "vdjml/config.hpp"
-#include "vdjml/format_version.hpp"
+#include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/percent.hpp"
 
 namespace vdjml{
@@ -69,7 +69,7 @@ private:
 VDJML_DECL void write(
          Xml_writer& xw,
          Match_metrics const& mm,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 }//namespace vdjml

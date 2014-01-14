@@ -8,7 +8,7 @@ part of vdjml project.
 #include <string>
 #include <vector>
 #include "vdjml/config.hpp"
-#include "vdjml/format_version.hpp"
+#include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/segment_match_map.hpp"
 #include "vdjml/segment_combination.hpp"
 
@@ -57,7 +57,7 @@ VDJML_DECL void write(
          Xml_writer& xw,
          Read_result const& rr,
          Results_meta const& rm,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 }//namespace vdjml

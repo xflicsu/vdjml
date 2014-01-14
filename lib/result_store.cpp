@@ -16,6 +16,7 @@ part of vdjml project.
 #include "vdjml/lib_info.hpp"
 #include "vdjml/aligner_info.hpp"
 #include "vdjml/germline_db_info.hpp"
+#include "vdjml/vdjml_version.hpp"
 
 namespace vdjml {
 
@@ -54,8 +55,8 @@ void write(
          Result_store const& rs,
          const unsigned version
 ) {
-   xw.open("vdjml_results", ELEM, "http://vdjserver.org/xml/schema/vdjml/");
-   xw.node("version", ATTR, version_to_string(version));
+   xw.open("vdjml_results", ELEM, VDJML_NAMESPACE_URI);
+   xw.node("version", ATTR, version_string(version));
 
    switch (version) {
       case 0:

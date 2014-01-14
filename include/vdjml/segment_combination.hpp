@@ -6,7 +6,7 @@ part of vdjml project.
 #ifndef SEGMENT_COMBINATION_HPP_
 #define SEGMENT_COMBINATION_HPP_
 #include "vdjml/config.hpp"
-#include "vdjml/format_version.hpp"
+#include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/object_ids.hpp"
 #include "vdjml/interval.hpp"
 #include "vdjml/detail/vector_set.hpp"
@@ -65,7 +65,7 @@ VDJML_DECL void write(
          Xml_writer& xw,
          Segment_combination const& sc,
          Results_meta const& rm,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 /**@brief
@@ -74,7 +74,7 @@ VDJML_DECL void write(
          Xml_writer& xw,
          Gene_region const& gr,
          Results_meta const& rm,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 }//namespace vdjml

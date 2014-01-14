@@ -10,7 +10,7 @@ part of vdjml project.
 #include "vdjml/config.hpp"
 #include "vdjml/exception.hpp"
 #include "vdjml/detail/comparison_operators_macro.hpp"
-#include "vdjml/format_version.hpp"
+#include "vdjml/vdjml_current_version.hpp"
 
 namespace vdjml{
 class Xml_writer;
@@ -132,7 +132,7 @@ typedef Interval<boost::uint_least16_t> interval_short;
 VDJML_DECL void write(
          Xml_writer& xw,
          interval_short const& range,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 }//namespace vdjml

@@ -12,12 +12,13 @@ part of vdjml project.
 #include "boost/range.hpp"
 #include "vdjml/config.hpp"
 #include "vdjml/exception.hpp"
+#include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/read_result.hpp"
 #include "vdjml/results_meta.hpp"
+#include "vdjml/xml_writer_options.hpp"
 
 namespace vdjml{
 class Xml_reader;
-class Xml_writer;
 
 /**@brief Store and search analysis results of many sequencing reads
 *******************************************************************************/
@@ -43,7 +44,7 @@ public:
    */
    explicit Result_store(
             Xml_reader& xr,
-            const unsigned version = current_version
+            const unsigned version = VDJML_CURRENT_VERSION
    );
 
    std::size_t size() const {return v_.size();}
@@ -70,9 +71,9 @@ private:
 @param version format version
 *******************************************************************************/
 VDJML_DECL void write(
-         Xml_writer& xw,
          Result_store const& rs,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION,
+         Xml_writer_options const& xwo = Xml_writer_options()
 );
 
 }//namespace vdjml

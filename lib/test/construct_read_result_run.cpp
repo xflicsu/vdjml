@@ -1,8 +1,7 @@
 /** @file "/vdjml/lib/test/construct_read_result_run.cpp" 
 part of vdjml project.
-@n @n Distributed under GNU General Public License, Version 3;
-see doc/license.txt.
-@n Copyright Mikhail K Levin 2014
+@n Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
+@date 2014 @author Mikhail K Levin
 *******************************************************************************/
 #define BOOST_TEST_MODULE construct_read_result_run
 #include "boost/test/unit_test.hpp"
