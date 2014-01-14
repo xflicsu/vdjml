@@ -31,16 +31,15 @@ class VDJML_DECL Read_result_writer : boost::noncopyable {
    typedef boost::scoped_ptr<std::ofstream> ofs_ptr;
    typedef boost::iostreams::filtering_ostreambuf fosb_t;
    typedef boost::scoped_ptr<fosb_t> fosb_ptr;
-   typedef boost::scoped_ptr<Xml_writer> xw_ptr;
 
    static Compression guess_compression(std::string const& path);
 
-   static boost::iostreams::filtering_ostreambuf* setup_fosb(
+   static std::ofstream* make_ofstream(
             std::string const& path,
-            const Compression compr,
-            std::ofstream& ofs,
-            boost::iostreams::filtering_ostreambuf& fosb
+            Compression& compr
    );
+
+   static fosb_t* make_fosb(const Compression compr, std::ostream& os);
 
 public:
    struct Err : public base_exception {};
@@ -70,14 +69,11 @@ private:
    ofs_ptr ofs_;
    fosb_ptr fosb_;
    os_ptr os_;
-   xw_ptr xw_;
+   Xml_writer xw_;
    unsigned version_;
 
    void init_xml();
 
-   void init_ofstream(std::string path, const Compression compr);
-
-   void init_compression(std::ostream& os, const Compression compr);
 };
 
 }//namespace vdjml

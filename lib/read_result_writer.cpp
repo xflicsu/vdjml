@@ -16,6 +16,7 @@ namespace bfs = boost::filesystem;
 #include "boost/iostreams/filter/zlib.hpp"
 
 #include "vdjml/results_meta.hpp"
+#include "vdjml/read_result.hpp"
 #include "vdjml/vdjml_version.hpp"
 
 namespace vdjml {
@@ -34,44 +35,51 @@ Compression Read_result_writer::guess_compression(std::string const& path) {
 
 /*
 *******************************************************************************/
-boost::iostreams::filtering_ostreambuf* Read_result_writer::setup_fosb(
-         std::string const& path,
-         Compression compr,
-         std::ofstream& ofs,
-         boost::iostreams::filtering_ostreambuf& fosb
+std::ofstream* Read_result_writer::make_ofstream(
+            std::string const& path,
+            Compression& compr
 ) {
-   if( compr == Unknown_compression ) compr = guess_compression(path);
    static const std::ios_base::openmode bin_mode =
             std::ios_base::out | std::ios_base::trunc | std::ios_base::binary;
+
+   static const std::ios_base::openmode txt_mode =
+            std::ios_base::out | std::ios_base::trunc;
+
+   if( compr == Unknown_compression ) compr = guess_compression(path);
+
+   const std::ios_base::openmode mode =
+            (compr == Uncompressed) ? txt_mode : bin_mode;
+
+   return new std::ofstream(path.c_str(), mode);
+}
+
+/*
+*******************************************************************************/
+Read_result_writer::fosb_t*
+Read_result_writer::make_fosb(const Compression compr, std::ostream& os) {
+   if( compr == Uncompressed ) return 0;
+   fosb_t* fosb = new fosb_t;
    switch (compr) {
       case Uncompressed:
-         ofs.open(path.c_str(), std::ios_base::out | std::ios_base::trunc);
-         fosb.push(ofs);
          break;
       case bzip2:
-         ofs.open(path.c_str(), bin_mode);
-         fosb.push(boost::iostreams::bzip2_compressor());
-         fosb.push(ofs);
+         fosb->push(boost::iostreams::bzip2_compressor());
          break;
       case gzip:
-         ofs.open(path.c_str(), bin_mode);
-         fosb.push(boost::iostreams::gzip_compressor());
-         fosb.push(ofs);
+         fosb->push(boost::iostreams::gzip_compressor());
          break;
       case zlib:
-         ofs.open(path.c_str(), bin_mode);
-         fosb.push(boost::iostreams::zlib_compressor());
-         fosb.push(ofs);
+         fosb->push(boost::iostreams::zlib_compressor());
          break;
       default:
          BOOST_THROW_EXCEPTION(
                   Err()
                   << Err::msg_t("unsupported compression")
-                  << Err::str1_t(path)
                   << Err::int1_t(compr)
          );
    }
-   return &fosb;
+   fosb->push(os);
+   return fosb;
 }
 
 /*
@@ -83,37 +91,12 @@ Read_result_writer::Read_result_writer(
          const unsigned version,
          Xml_writer_options const& opts
 )
-: rm_(rm)
+: rm_(rm),
+  ofs_(0),
+  fosb_(make_fosb(compr, os)),
+  os_(fosb_ ? new std::ostream(&(*fosb_)) : 0),
+  xw_(os_ ? *os_ : os, opts)
 {
-   switch (compr) {
-      case Uncompressed:
-         xw_.reset(new Xml_writer(os, opts));
-         break;
-      case bzip2:
-         fosb_.reset(new fosb_t());
-         fosb_->push(boost::iostreams::bzip2_compressor());
-         os_.reset(new std::ostream(*(*fosb_)));
-         xw_.reset(new Xml_writer(*os_, opts));
-         break;
-      case gzip:
-         ofs.open(path.c_str(), bin_mode);
-         fosb.push(boost::iostreams::gzip_compressor());
-         fosb.push(ofs);
-         break;
-      case zlib:
-         ofs.open(path.c_str(), bin_mode);
-         fosb.push(boost::iostreams::zlib_compressor());
-         fosb.push(ofs);
-         break;
-      default:
-         BOOST_THROW_EXCEPTION(
-                  Err()
-                  << Err::msg_t("unsupported compression")
-                  << Err::str1_t(path)
-                  << Err::int1_t(compr)
-         );
-   }
-
    init_xml();
 }
 
@@ -127,10 +110,10 @@ Read_result_writer::Read_result_writer(
          Xml_writer_options const& opts
 )
 : rm_(rm),
-  ofs_(),
-  fosb_(),
-  os_(setup_fosb(path, compr, ofs_, fosb_)),
-  xw_(os_, opts),
+  ofs_(make_ofstream(path, compr)),
+  fosb_(make_fosb(compr, *ofs_)),
+  os_(fosb_ ? new std::ostream(&(*fosb_)) : 0),
+  xw_(os_ ? *os_ : *ofs_, opts),
   version_(version)
 {
    init_xml();

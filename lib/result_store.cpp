@@ -12,7 +12,7 @@ part of vdjml project.
 #include "boost/foreach.hpp"
 
 #include "vdjml/read_result.hpp"
-#include "vdjml/xml_writer.hpp"
+#include "vdjml/read_result_writer.hpp"
 #include "vdjml/lib_info.hpp"
 #include "vdjml/aligner_info.hpp"
 #include "vdjml/germline_db_info.hpp"
@@ -51,26 +51,12 @@ void write_0(
 /*
 *******************************************************************************/
 void write(
-         Xml_writer& xw,
+         std::string const& path,
          Result_store const& rs,
-         const unsigned version
+         const unsigned version,
+         Xml_writer_options const& xwo
 ) {
-   xw.open("vdjml_results", ELEM, VDJML_NAMESPACE_URI);
-   xw.node("version", ATTR, version_string(version));
-
-   switch (version) {
-      case 0:
-         write_0(xw, rs, version);
-         break;
-      default:
-         BOOST_THROW_EXCEPTION(
-                  base_exception()
-                  << base_exception::msg_t("unsupported format version")
-                  << base_exception::int1_t(version)
-         );
-   }
-
-   xw.close();
+   Read_result_writer rrw()
 }
 
 

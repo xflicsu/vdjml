@@ -66,11 +66,12 @@ private:
 };
 
 /**@brief
-@param xw XML writer
+@param path output path
 @param rs result store
 @param version format version
 *******************************************************************************/
-VDJML_DECL void write(
+VDJML_DECL void write_to_file(
+         std::string const& path,
          Result_store const& rs,
          const unsigned version = VDJML_CURRENT_VERSION,
          Xml_writer_options const& xwo = Xml_writer_options()
