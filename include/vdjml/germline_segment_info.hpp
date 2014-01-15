@@ -22,7 +22,8 @@ class Results_meta;
 struct Gl_segment_info {
 
    Gl_segment_info(const Gl_db_id db, const char vdj, std::string const& name)
-   : db_(db),
+   : id_(),
+     db_(db),
      gst_(segment_type(vdj)),
      name_(name)
    {}

@@ -62,9 +62,7 @@ public:
             const char vdj,
             std::string const& name
    ) {
-      return germline_segment_map().insert(
-               Gl_segment_info(db, vdj, name)
-      );
+      return germline_segment_map().insert(db, vdj, name);
    }
 
    Aligner_map const & aligner_map() const {return am_;}
