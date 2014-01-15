@@ -7,6 +7,7 @@ part of vdjml project.
 #define BTOP_HPP_
 #include <string>
 #include "boost/algorithm/string/case_conv.hpp"
+#include "vdjml/detail/comparison_operators_macro.hpp"
 
 namespace vdjml{
 
@@ -24,6 +25,7 @@ public:
    bool empty() const {return val_.empty();}
    bool operator==(Btop const& bt) const {return val_ == bt.val_;}
    bool operator<(Btop const& bt) const {return val_ < bt.val_;}
+   VDJML_COMPARISON_OPERATOR_MEMBERS(Btop)
 
 private:
    std::string val_;

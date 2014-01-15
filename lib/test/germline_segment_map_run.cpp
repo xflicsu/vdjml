@@ -22,6 +22,12 @@ BOOST_AUTO_TEST_CASE( case01 ) {
    const Gl_seg_id id2a = gsm.insert(Gl_db_id(1), 'V', "IGHV3-21*02");
    BOOST_CHECK_EQUAL(id2, id2a);
    const Gl_seg_id id3 = gsm.insert(Gl_db_id(2), 'V', "IGHV3-21*02");
+
+   BOOST_CHECK_THROW(
+            gsm.insert(Gl_db_id(2), 'D', "IGHV3-21*02"),
+            Gl_segment_map::Err
+   ); //same name, DB -- different type
+
    BOOST_CHECK_NE(id2, id3);
    Gl_segment_map::name_range nr1 = gsm.find("IGHV3-21*01");
    BOOST_CHECK_EQUAL(distance(nr1), 1);

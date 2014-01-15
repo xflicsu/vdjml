@@ -107,7 +107,7 @@ if [ modules.peek doxygen : .initialized ] {
          [ glob 
                include/vdjml/*.hpp
                include/vdjml/*/*.hpp
-               lib/*/test/*.?pp
+               lib/test/*.?pp
                apps/*.cpp
                : include/owlcpp/detail/* 
          ]

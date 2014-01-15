@@ -31,6 +31,10 @@ struct Gene_region : public Match_metrics {
      range_(range)
    {}
 
+   bool operator==(Gene_region const& gr) const {
+      return num_system_ == gr.num_system_ && region_ == gr.region_;
+   }
+
    Numsys_id num_system_;
    Region_id region_;
    interval_short range_; ///< read positions aligned

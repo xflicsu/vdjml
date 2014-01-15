@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE( case01 ) {
 
    Read_result rr1("Y14934");
    Segment_match sm1(Btop("61AC10A-136"), interval_short::first_last_1(1, 275));
-   const Germline_segment_match gsm1(
+   const Gl_segment_match gsm1(
             Num_system::imgt,
             aid1,
             seg_id1,
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE( case01 ) {
    );
    sm1.insert(gsm1);
 
-   const Germline_segment_match gsm2(
+   const Gl_segment_match gsm2(
             Num_system::imgt,
             aid1,
             seg_id2,
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE( case01 ) {
    const Seg_match_id sm_id1 = rr1.insert(sm1);
 
    Segment_match sm2(Btop("20"), interval_short::first_last_1(275, 295));
-   const Germline_segment_match gsm3(
+   const Gl_segment_match gsm3(
             Num_system::imgt,
             aid1,
             seg_id3,
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE( case01 ) {
    const Seg_match_id sm_id2 = rr1.insert(sm2);
 
    Segment_match sm3(Btop("5AC35"), interval_short::first_last_1(311, 351));
-   const Germline_segment_match gsm4(
+   const Gl_segment_match gsm4(
             Num_system::imgt,
             aid1,
             seg_id4,

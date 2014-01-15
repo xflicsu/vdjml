@@ -9,12 +9,10 @@ part of vdjml project.
 #include <string>
 #include "vdjml/config.hpp"
 #include "vdjml/object_ids.hpp"
+#include "vdjml/exception.hpp"
+#include "vdjml/read_result.hpp"
 
-namespace vdjml{
-class Results_meta;
-class Read_result;
-
-namespace detail{
+namespace vdjml{ namespace detail{
 
 /**@brief Construct alignment results for one sequencing read
 *******************************************************************************/
@@ -68,12 +66,79 @@ private:
 
 }//namespace detail
 
+/**@brief Construct alignment results for one sequencing read segment match
+*******************************************************************************/
+class VDJML_DECL Segment_combination_builder :
+   public detail::Result_factory_impl {
+public:
+   struct Err : public base_exception {};
+
+   Segment_combination_builder(
+            detail::Result_factory_impl& rf,
+            Read_result& rr,
+            Segment_combination const& sc
+   );
+
+   void add_region(
+            std::string const& name,
+            interval_short read_range,
+            Match_metrics const& mm
+   );
+
+   void add_region(
+            const Numsys_id num_system,
+            const Region_id region,
+            interval_short const& range,
+            Match_metrics const& mm
+   );
+
+private:
+   Read_result& rr_;
+   std::size_t n_;
+};
+
+/**@brief Construct alignment results for one sequencing read segment match
+*******************************************************************************/
+class VDJML_DECL Segment_match_builder : public detail::Result_factory_impl {
+
+public:
+   struct Err : public base_exception {};
+
+   Segment_match_builder(detail::Result_factory_impl& rf, Segment_match& sm)
+   : detail::Result_factory_impl(rf),
+     sm_(sm)
+   {}
+
+   void add_gl_segment(
+            const Numsys_id numsys_id,
+            const Aligner_id aligner_id,
+            const Gl_seg_id gl_segment_id,
+            interval_short const& gl_range,
+            Match_metrics const& mm
+   );
+
+   void add_gl_segment(
+            const char vdj,
+            std::string const& seg_name,
+            interval_short const& gl_range,
+            Match_metrics const& mm
+   );
+
+   Segment_match const  & get() const  {return sm_;}
+   Segment_match        & get()        {return sm_;}
+
+private:
+   Segment_match& sm_;
+};
+
 /**@brief Construct alignment results for one sequencing read
 *******************************************************************************/
 class VDJML_DECL Result_builder : public detail::Result_factory_impl {
 //   typedef boost::shared_ptr<Read_result> result_ptr;
    typedef std::auto_ptr<Read_result> result_ptr;
 public:
+   struct Err : public base_exception {};
+
    Result_builder(detail::Result_factory_impl& rf, std::string const& id);
 
    Result_builder(Results_meta& rm, std::string const& id);
@@ -83,8 +148,30 @@ public:
      r_(const_cast<result_ptr&>(rb.r_).release())
    {}
 
-   Read_result const & get() const  {return *r_;}
-   Read_result       & get()        {return *r_;}
+   Read_result const& get() const {
+      if( ! r_.get() ) BOOST_THROW_EXCEPTION(
+               Err()
+               << Err::msg_t("invalid builder")
+      );
+      return *r_;
+   }
+
+   Read_result& get(){
+      if( ! r_.get() ) BOOST_THROW_EXCEPTION(
+               Err()
+               << Err::msg_t("invalid builder")
+      );
+      return *r_;
+   }
+
+   Segment_match_builder add_segment_match(
+            std::string const& btop,
+            interval_short const& read_range,
+            const char vdj,
+            std::string const& seg_name,
+            interval_short const& gl_range,
+            Match_metrics const& mm
+   );
 
    std::auto_ptr<Read_result> release() { return r_;}
 

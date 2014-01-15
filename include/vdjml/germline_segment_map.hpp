@@ -79,6 +79,12 @@ public:
       identity_index& ind = map_.get<identity_tag>();
       identity_index::const_iterator iter = ind.find(gsi);
       if( iter != ind.end() ) {
+         if( gsi.gst_ != iter->gst_ ) BOOST_THROW_EXCEPTION(
+                  Err()
+                  << Err::msg_t("same segment name, different VDJ type")
+                  << Err::str1_t(segment_type_str(gsi.gst_))
+                  << Err::str2_t(segment_type_str(iter->gst_))
+         );
          return iter->id_;
       }
       const Gl_seg_id id(size() + 1);
@@ -88,16 +94,7 @@ public:
    }
 
    Gl_seg_id insert(const Gl_db_id db, const char vdj, std::string const& name) {
-      Gl_segment_info gsi(db, vdj, name);
-      identity_index& ind = map_.get<identity_tag>();
-      identity_index::const_iterator iter = ind.find(gsi);
-      if( iter != ind.end() ) {
-         return iter->id_;
-      }
-      const Gl_seg_id id(size() + 1);
-      gsi.id_ = id;
-      ind.insert(gsi);
-      return id;
+      return insert(Gl_segment_info(db, vdj, name));
    }
 
    name_range find(std::string const& name) const {

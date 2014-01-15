@@ -5,16 +5,18 @@ part of vdjml project.
 *******************************************************************************/
 #ifndef SEGMENT_MATCH_MAP_HPP_
 #define SEGMENT_MATCH_MAP_HPP_
+#include "boost/foreach.hpp"
 #include "vdjml/segment_match.hpp"
 #include "vdjml/object_ids.hpp"
 #include "vdjml/detail/id_map.hpp"
 #include "vdjml/detail/id_iterator.hpp"
+#include "vdjml/config.hpp"
 
 namespace vdjml{
 
 /**@brief 
 *******************************************************************************/
-class Segment_match_map {
+class VDJML_DECL Segment_match_map {
    typedef detail::Id_map<Seg_match_id, Segment_match> map_t;
 public:
    typedef map_t::iterator iterator;
@@ -24,8 +26,17 @@ public:
    const_iterator end() const {return map_.end();}
    bool empty() const {return map_.empty();}
    Segment_match const& operator[](const Seg_match_id id) const {return map_[id];}
+   Segment_match& operator[](const Seg_match_id id) {return map_[id];}
+   Segment_match const* find(const Seg_match_id id) const {return map_.find(id);}
 
    Seg_match_id insert(Segment_match const& sm) {
+      //only a few segment matches per read result are expected
+      BOOST_FOREACH(Segment_match& sm0, map_) {
+         if( sm == sm0 ) {
+            merge(sm0, sm);
+            return sm0.id_;
+         }
+      }
       const Seg_match_id id = map_.insert(sm);
       map_[id].id_ = id;
       return id;

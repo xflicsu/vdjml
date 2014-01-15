@@ -12,6 +12,7 @@ part of vdjml project.
 
 #include "vdjml/xml_writer.hpp"
 #include "vdjml/results_meta.hpp"
+#include "vdjml/exception.hpp"
 
 namespace vdjml {
 
@@ -19,7 +20,7 @@ namespace vdjml {
 *******************************************************************************/
 void write(
          Xml_writer& xw,
-         Germline_segment_match const& gsm,
+         Gl_segment_match const& gsm,
          Results_meta const& rm,
          const unsigned version
 ) {
@@ -44,10 +45,24 @@ void write(
    xw.node("id", ATTR, sm.id());
    write(xw, sm.range(), version);
    xw.node("btop", ELEM, sm.btop().str());
-   BOOST_FOREACH(Germline_segment_match const& gsm, sm.germline_segments()) {
+   BOOST_FOREACH(Gl_segment_match const& gsm, sm.germline_segments()) {
       write(xw, gsm, rm, version);
    }
    xw.close(); //read_segment_match, ELEM
+}
+
+/*
+*******************************************************************************/
+void merge(Segment_match& sm1, Segment_match const& sm2) {
+   if( sm1.btop() != sm2.btop() || sm1.range() != sm2.range() ) {
+      BOOST_THROW_EXCEPTION(
+               Segment_match::Err()
+               << Segment_match::Err::msg_t("same BTOP and range are required")
+      );
+   }
+   BOOST_FOREACH(Gl_segment_match const& gsm, sm2.germline_segments()) {
+      sm1.insert(gsm);
+   }
 }
 
 }//namespace vdjml

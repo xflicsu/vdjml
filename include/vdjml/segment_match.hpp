@@ -68,8 +68,8 @@ struct Aa_substitution {
 
 /**@brief
 *******************************************************************************/
-struct Germline_segment_match : public Match_metrics {
-   Germline_segment_match(
+struct Gl_segment_match : public Match_metrics {
+   Gl_segment_match(
             const Numsys_id numsys,
             const Aligner_id aligner,
             const Gl_seg_id germline_segment,
@@ -83,7 +83,7 @@ struct Germline_segment_match : public Match_metrics {
      range_(range)
    {}
 
-   bool operator==(Germline_segment_match const& gsm) const {
+   bool operator==(Gl_segment_match const& gsm) const {
       return
                num_system_ == gsm.num_system_ &&
                aligner_ == gsm.aligner_ &&
@@ -92,7 +92,7 @@ struct Germline_segment_match : public Match_metrics {
                ;
    }
 
-   bool operator<(Germline_segment_match const& gsm) const {
+   bool operator<(Gl_segment_match const& gsm) const {
       if( num_system_ < gsm.num_system_ ) return true;
       if( gsm.num_system_ < num_system_ ) return false;
       if( aligner_ < gsm.aligner_ ) return true;
@@ -102,7 +102,7 @@ struct Germline_segment_match : public Match_metrics {
       return range_ < gsm.range_;
    }
 
-   VDJML_COMPARISON_OPERATOR_MEMBERS(Germline_segment_match)
+   VDJML_COMPARISON_OPERATOR_MEMBERS(Gl_segment_match)
 
    Numsys_id num_system_;
    Aligner_id aligner_;
@@ -117,8 +117,10 @@ struct Germline_segment_match : public Match_metrics {
 *******************************************************************************/
 class VDJML_DECL Segment_match {
    friend class Segment_match_map;
-   typedef detail::Vector_set<Germline_segment_match> germline_segment_set;
+   typedef detail::Vector_set<Gl_segment_match> germline_segment_set;
 public:
+   struct Err : public base_exception {};
+
    Segment_match(
             Btop const& btop,
             interval_short const& read_range
@@ -131,20 +133,28 @@ public:
    Btop const& btop() const {return btop_;}
    interval_short const& range() const {return range_;}
    germline_segment_set const& germline_segments() const {return gsv_;}
-   void insert(Germline_segment_match const& gsm) {gsv_.insert(gsm);}
+   void insert(Gl_segment_match const& gsm) {gsv_.insert(gsm);}
+
+   bool operator==(Segment_match const& sm) const {
+      return btop_ == sm.btop_ && range_ == sm.range_;
+   }
 
 private:
    Seg_match_id id_; //may be removed to save space
    Btop btop_;
    interval_short range_;
-   detail::Vector_set<Germline_segment_match> gsv_;
+   detail::Vector_set<Gl_segment_match> gsv_;
 };
+
+/**@brief
+*******************************************************************************/
+VDJML_DECL void merge(Segment_match& sm1, Segment_match const& sm2);
 
 /**@brief
 *******************************************************************************/
 VDJML_DECL void write(
          Xml_writer& xw,
-         Germline_segment_match const& gsm,
+         Gl_segment_match const& gsm,
          Results_meta const& rm,
          const unsigned version = VDJML_CURRENT_VERSION
 );

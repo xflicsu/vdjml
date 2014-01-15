@@ -32,6 +32,14 @@ public:
             const unsigned version
    );
 
+   Segment_match const& operator[](const Seg_match_id id) const {
+      return smm_[id];
+   }
+
+   Segment_match& operator[](const Seg_match_id id) {
+      return smm_[id];
+   }
+
    Seg_match_id insert(Segment_match const& rsm) {
       return smm_.insert(rsm);
    }
@@ -42,8 +50,10 @@ public:
 
    std::string const& id() const {return id_;}
 
-   Segment_match_map const& segment_match_map() const {return smm_;}
-   seg_comb_store const& segment_combinations() const {return scm_;}
+   Segment_match_map const & segment_match_map() const   {return smm_;}
+   Segment_match_map       & segment_match_map()         {return smm_;}
+   seg_comb_store const & segment_combinations() const   {return scm_;}
+   seg_comb_store       & segment_combinations()         {return scm_;}
 
 private:
    std::string id_;
