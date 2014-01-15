@@ -71,11 +71,22 @@ private:
 /**@brief Construct alignment results for one sequencing read
 *******************************************************************************/
 class VDJML_DECL Result_builder : public detail::Result_factory_impl {
+//   typedef boost::shared_ptr<Read_result> result_ptr;
    typedef std::auto_ptr<Read_result> result_ptr;
 public:
    Result_builder(detail::Result_factory_impl& rf, std::string const& id);
 
    Result_builder(Results_meta& rm, std::string const& id);
+
+   Result_builder(Result_builder const& rb)
+   : detail::Result_factory_impl(rb),
+     r_(const_cast<result_ptr&>(rb.r_).release())
+   {}
+
+   Read_result const & get() const  {return *r_;}
+   Read_result       & get()        {return *r_;}
+
+   std::auto_ptr<Read_result> release() { return r_;}
 
 private:
    result_ptr r_;
@@ -84,6 +95,8 @@ private:
 /**@brief Construct alignment results for one sequencing read
 *******************************************************************************/
 struct Result_factory : public detail::Result_factory_impl {
+   Result_factory(Results_meta& meta) : detail::Result_factory_impl(meta) {}
+
    Result_builder new_result(std::string const& id) {
       Result_builder rb(*this, id);
       return rb;
