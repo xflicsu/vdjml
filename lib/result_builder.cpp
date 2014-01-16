@@ -134,7 +134,7 @@ void Segment_combination_builder::add_region(
 
 /*
 *******************************************************************************/
-void Segment_match_builder::add_gl_segment(
+Gl_seg_match_id Segment_match_builder::add_gl_segment(
          const Gl_seg_id gl_segment_id,
          interval_short const& gl_range,
          Match_metrics const& mm,
@@ -152,7 +152,7 @@ void Segment_match_builder::add_gl_segment(
             << Err::msg_t("set default or specify the aligner")
    );
 
-   sm_.insert(
+   return sm_.insert(
             Gl_segment_match(
                      num_system, aligner, gl_segment_id, gl_range, mm
             )
@@ -161,7 +161,7 @@ void Segment_match_builder::add_gl_segment(
 
 /*
 *******************************************************************************/
-void Segment_match_builder::add_gl_segment(
+Gl_seg_match_id Segment_match_builder::add_gl_segment(
          const char vdj,
          std::string const& seg_name,
          interval_short const& gl_range,
@@ -196,13 +196,27 @@ void Segment_match_builder::add_gl_segment(
                << Err::msg_t("set default or specify germline DB")
       );
    }
-   add_gl_segment(
+   return add_gl_segment(
             gs_id,
             gl_range,
             mm,
             num_system,
             aligner
    );
+}
+
+/*
+*******************************************************************************/
+void Segment_match_builder::add_aa_substitution(
+         const unsigned read_pos,
+         const char aa_from,
+         const char aa_to,
+         Gl_seg_match_id gls_match,
+         const unsigned gl_pos
+) {
+   Aa_substitution aas(read_pos, aa_from, aa_to);
+   aas.insert(Gl_position(gls_match, gl_pos));
+   sm_.insert(aas);
 }
 
 /*

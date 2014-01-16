@@ -7,64 +7,23 @@ part of vdjml project.
 #define SEGMENT_MATCH_HPP_
 #include <string>
 #include <vector>
+#include "boost/foreach.hpp"
 #include "vdjml/object_ids.hpp"
 #include "vdjml/btop.hpp"
 #include "vdjml/config.hpp"
 #include "vdjml/detail/vector_set.hpp"
+#include "vdjml/detail/id_map.hpp"
 #include "vdjml/detail/comparison_operators_macro.hpp"
 #include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/gene_segment_type.hpp"
 #include "vdjml/interval.hpp"
 #include "vdjml/match_metrics.hpp"
+#include "vdjml/aa_substitution.hpp"
 
 namespace vdjml{
 class Read_result;
 class Xml_writer;
 class Results_meta;
-
-/**@brief 
-*******************************************************************************/
-struct Germline_position {
-   Germline_position(
-            const Gl_db_id gdb,
-            const Numsys_id num_sys,
-            const unsigned pos,
-            std::string gene
-   )
-   : gdb_id_(gdb),
-     num_sys_id_(num_sys),
-     pos_(pos),
-     gene_(gene)
-   {}
-
-   Gl_db_id gdb_id_;
-   Numsys_id num_sys_id_;
-   unsigned pos_;
-   std::string gene_;
-};
-
-/**@brief
-*******************************************************************************/
-struct Aa_substitution {
-
-   Aa_substitution(
-            const char from,
-            const char to,
-            const unsigned read_pos,
-            Germline_position const& gp
-   )
-   : from_(from), to_(to), r_pos_(read_pos)
-   {
-      gpv_.push_back(gp);
-   }
-
-//   void insert_gp(Germline_position const& gp) {gpv_
-
-   char from_;
-   char to_;
-   unsigned r_pos_;
-   std::vector<Germline_position> gpv_;
-};
 
 /**@brief
 *******************************************************************************/
@@ -77,6 +36,7 @@ struct Gl_segment_match : public Match_metrics {
             Match_metrics const& mm
    )
    : Match_metrics(mm),
+     id_(),
      num_system_(numsys),
      aligner_(aligner),
      gl_segment_(germline_segment),
@@ -104,21 +64,21 @@ struct Gl_segment_match : public Match_metrics {
 
    VDJML_COMPARISON_OPERATOR_MEMBERS(Gl_segment_match)
 
+   Gl_seg_match_id id_;
    Numsys_id num_system_;
    Aligner_id aligner_;
    Gl_seg_id gl_segment_;
    interval_short range_;
 };
 
-
-
 /**@brief Alignment results for a read segment
 @details
 *******************************************************************************/
 class VDJML_DECL Segment_match {
    friend class Segment_match_map;
-   typedef detail::Vector_set<Gl_segment_match> germline_segment_set;
 public:
+   typedef detail::Id_map<Gl_seg_match_id, Gl_segment_match> germline_segment_map;
+   typedef detail::Vector_set<Aa_substitution> aa_substitution_set;
    struct Err : public base_exception {};
 
    Segment_match(
@@ -132,8 +92,22 @@ public:
    Seg_match_id id() const {return id_;}
    Btop const& btop() const {return btop_;}
    interval_short const& range() const {return range_;}
-   germline_segment_set const& germline_segments() const {return gsv_;}
-   void insert(Gl_segment_match const& gsm) {gsv_.insert(gsm);}
+   germline_segment_map const& germline_segments() const {return gsv_;}
+   aa_substitution_set const& aa_substitutions() const {return aass_;}
+
+   Gl_seg_match_id insert(Gl_segment_match const& gsm) {
+//      BOOST_FOREACH(Gl_segment_match const& gsm0, gsv_) {
+//         if( gsm0 == gsm )
+//      }
+      //todo:
+      const Gl_seg_match_id id = gsv_.insert(gsm);
+      gsv_[id].id_ = id;
+      return id;
+   }
+
+   void insert(Aa_substitution const& aas) {
+      aass_.insert(aas);
+   }
 
    bool operator==(Segment_match const& sm) const {
       return btop_ == sm.btop_ && range_ == sm.range_;
@@ -143,7 +117,8 @@ private:
    Seg_match_id id_; //may be removed to save space
    Btop btop_;
    interval_short range_;
-   detail::Vector_set<Gl_segment_match> gsv_;
+   germline_segment_map gsv_;
+   aa_substitution_set aass_;
 };
 
 /**@brief

@@ -110,7 +110,7 @@ public:
      sm_(sm)
    {}
 
-   void add_gl_segment(
+   Gl_seg_match_id add_gl_segment(
             const Gl_seg_id gl_segment_id,
             interval_short const& gl_range,
             Match_metrics const& mm,
@@ -118,7 +118,7 @@ public:
             Aligner_id aligner = Aligner_id()
    );
 
-   void add_gl_segment(
+   Gl_seg_match_id add_gl_segment(
             const char vdj,
             std::string const& seg_name,
             interval_short const& gl_range,
@@ -126,6 +126,14 @@ public:
             Gl_db_id gl_database = Gl_db_id(),
             Numsys_id num_system = Numsys_id(),
             Aligner_id aligner = Aligner_id()
+   );
+
+   void add_aa_substitution(
+            const unsigned read_pos,
+            const char aa_from,
+            const char aa_to,
+            Gl_seg_match_id gls_match,
+            const unsigned gl_pos
    );
 
    Segment_match const  & get() const  {return sm_;}

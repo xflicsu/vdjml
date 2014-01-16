@@ -25,6 +25,7 @@ void write(
          const unsigned version
 ) {
    xw.open("germline_segment", ELEM);
+   xw.node("id", ATTR, gsm.id_);
    xw.node("num_system", ATTR, rm.num_system_map()[gsm.num_system_]);
    write(xw, rm.germline_segment_map()[gsm.gl_segment_], rm, version);
    xw.node("aligner", ATTR, gsm.aligner_);
@@ -47,6 +48,9 @@ void write(
    xw.node("btop", ELEM, sm.btop().str());
    BOOST_FOREACH(Gl_segment_match const& gsm, sm.germline_segments()) {
       write(xw, gsm, rm, version);
+   }
+   BOOST_FOREACH(Aa_substitution const& aas, sm.aa_substitutions()) {
+      write(xw, aas, version);
    }
    xw.close(); //read_segment_match, ELEM
 }

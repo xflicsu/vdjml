@@ -45,14 +45,16 @@ BOOST_AUTO_TEST_CASE( building ) {
 
    Result_builder rb1 = rf.new_result("Y14934");
 
-   const Seg_match_id smid1 = rb1.add_segment_match(
+   Segment_match_builder smb1 =rb1.add_segment_match(
             "61AC10A-136",
             interval_short::first_last_1(1, 275),
             'V',
             "IGHV3-21*01",
             interval_short::first_last_1(22, 296),
             Match_metrics(264, 96.0, 0, 0, 11)
-   ).get().id();
+   );
+   smb1.add_aa_substitution(61, 'P', 'T', Gl_seg_match_id(1), 84);
+   const Seg_match_id smid1 = smb1.get().id();
 
    const Seg_match_id smid1a = rb1.add_segment_match(
             "61AC10A-136",
