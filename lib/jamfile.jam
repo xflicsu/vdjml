@@ -42,8 +42,11 @@ lib vdjml
       $(LIB_REQUIREMENTS)
       <library>/vdjml//libxml2
       <library>/boost//iostreams
+      <library>/boost//filesystem
       <link>shared:<define>VDJML_DYN_LINK
    :  #default build options
    :  #usage requirements
       <link>shared:<define>VDJML_DYN_LINK
+      <library>/boost//iostreams
+      <library>/boost//filesystem
 ;

@@ -82,14 +82,15 @@ public:
    void add_region(
             std::string const& name,
             interval_short read_range,
-            Match_metrics const& mm
+            Match_metrics const& mm,
+            Numsys_id num_system = Numsys_id()
    );
 
    void add_region(
-            const Numsys_id num_system,
             const Region_id region,
-            interval_short const& range,
-            Match_metrics const& mm
+            interval_short const& read_range,
+            Match_metrics const& mm,
+            Numsys_id num_system = Numsys_id()
    );
 
 private:
@@ -110,18 +111,21 @@ public:
    {}
 
    void add_gl_segment(
-            const Numsys_id numsys_id,
-            const Aligner_id aligner_id,
             const Gl_seg_id gl_segment_id,
             interval_short const& gl_range,
-            Match_metrics const& mm
+            Match_metrics const& mm,
+            Numsys_id num_system = Numsys_id(),
+            Aligner_id aligner = Aligner_id()
    );
 
    void add_gl_segment(
             const char vdj,
             std::string const& seg_name,
             interval_short const& gl_range,
-            Match_metrics const& mm
+            Match_metrics const& mm,
+            Gl_db_id gl_database = Gl_db_id(),
+            Numsys_id num_system = Numsys_id(),
+            Aligner_id aligner = Aligner_id()
    );
 
    Segment_match const  & get() const  {return sm_;}
@@ -171,6 +175,14 @@ public:
             std::string const& seg_name,
             interval_short const& gl_range,
             Match_metrics const& mm
+   );
+
+   Segment_combination_builder add_segment_combination(
+            const Seg_match_id id1,
+            const Seg_match_id id2 = Seg_match_id(),
+            const Seg_match_id id3 = Seg_match_id(),
+            const Seg_match_id id4 = Seg_match_id(),
+            const Seg_match_id id5 = Seg_match_id()
    );
 
    std::auto_ptr<Read_result> release() { return r_;}

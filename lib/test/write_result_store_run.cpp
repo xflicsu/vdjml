@@ -77,29 +77,23 @@ BOOST_AUTO_TEST_CASE( case01 ) {
    const Seg_match_id sm_id3 = rr1.insert(sm3);
 
    Segment_combination sc1(sm_id1, sm_id2, sm_id3);
-   sc1.grv_.push_back(
-            Gene_region(
+   sc1.insert_region(
                      Num_system::imgt,
                      Gene_region_map::fr1().first,
                      interval_short::first_last_1(1,54),
                      Match_metrics(54, 100, 0, 0, 0)
-            )
    );
-   sc1.grv_.push_back(
-            Gene_region(
+   sc1.insert_region(
                      Num_system::imgt,
                      Gene_region_map::cdr1().first,
                      interval_short::first_last_1(55,78),
                      Match_metrics(24, 83.3, 0, 0, 4)
-            )
    );
-   sc1.grv_.push_back(
-            Gene_region(
+   sc1.insert_region(
                      Num_system::imgt,
                      Gene_region_map::fr2().first,
                      interval_short::first_last_1(79,129),
                      Match_metrics(59, 98, 0, 0, 1)
-            )
    );
    rr1.insert(sc1);
 

@@ -1,6 +1,6 @@
 ## file vdjml/lib/test/jamfile.jam
 ## Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
-## Author Mikhail K Levin 2013
+## Author Mikhail K Levin 2013-4
 
 import path ;
 local smpl_dir = [ path.native $(SMPL_DATA) ] ;
@@ -10,7 +10,6 @@ project vdjml/lib/test
    : requirements
       <include>../
       <library>/boost//unit_test_framework
-      <library>/boost//filesystem
       <define>SAMPLE_DATA_DIR="\"$(smpl_dir:T)\""
       <define>TEMPORARY_DIR="\"$(tmp_dir:T)\""
 ;
@@ -31,7 +30,7 @@ test-suite simple_tests
     :
         [ 
          run-all [ glob *_run.cpp ] 
-            : <library>/vdjml/lib
+            : <library>/vdjml//libvdjml
         ]
 ;
 

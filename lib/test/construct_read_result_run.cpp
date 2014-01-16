@@ -8,7 +8,8 @@ part of vdjml project.
 #include "test/exception_fixture.hpp"
 #include <iostream>
 #include "test/exception_fixture.hpp"
-#include "vdjml/xml_writer.hpp"
+#include "test/sample_data.hpp"
+#include "vdjml/read_result_writer.hpp"
 #include "vdjml/results_meta.hpp"
 #include "vdjml/result_builder.hpp"
 #include "vdjml/read_result.hpp"
@@ -33,9 +34,9 @@ BOOST_AUTO_TEST_CASE( ownership ) {
    BOOST_CHECK_THROW(rb1.get(), Result_builder::Err);
 }
 
-/**@test
+/**@test builders and result writer compression
 *******************************************************************************/
-BOOST_AUTO_TEST_CASE( case02 ) {
+BOOST_AUTO_TEST_CASE( building ) {
    Results_meta rm ;
    Result_factory rf(rm);
    rf.set_default_aligner("V-QUEST", " 3.2.32", "", 0);
@@ -81,7 +82,35 @@ BOOST_AUTO_TEST_CASE( case02 ) {
                      Match_metrics(40, 97.6, 0, 0, 1)
    );
 
+   Segment_combination_builder scb =
+            rb1.add_segment_combination(smid1, smb2.get().id(), smb3.get().id());
 
+   scb.add_region(
+            "FR1",
+            interval_short::first_last_1(1,54),
+            Match_metrics(54, 100, 0, 0, 0)
+   );
+
+   scb.add_region(
+            "CDR1",
+            interval_short::first_last_1(55,78),
+            Match_metrics(24, 83.3, 0, 0, 4)
+   );
+
+   scb.add_region(
+            "FR2",
+            interval_short::first_last_1(79,129),
+            Match_metrics(59, 98, 0, 0, 1)
+   );
+
+   Read_result_writer rrw1(temp_file_path("out2.vdjml"), rm);
+   rrw1(rb1.get());
+
+   Read_result_writer rrw2(temp_file_path("out3.vdjml.bz2"), rm);
+   rrw2(rb1.get());
+
+   Read_result_writer rrw3(temp_file_path("out4.vdjml.gz"), rm);
+   rrw3(rb1.get());
 }
 
 }//namespace test
