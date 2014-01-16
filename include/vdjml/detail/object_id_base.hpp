@@ -7,7 +7,6 @@ part of vdjml project.
 #define OBJECT_ID_BASE_HPP_
 #include <iosfwd>
 #include "boost/cstdint.hpp"
-#include "vdjml/detail/comparison_operators_macro.hpp"
 
 namespace vdjml{
 template<class Id> class Id_iterator;
@@ -24,9 +23,12 @@ public:
    typedef Val value_type;
    explicit Base_id(const value_type val) : val_(val) {}
    Base_id(Super const& s) : val_(s.val_) {}
-   bool operator==(const Super& t) const {return val_ == t.val_;}
-   bool operator<(const Super& t) const {return val_< t.val_;}
-   VDJML_COMPARISON_OPERATOR_MEMBERS(Super)
+   bool operator==(Super const& t) const {return val_ == t.val_;}
+   bool operator<(Super const& t) const {return val_< t.val_;}
+   bool operator!=(Super const& x) const {return !( val_ == x.val_ );}
+   bool operator>(Super const& x) const {return x.val_ < val_;}
+   bool operator<=(Super const& x) const {return !( x.val_ < val_ );}
+   bool operator>=(Super const& x) const {return !( val_ < x.val_ );}
    value_type operator()() const {return val_;}
 private:
    typedef value_type self_type::*unspecified_bool_type; //ptr to member
