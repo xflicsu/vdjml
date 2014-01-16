@@ -21,6 +21,7 @@ constant VDJML_LICENSE : "the Boost Software License, Version 1.0" ;
 
 constant LIB_REQUIREMENTS :
    <toolset>gcc,<target-os>linux:<cflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+   <toolset>clang,<target-os>linux:<cflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
    <toolset>msvc:<cxxflags>/Gy
 ;
 

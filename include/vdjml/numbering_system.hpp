@@ -6,12 +6,13 @@ part of vdjml project.
 #ifndef NUMBERING_SYSTEM_HPP_
 #define NUMBERING_SYSTEM_HPP_
 #include "vdjml/object_ids.hpp"
+#include "vdjml/config.hpp"
 
 namespace vdjml{
 
 /**@brief 
 *******************************************************************************/
-struct Num_system {
+struct VDJML_DECL Num_system {
    static const Numsys_id imgt;
    static const Numsys_id kabat;
 };
