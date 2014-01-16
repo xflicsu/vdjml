@@ -10,7 +10,7 @@ part of vdjml project.
 #include "boost/functional/hash.hpp"
 #include "vdjml/object_ids.hpp"
 #include "vdjml/gene_segment_type.hpp"
-#include "vdjml/format_version.hpp"
+#include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/detail/comparison_operators_macro.hpp"
 
 namespace vdjml{
@@ -22,7 +22,8 @@ class Results_meta;
 struct Gl_segment_info {
 
    Gl_segment_info(const Gl_db_id db, const char vdj, std::string const& name)
-   : db_(db),
+   : id_(),
+     db_(db),
      gst_(segment_type(vdj)),
      name_(name)
    {}
@@ -60,7 +61,7 @@ VDJML_DECL void write(
          Xml_writer& xw,
          Gl_segment_info const& gsm,
          Results_meta const& rm,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 }//namespace vdjml

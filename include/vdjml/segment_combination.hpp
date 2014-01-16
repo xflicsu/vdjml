@@ -6,11 +6,12 @@ part of vdjml project.
 #ifndef SEGMENT_COMBINATION_HPP_
 #define SEGMENT_COMBINATION_HPP_
 #include "vdjml/config.hpp"
-#include "vdjml/format_version.hpp"
+#include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/object_ids.hpp"
 #include "vdjml/interval.hpp"
 #include "vdjml/detail/vector_set.hpp"
 #include "vdjml/match_metrics.hpp"
+#include "vdjml/detail/comparison_operators_macro.hpp"
 
 namespace vdjml{
 class Xml_writer;
@@ -22,7 +23,7 @@ struct Gene_region : public Match_metrics {
    Gene_region(
             const Numsys_id num_system,
             const Region_id region,
-            short_interval const& range,
+            interval_short const& range,
             Match_metrics const& mm
    )
    : Match_metrics(mm),
@@ -31,14 +32,31 @@ struct Gene_region : public Match_metrics {
      range_(range)
    {}
 
+   bool operator==(Gene_region const& gr) const {
+      return num_system_ == gr.num_system_ && region_ == gr.region_;
+   }
+
+   bool operator<(Gene_region const& gr) const {
+      if( num_system_ < gr.num_system_ ) return true;
+      if( gr.num_system_ < num_system_ ) return false;
+      return region_ < gr.region_;
+   }
+
+   VDJML_COMPARISON_OPERATOR_MEMBERS(Gene_region)
+
    Numsys_id num_system_;
    Region_id region_;
-   short_interval range_; ///< read positions aligned
+   interval_short range_; ///< read positions aligned
 };
 
 /**@brief
 *******************************************************************************/
-struct Segment_combination {
+class Segment_combination {
+
+public:
+   typedef detail::Vector_set<Seg_match_id> segment_set;
+   typedef detail::Vector_set<Gene_region> gene_region_set;
+
    explicit Segment_combination(
             const Seg_match_id id1,
             const Seg_match_id id2 = Seg_match_id(),
@@ -55,8 +73,21 @@ struct Segment_combination {
       if( id5 ) smv_.insert(id5);
    }
 
-   detail::Vector_set<Seg_match_id> smv_;
-   std::vector<Gene_region> grv_;
+   segment_set const& segments() const {return smv_;}
+   gene_region_set const& regions() const {return grv_;}
+
+   void insert_region(
+            const Numsys_id num_system,
+            const Region_id region,
+            interval_short const& range,
+            Match_metrics const& mm
+   ) {
+      grv_.insert(Gene_region(num_system, region, range, mm));
+   }
+
+private:
+   segment_set smv_;
+   gene_region_set grv_;
 };
 
 /**@brief
@@ -65,7 +96,7 @@ VDJML_DECL void write(
          Xml_writer& xw,
          Segment_combination const& sc,
          Results_meta const& rm,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 /**@brief
@@ -74,7 +105,7 @@ VDJML_DECL void write(
          Xml_writer& xw,
          Gene_region const& gr,
          Results_meta const& rm,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 }//namespace vdjml

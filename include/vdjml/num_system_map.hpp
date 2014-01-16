@@ -8,35 +8,25 @@ part of vdjml project.
 #include <string>
 #include <utility>
 #include "boost/array.hpp"
+#include "vdjml/config.hpp"
 #include "vdjml/detail/id_bimap.hpp"
 #include "vdjml/object_ids.hpp"
+#include "vdjml/numbering_system.hpp"
 
 namespace vdjml{
 
 /**@brief 
 *******************************************************************************/
-class Num_system_map {
+class VDJML_DECL Num_system_map {
    typedef detail::Id_bimap<Numsys_id, std::string> map_t;
-   typedef boost::array<std::string,3> name_array;
-   static name_array const& list() {
-      static const name_array na = {{
-               "",
-               "IMGT", "Kabat"
-      }};
-      return na;
-   }
 
 public:
-   typedef std::pair<Numsys_id, std::string> num_system;
-   static num_system imgt() {return num_system(Numsys_id(1), list()[1]);}
-   static num_system kabat() {return num_system(Numsys_id(2), list()[2]);}
 
    Num_system_map()
    : map_(Numsys_id(1))
    {
-      for(std::size_t n = 1; n != name_array::size(); ++n) {
-         map_.insert(Numsys_id(n), list()[n]);
-      }
+      map_.insert(Num_system::imgt, "IMGT");
+      map_.insert(Num_system::kabat, "Kabat");
    }
 
    typedef map_t::const_iterator iterator;

@@ -24,6 +24,9 @@ VDJML_OBJECT_ID(Seg_match_id);
 /** Germline segment ID */
 VDJML_OBJECT_ID(Gl_seg_id);
 
+/** Germline segment match ID */
+VDJML_OBJECT_ID(Gl_seg_match_id);
+
 /** Gene region type ID */
 VDJML_OBJECT_ID(Region_id);
 

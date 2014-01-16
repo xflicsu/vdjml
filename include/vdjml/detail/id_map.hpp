@@ -26,8 +26,10 @@ public:
    typedef base_exception Err;
 
    std::size_t size() const { return vid_.size(); }
-   const_iterator begin() const {return vid_.begin();}
+   const_iterator begin() const  {return vid_.begin();}
+   iterator       begin()        {return vid_.begin();}
    const_iterator end() const {return vid_.end();}
+   iterator       end()       {return vid_.end();}
    bool empty() const {return !(vid_.size());}
    id_type min_id() const {return id_type(1);}
    id_type max_id() const {return pos2id(vid_.size()-1);}
@@ -59,6 +61,16 @@ public:
                << Err::int1_t(id())
       );
       return vid_[vpos(id)];
+   }
+
+   value_type const* find(const id_type id) const {
+      if( check_range(id) ) return & this->operator[](id);
+      return 0;
+   }
+
+   value_type* find(const id_type id) {
+      if( check_range(id) ) return & this->operator[](id);
+      return 0;
    }
 
    id_type insert(value_type const& obj) {

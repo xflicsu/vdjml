@@ -31,7 +31,8 @@ enum Aminoacid {
    Thr,   ///< Threonine, T
    Val,   ///< Valine, V
    Trp,   ///< Tryptophan, W
-   Tyr    ///< Tyrosine, Y
+   Tyr,   ///< Tyrosine, Y
+   Stop   ///< Stop codon, *
 };
 
 /**@brief
@@ -98,6 +99,8 @@ inline Aminoacid aminoacid_index(const char c) {
    case 'Y':
    case 'y':
       return Tyr;
+   case '*':
+      return Stop;
    default: {
       std::string s("invalid amino acid code \"");
       s += c;
@@ -108,7 +111,6 @@ inline Aminoacid aminoacid_index(const char c) {
       );
    }
    }
-   return 0;
 }
 
 /**@brief
@@ -135,6 +137,7 @@ inline char to_capital(const Aminoacid n) {
    case Val: return 'V';
    case Trp: return 'W';
    case Tyr: return 'Y';
+   case Stop: return '*';
    }
 }
 
@@ -162,6 +165,7 @@ inline char to_small(const Aminoacid n) {
    case Val: return 'v';
    case Trp: return 'w';
    case Tyr: return 'y';
+   case Stop: return '*';
    }
 }
 

@@ -12,10 +12,11 @@ part of vdjml project.
 #include "boost/foreach.hpp"
 
 #include "vdjml/read_result.hpp"
-#include "vdjml/xml_writer.hpp"
+#include "vdjml/read_result_writer.hpp"
 #include "vdjml/lib_info.hpp"
 #include "vdjml/aligner_info.hpp"
 #include "vdjml/germline_db_info.hpp"
+#include "vdjml/vdjml_version.hpp"
 
 namespace vdjml {
 
@@ -23,52 +24,39 @@ Result_store::Result_store(
             Xml_reader& xr,
             const unsigned version
 )
+: rm_(new Results_meta())
 {
-
+   //todo:
 }
-
-namespace {
 
 /*
 *******************************************************************************/
-void write_0(
-         Xml_writer& xw,
+void write_to_file(
+         std::string const& path,
          Result_store const& rs,
-         const unsigned version
+         const Compression compr,
+         const unsigned version,
+         Xml_writer_options const& xwo
 ) {
-   write(xw, rs.meta(), version);
-   xw.open("read_results", ELEM);
+   Read_result_writer rrw(path, rs.meta(), compr, version, xwo);
    BOOST_FOREACH(Read_result const& rr, rs) {
-      write(xw, rr, rs.meta(), version);
+      rrw(rr);
    }
-   xw.close(); //read_results ELEM
 }
-
-}//anonymous namespace
 
 /*
 *******************************************************************************/
 void write(
-         Xml_writer& xw,
+         std::ostream& os,
          Result_store const& rs,
-         const unsigned version
+         const Compression compr,
+         const unsigned version,
+         Xml_writer_options const& xwo
 ) {
-   xw.open("vdjml_results", ELEM, "http://vdjserver.org/xml/schema/vdjml/");
-   xw.node("version", ATTR, version_to_string(version));
-
-   switch (version) {
-      case 0:
-         write_0(xw, rs, version);
-         break;
-      default:
-         BOOST_THROW_EXCEPTION(
-                  base_exception()
-                  << base_exception::msg_t("unsupported format version")
-                  << base_exception::int1_t(version)
-         );
+   Read_result_writer rrw(os, rs.meta(), compr, version, xwo);
+   BOOST_FOREACH(Read_result const& rr, rs) {
+      rrw(rr);
    }
-
-   xw.close();
 }
 
 

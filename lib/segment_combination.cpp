@@ -26,8 +26,7 @@ void write(
    xw.open("region", ELEM);
    xw.node("name", ATTR, rm.gene_region_map()[gr.region_]);
    xw.node("num_system", ATTR, rm.num_system_map()[gr.num_system_]);
-   xw.node("pos", ATTR, gr.range_.first());
-   xw.node("len", ATTR, gr.range_.length());
+   write(xw, gr.range_, version);
    write(xw, (Match_metrics const&)gr, version);
    xw.close(); //region, ELEM
 }
@@ -42,16 +41,16 @@ void write(
 ) {
    xw.open("combination", ELEM);
    xw.open("segments", ATTR);
-   if( sc.smv_.size() ) {
-      xw.value(sc.smv_[0]);
-      for(std::size_t n = 1; n != sc.smv_.size(); ++n) {
+   if( sc.segments().size() ) {
+      xw.value(sc.segments()[0]);
+      for(std::size_t n = 1; n != sc.segments().size(); ++n) {
          xw.value(',');
-         xw.value(sc.smv_[n]);
+         xw.value(sc.segments()[n]);
       }
    }
    xw.close(); //segments, ATTR
 
-   BOOST_FOREACH(Gene_region const& gr, sc.grv_) {
+   BOOST_FOREACH(Gene_region const& gr, sc.regions()) {
       write(xw, gr, rm, version);
    }
 

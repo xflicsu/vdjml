@@ -7,7 +7,7 @@ part of vdjml project.
 #define GERMLINE_DB_INFO_HPP_
 #include <string>
 #include "boost/functional/hash.hpp"
-#include "vdjml/format_version.hpp"
+#include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/config.hpp"
 #include "vdjml/object_ids.hpp"
 
@@ -80,7 +80,7 @@ inline std::size_t hash_value(Gl_db_info const& gdi) {
 VDJML_DECL void write(
          Xml_writer& xw,
          Gl_db_info const& gdi,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 }//namespace vdjml

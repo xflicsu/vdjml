@@ -9,7 +9,7 @@ part of vdjml project.
 #include "boost/functional/hash.hpp"
 #include "vdjml/config.hpp"
 #include "vdjml/object_ids.hpp"
-#include "vdjml/format_version.hpp"
+#include "vdjml/vdjml_current_version.hpp"
 
 namespace vdjml{
 class Aligner_map;
@@ -80,7 +80,7 @@ inline std::size_t hash_value(Aligner_info const& ai) {
 VDJML_DECL void write(
          Xml_writer& xw,
          Aligner_info const& ai,
-         const unsigned version = current_version
+         const unsigned version = VDJML_CURRENT_VERSION
 );
 
 }//namespace vdjml

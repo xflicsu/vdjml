@@ -1,16 +1,18 @@
-/** @file "/vdjml/include/vdjml/format_version.hpp" 
+/** @file "/vdjml/lib/numbering_system.cpp" 
 part of vdjml project.
 @n Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
 @date 2014 @author Mikhail K Levin
 *******************************************************************************/
-#ifndef FORMAT_VERSION_HPP_
-#define FORMAT_VERSION_HPP_
+#ifndef VDJML_SOURCE
+#define VDJML_SOURCE
+#endif
+#include "vdjml/numbering_system.hpp"
 
-namespace vdjml{
+namespace vdjml {
 
-/**@brief 
+/*
 *******************************************************************************/
-static const unsigned current_version = 0;
+const Numsys_id Num_system::imgt = Numsys_id(1);
+const Numsys_id Num_system::kabat = Numsys_id(2);
 
 }//namespace vdjml
-#endif /* FORMAT_VERSION_HPP_ */

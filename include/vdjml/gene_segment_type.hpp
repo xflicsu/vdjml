@@ -5,6 +5,7 @@ part of vdjml project.
 *******************************************************************************/
 #ifndef GENE_SEGMENT_TYPE_HPP_
 #define GENE_SEGMENT_TYPE_HPP_
+#include <string>
 #include "vdjml/exception.hpp"
 
 namespace vdjml{
@@ -46,6 +47,12 @@ inline char segment_type(const Gs_type gst) {
    case D_gs: return 'D';
    case J_gs: return 'J';
    }
+}
+
+/**@brief Gene segment types
+*******************************************************************************/
+inline std::string segment_type_str(const Gs_type gst) {
+   return std::string(segment_type(gst), 1);
 }
 
 
