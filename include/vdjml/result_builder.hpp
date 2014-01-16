@@ -16,7 +16,7 @@ namespace vdjml{ namespace detail{
 
 /**@brief Construct alignment results for one sequencing read
 *******************************************************************************/
-class Result_factory_impl {
+class VDJML_DECL Result_factory_impl {
 public:
    Result_factory_impl(
             Results_meta& rm,
@@ -34,8 +34,8 @@ public:
    void set_default_aligner(const Aligner_id def_aligner) {def_aligner_ = def_aligner;}
    void set_default_num_system(const Numsys_id def_numsys) {def_numsys_ = def_numsys;}
 
-   Gl_db_id get_default_gl_database() const {return def_gldb_;}
-   Aligner_id get_default_aligner() const {return def_aligner_;}
+   Gl_db_id get_default_gl_database() const;
+   Aligner_id get_default_aligner() const;
    Numsys_id get_default_num_system() const {return def_numsys_;}
 
    Results_meta const   & meta() const {return rm_;}

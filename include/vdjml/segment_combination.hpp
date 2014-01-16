@@ -11,6 +11,7 @@ part of vdjml project.
 #include "vdjml/interval.hpp"
 #include "vdjml/detail/vector_set.hpp"
 #include "vdjml/match_metrics.hpp"
+#include "vdjml/detail/comparison_operators_macro.hpp"
 
 namespace vdjml{
 class Xml_writer;
@@ -35,6 +36,14 @@ struct Gene_region : public Match_metrics {
       return num_system_ == gr.num_system_ && region_ == gr.region_;
    }
 
+   bool operator<(Gene_region const& gr) const {
+      if( num_system_ < gr.num_system_ ) return true;
+      if( gr.num_system_ < num_system_ ) return false;
+      return region_ < gr.region_;
+   }
+
+   VDJML_COMPARISON_OPERATOR_MEMBERS(Gene_region)
+
    Numsys_id num_system_;
    Region_id region_;
    interval_short range_; ///< read positions aligned
@@ -42,7 +51,12 @@ struct Gene_region : public Match_metrics {
 
 /**@brief
 *******************************************************************************/
-struct Segment_combination {
+class Segment_combination {
+
+public:
+   typedef detail::Vector_set<Seg_match_id> segment_set;
+   typedef detail::Vector_set<Gene_region> gene_region_set;
+
    explicit Segment_combination(
             const Seg_match_id id1,
             const Seg_match_id id2 = Seg_match_id(),
@@ -59,8 +73,21 @@ struct Segment_combination {
       if( id5 ) smv_.insert(id5);
    }
 
-   detail::Vector_set<Seg_match_id> smv_;
-   std::vector<Gene_region> grv_;
+   segment_set const& segments() const {return smv_;}
+   gene_region_set const& regions() const {return grv_;}
+
+   void insert_region(
+            const Numsys_id num_system,
+            const Region_id region,
+            interval_short const& range,
+            Match_metrics const& mm
+   ) {
+      grv_.insert(Gene_region(num_system, region, range, mm));
+   }
+
+private:
+   segment_set smv_;
+   gene_region_set grv_;
 };
 
 /**@brief

@@ -41,16 +41,16 @@ void write(
 ) {
    xw.open("combination", ELEM);
    xw.open("segments", ATTR);
-   if( sc.smv_.size() ) {
-      xw.value(sc.smv_[0]);
-      for(std::size_t n = 1; n != sc.smv_.size(); ++n) {
+   if( sc.segments().size() ) {
+      xw.value(sc.segments()[0]);
+      for(std::size_t n = 1; n != sc.segments().size(); ++n) {
          xw.value(',');
-         xw.value(sc.smv_[n]);
+         xw.value(sc.segments()[n]);
       }
    }
    xw.close(); //segments, ATTR
 
-   BOOST_FOREACH(Gene_region const& gr, sc.grv_) {
+   BOOST_FOREACH(Gene_region const& gr, sc.regions()) {
       write(xw, gr, rm, version);
    }
 

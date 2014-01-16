@@ -29,6 +29,8 @@ Gl_db_id Result_factory_impl::set_default_gl_database(
    return def_gldb_;
 }
 
+/*
+*******************************************************************************/
 Aligner_id Result_factory_impl::set_default_aligner(
          std::string const& name,
          std::string const& version,
@@ -42,11 +44,31 @@ Aligner_id Result_factory_impl::set_default_aligner(
    return def_aligner_;
 }
 
+/*
+*******************************************************************************/
 Numsys_id Result_factory_impl::set_default_num_system(std::string const& name) {
    def_numsys_ = rm_.num_system_map().insert(name);
    return def_numsys_;
 }
 
+/*
+*******************************************************************************/
+Gl_db_id Result_factory_impl::get_default_gl_database() const {
+   if( def_gldb_ ) return def_gldb_;
+   if( rm_.germline_db_map().size() == 1U ) {
+      return rm_.germline_db_map().front().id_;
+   }
+   return Gl_db_id();
+}
+
+/*
+*******************************************************************************/
+Aligner_id Result_factory_impl::get_default_aligner() const {
+   if( def_aligner_ ) return def_aligner_;
+   if( rm_.aligner_map().size() == 1U ) {
+      return rm_.aligner_map().front().id_;
+   }
+}
 
 }//namespace detail
 
@@ -61,7 +83,7 @@ Segment_combination_builder::Segment_combination_builder(
   rr_(rr),
   n_(rr_.segment_combinations().size())
 {
-   BOOST_FOREACH(const Seg_match_id id, sc.smv_) {
+   BOOST_FOREACH(const Seg_match_id id, sc.segments()) {
       if( ! rr_.segment_match_map().find(id) ) {
          BOOST_THROW_EXCEPTION(
                   Err()
@@ -91,8 +113,9 @@ void Segment_combination_builder::add_region(
          interval_short const& read_range,
          Match_metrics const& mm
 ) {
-   const Gene_region gr(num_system, region, read_range, mm);
-   rr_.segment_combinations()[n_].grv_.push_back(gr);
+   rr_.segment_combinations()[n_].insert_region(
+            num_system, region, read_range, mm
+   );
 }
 
 /*

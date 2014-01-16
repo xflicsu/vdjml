@@ -42,6 +42,7 @@ public:
    std::size_t size() const {return map_.size();}
    const_iterator begin() const {return map_.begin();}
    const_iterator end() const {return map_.end();}
+   Aligner_info const& front() const {return *map_.begin();}
    bool empty() const {return ! size();}
 
    /**@param ai accept by value to change the ID */
