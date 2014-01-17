@@ -85,7 +85,7 @@ Segment_combination_builder::Segment_combination_builder(
   n_(rr_.segment_combinations().size())
 {
    BOOST_FOREACH(const Seg_match_id id, sc.segments()) {
-      if( ! rr_.segment_match_map().find(id) ) {
+      if( ! rr_.segment_matches().find(id) ) {
          BOOST_THROW_EXCEPTION(
                   Err()
                   << Err::msg_t("invalid segment match ID")

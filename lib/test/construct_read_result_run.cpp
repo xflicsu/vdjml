@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE( building ) {
             Match_metrics(264, 96.0, 0, 0, 11)
    ).get().id(); //this entry should be merged with previous
 
-   BOOST_CHECK_EQUAL(rb1.get().segment_match_map().size(), 1U);
+   BOOST_CHECK_EQUAL(rb1.get().segment_matches().size(), 1U);
    BOOST_CHECK_EQUAL(smid1, smid1a);
 
    Segment_match_builder smb2 =

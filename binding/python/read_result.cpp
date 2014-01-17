@@ -9,13 +9,74 @@ namespace bp = boost::python;
 #include "vdjml/read_result.hpp"
 #include "vdjml/result_store.hpp"
 using vdjml::Read_result;
+using vdjml::Segment_match;
+using vdjml::Seg_match_id;
+using vdjml::Segment_match_map;
+using vdjml::Results_meta;
+using vdjml::Result_store;
 
 void export_read_result() {
-   bp::class_<Read_result>(
+   bp::class_<Read_result, std::auto_ptr<Read_result> >(
             "Read_result",
-            "Analysis results of a single sequencing read",
+            "Analysis results for one sequencing read",
             bp::init<std::string>()
    )
    .def("id", &Read_result::id, bp::return_internal_reference<>(), "read ID string")
+   .def(
+            "__getitem__",
+            static_cast<
+               Segment_match const& (Read_result::*)(const Seg_match_id) const
+            >(&Read_result::operator[]),
+            bp::return_internal_reference<>(),
+            "access segment match"
+   )
+   .def(
+            "segment_matches",
+            static_cast<
+               Segment_match_map const& (Read_result::*)() const
+            >(&Read_result::segment_matches),
+            bp::return_internal_reference<>(),
+            "map of segment matches"
+   )
+   .def(
+            "segment_combinations",
+            static_cast<
+            Read_result::seg_comb_store const& (Read_result::*)() const
+            >(&Read_result::segment_combinations),
+            bp::return_internal_reference<>(),
+            "list of segment combinations"
+   )
    ;
+}
+
+void export_result_store() {
+   bp::class_<Result_store>(
+            "Result_store",
+            "Storage of sequencing read results",
+            bp::init<boost::shared_ptr<Results_meta> >()
+   )
+   .def("__len__", &Result_store::size)
+   .def("empty", &Result_store::empty)
+   .def(
+            "__iter__",
+            bp::range<bp::return_value_policy<bp::copy_const_reference> >(
+                     &Result_store::begin, &Result_store::end
+            )
+   )
+   .def(
+            "insert",
+            static_cast<
+               void (Result_store::*)(std::auto_ptr<Read_result>)
+            >(&Result_store::insert),
+            "add new result"
+   )
+   .def(
+            "meta",
+            static_cast<
+               Results_meta& (Result_store::*)()
+            >(&Result_store::meta),
+            bp::return_internal_reference<>())
+   ;
+
+   bp::def("write_to_file")
 }

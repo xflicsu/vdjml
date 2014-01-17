@@ -39,7 +39,7 @@ void write(
 
    xw.open("alignment", ELEM);
 
-   BOOST_FOREACH(Segment_match const& sm, rr.segment_match_map()) {
+   BOOST_FOREACH(Segment_match const& sm, rr.segment_matches()) {
       write(xw, sm, rm, version);
    }
 
