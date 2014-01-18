@@ -1,11 +1,12 @@
 /** @file "/vdjml/binding/python/read_result.cpp" 
 part of vdjml project.
 @n Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
-@date 2013 @author Mikhail K Levin
+@date 2014 @author Mikhail K Levin
 *******************************************************************************/
 #include "boost/python.hpp"
 namespace bp = boost::python;
 
+#include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/read_result.hpp"
 #include "vdjml/result_store.hpp"
 using vdjml::Read_result;
@@ -78,5 +79,22 @@ void export_result_store() {
             bp::return_internal_reference<>())
    ;
 
-   bp::def("write_to_file")
+
+   bp::enum_<vdjml::Compression>("Compression")
+   .value("Unknown_compression", vdjml::Unknown_compression)
+   .value("Uncompressed", vdjml::Uncompressed)
+   .value("gzip", vdjml::gzip)
+   .value("bzip2", vdjml::bzip2)
+   .value("zlib", vdjml::zlib)
+   ;
+
+   bp::def(
+            "write_to_file", &vdjml::write_to_file,
+            (
+                     bp::arg("path"),
+                     bp::arg("store"),
+                     bp::arg("compression") = vdjml::Unknown_compression,
+                     bp::arg("version") = unsigned(VDJML_CURRENT_VERSION)
+            )
+   );
 }

@@ -7,13 +7,13 @@ part of vdjml project.
 #include "boost/preprocessor/stringize.hpp"
 #include "vdjml/object_ids.hpp"
 
-#define VDJML_EXPORT_OBJECT_ID(full_name, short_name, comment)                \
+#define VDJML_EXPORT_OBJECT_ID(full_name, short_name, doc_str)                \
    boost::python::class_<full_name>(                                          \
                BOOST_PP_STRINGIZE(short_name),                                \
-               comment                                                        \
+               doc_str                                                        \
             )                                                                 \
             .def(boost::python::init<full_name::value_type>())                \
-            .def(str(boost::python::self))                     \
+            .def(str(boost::python::self))                                    \
             .def(boost::python::self < boost::python::self)                   \
             .def(boost::python::self > boost::python::self)                   \
             .def(boost::python::self == boost::python::self)                  \

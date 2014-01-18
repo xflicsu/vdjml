@@ -12,5 +12,6 @@ import vdjml
 class Test(unittest.TestCase):
     def test_1(self):
         rr1 = vdjml.Read_result("id")
+        rm = vdjml.Results_meta()
 
 if __name__ == '__main__': unittest.main()

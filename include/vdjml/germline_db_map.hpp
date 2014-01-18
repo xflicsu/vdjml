@@ -13,6 +13,7 @@ part of vdjml project.
 #include "boost/range.hpp"
 #include "vdjml/config.hpp"
 #include "vdjml/germline_db_info.hpp"
+#include "vdjml/exception.hpp"
 
 namespace vdjml{
 
@@ -48,6 +49,7 @@ class VDJML_DECL Germline_db_map {
       >
    > map_t;
 public:
+   struct Err : public base_exception {};
    typedef map_t::const_iterator iterator;
    typedef map_t::const_iterator const_iterator;
    typedef boost::iterator_range<const_iterator> range;
@@ -57,6 +59,18 @@ public:
    const_iterator end() const {return map_.end();}
    Gl_db_info const& front() const {return *map_.begin();}
    bool empty() const {return ! size();}
+
+   Gl_db_info const& operator[](const Gl_db_id id) const {
+      typedef map_t::index<id_tag>::type index;
+      index const& ind = map_.get<id_tag>();
+      index::const_iterator iter = ind.find(id);
+      if( iter == ind.end() ) BOOST_THROW_EXCEPTION(
+               Err()
+               << Err::msg_t("invalid ID")
+               << Err::int1_t(id())
+      );
+      return *iter;
+   }
 
    /**@param gdi accept by value to change the ID */
    Gl_db_id insert(Gl_db_info gdi) {

@@ -17,7 +17,7 @@ part of vdjml project.
 namespace vdjml{
 class Xml_writer;
 
-/**@brief 
+/**@brief Metadata for a collection of alignment results of sequencing reads
 *******************************************************************************/
 class VDJML_DECL Results_meta {
 public:
@@ -34,6 +34,12 @@ public:
             Xml_reader& xr,
             const unsigned version = VDJML_CURRENT_VERSION
    );
+
+   Aligner_info const& operator[](const Aligner_id id) const {return am_[id];}
+   Gl_db_info const& operator[](const Gl_db_id id) const {return gm_[id];}
+   std::string const& operator[](const Numsys_id id) const {return nsm_[id];}
+   Gl_segment_info const& operator[](const Gl_seg_id id) const {return gsm_[id];}
+   std::string const& operator[](const Region_id id) const {return grm_[id];}
 
    Gl_db_id add_gl_db(
             std::string const& name,
