@@ -16,6 +16,8 @@ part of vdjml project.
             .def(str(boost::python::self))                                    \
             .def(boost::python::self < boost::python::self)                   \
             .def(boost::python::self > boost::python::self)                   \
+            .def(boost::python::self <= boost::python::self)                  \
+            .def(boost::python::self >= boost::python::self)                  \
             .def(boost::python::self == boost::python::self)                  \
             .def(boost::python::self != boost::python::self)                  \
             .def("__call__", &full_name::operator())                          \
@@ -27,6 +29,7 @@ void export_ids() {
    VDJML_EXPORT_OBJECT_ID(vdjml::Numsys_id, Numsys_id, "Numbering system ID");
    VDJML_EXPORT_OBJECT_ID(vdjml::Seg_match_id, Seg_match_id, "Segment match ID");
    VDJML_EXPORT_OBJECT_ID(vdjml::Gl_seg_id, Gl_seg_id, "Germline segment ID");
+   VDJML_EXPORT_OBJECT_ID(vdjml::Gl_seg_match_id, Gl_seg_match_id, "Germline segment match ID");
    VDJML_EXPORT_OBJECT_ID(vdjml::Region_id, Region_id, "Gene region type ID");
 }
 

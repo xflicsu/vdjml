@@ -16,7 +16,7 @@ project vdjml/binding/python
 
 import python ;
 
-python-extension _vdjml 
+python-extension _vdjml_py 
    : 
       [ glob *.cpp ]
       boost_python_dyn boost_iostreams_dyn boost_filesystem_dyn
@@ -27,7 +27,7 @@ python-extension _vdjml
 
 install install
    : 
-      _vdjml
+      _vdjml_py
    : 
       <location>$(PYTHON_OUT)/vdjml
       <install-type>LIB
@@ -37,7 +37,7 @@ install install
 make __init__.py : : @init_py : <location>$(PYTHON_OUT)/vdjml ;
 actions init_py {
     @($(STDOUT):E=#!/usr/bin/env python
-from _vdjml import *
+from _vdjml_py import *
 ) > "$(<)"
 echo $(<)
 }

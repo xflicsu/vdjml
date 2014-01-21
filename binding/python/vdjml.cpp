@@ -7,17 +7,23 @@ part of vdjml project.
 namespace bp = boost::python;
 
 void export_ids();
+void export_misc_types();
 void export_read_result();
 void export_result_store();
 void export_results_meta();
 void export_result_writer();
+void export_segment_match();
+void export_segment_combination();
 
-BOOST_PYTHON_MODULE(_vdjml) {
+BOOST_PYTHON_MODULE(_vdjml_py) {
    bp::object package = bp::scope();
-   package.attr("__path__") = "_vdjml";
+   package.attr("__path__") = "_vdjml_py";
    export_ids();
+   export_misc_types();
    export_read_result();
    export_result_store();
    export_results_meta();
    export_result_writer();
+   export_segment_match();
+   export_segment_combination();
 }
