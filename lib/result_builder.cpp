@@ -85,7 +85,7 @@ Segment_combination_builder::Segment_combination_builder(
   n_(rr_.segment_combinations().size())
 {
    BOOST_FOREACH(const Seg_match_id id, sc.segments()) {
-      if( ! rr_.segment_match_map().find(id) ) {
+      if( ! rr_.segment_matches().find(id) ) {
          BOOST_THROW_EXCEPTION(
                   Err()
                   << Err::msg_t("invalid segment match ID")
@@ -100,8 +100,8 @@ Segment_combination_builder::Segment_combination_builder(
 *******************************************************************************/
 void Segment_combination_builder::add_region(
          std::string const& name,
-         interval_short read_range,
-         Match_metrics const& mm,
+         interval_short const& read_range,
+         Match_metrics const& metric,
          Numsys_id num_system
 ) {
    if( ! num_system ) num_system = get_default_num_system();
@@ -110,7 +110,7 @@ void Segment_combination_builder::add_region(
             << Err::msg_t("set default or specify the numbering system")
    );
    const Region_id rid = meta().gene_region_map().insert(name);
-   add_region(rid, read_range, mm, num_system);
+   add_region(rid, read_range, metric, num_system);
 }
 
 /*
@@ -118,7 +118,7 @@ void Segment_combination_builder::add_region(
 void Segment_combination_builder::add_region(
          const Region_id region,
          interval_short const& read_range,
-         Match_metrics const& mm,
+         Match_metrics const& metric,
          Numsys_id num_system
 ) {
    if( ! num_system ) num_system = get_default_num_system();
@@ -128,8 +128,23 @@ void Segment_combination_builder::add_region(
    );
 
    rr_.segment_combinations()[n_].insert_region(
-            num_system, region, read_range, mm
+            num_system, region, read_range, metric
    );
+}
+
+/*
+*******************************************************************************/
+Segment_match_builder::Segment_match_builder(
+         detail::Result_factory_impl& rf,
+         Read_result& rr,
+         const Seg_match_id sm_id
+)
+: detail::Result_factory_impl(rf),
+  rr_(rr),
+  sm_id_(sm_id),
+  last_gl_seg_()
+{
+
 }
 
 /*
@@ -152,11 +167,12 @@ Gl_seg_match_id Segment_match_builder::add_gl_segment(
             << Err::msg_t("set default or specify the aligner")
    );
 
-   return sm_.insert(
+   last_gl_seg_ = get().insert(
             Gl_segment_match(
                      num_system, aligner, gl_segment_id, gl_range, mm
             )
    );
+   return last_gl_seg_;
 }
 
 /*
@@ -211,12 +227,18 @@ void Segment_match_builder::add_aa_substitution(
          const unsigned read_pos,
          const char aa_from,
          const char aa_to,
-         Gl_seg_match_id gls_match,
-         const unsigned gl_pos
+         const unsigned gl_pos,
+         Gl_seg_match_id gls_match
 ) {
+   if( ! gls_match ) gls_match = last_gl_seg_;
+   if( ! gls_match ) BOOST_THROW_EXCEPTION(
+            Err()
+            << Err::msg_t("germline segment match ID needs to be provided")
+   );
+
    Aa_substitution aas(read_pos, aa_from, aa_to);
    aas.insert(Gl_position(gls_match, gl_pos));
-   sm_.insert(aas);
+   get().insert(aas);
 }
 
 /*
@@ -245,7 +267,7 @@ Segment_match_builder Result_builder::add_segment_match(
          Match_metrics const& mm
 ) {
    const Seg_match_id id = get().insert(Segment_match(Btop(btop), read_range));
-   Segment_match_builder smb(*this, get()[id]);
+   Segment_match_builder smb(*this, get(), id);
    smb.add_gl_segment(vdj, seg_name, gl_range, mm);
    return smb;
 }

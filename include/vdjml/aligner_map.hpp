@@ -12,6 +12,7 @@ part of vdjml project.
 #include "boost/multi_index/mem_fun.hpp"
 #include "boost/range.hpp"
 #include "vdjml/config.hpp"
+#include "vdjml/exception.hpp"
 #include "vdjml/aligner_info.hpp"
 
 namespace vdjml{
@@ -35,6 +36,7 @@ class VDJML_DECL Aligner_map {
       >
    > map_t;
 public:
+   struct Err : public base_exception {};
    typedef map_t::const_iterator iterator;
    typedef map_t::const_iterator const_iterator;
    typedef boost::iterator_range<const_iterator> range;
@@ -44,6 +46,18 @@ public:
    const_iterator end() const {return map_.end();}
    Aligner_info const& front() const {return *map_.begin();}
    bool empty() const {return ! size();}
+
+   Aligner_info const& operator[](const Aligner_id id) const {
+      typedef map_t::index<id_tag>::type index;
+      index const& ind = map_.get<id_tag>();
+      index::const_iterator iter = ind.find(id);
+      if( iter == ind.end() ) BOOST_THROW_EXCEPTION(
+               Err()
+               << Err::msg_t("invalid ID")
+               << Err::int1_t(id())
+      );
+      return *iter;
+   }
 
    /**@param ai accept by value to change the ID */
    Aligner_id insert(Aligner_info ai) {

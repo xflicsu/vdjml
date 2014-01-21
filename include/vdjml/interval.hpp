@@ -6,6 +6,7 @@ part of vdjml project.
 #ifndef INTERVAL_HPP_
 #define INTERVAL_HPP_
 #include <limits>
+#include <iosfwd>
 #include "boost/cstdint.hpp"
 #include "vdjml/config.hpp"
 #include "vdjml/exception.hpp"
@@ -24,6 +25,8 @@ public:
    typedef T value_type;
 
 private:
+   Interval();
+
    Interval(const std::size_t pos, const std::size_t len)
    : pos_(pos), len_(len)
    {
@@ -50,6 +53,21 @@ public:
    }
 
    /**
+    @param first1 zero-based interval starting position
+    @param last1 zero-based last position of interval
+    */
+   static Interval first_last_0(const std::size_t first0, const std::size_t last0) {
+      if( last0 < first0 ) BOOST_THROW_EXCEPTION(
+               Interval_err()
+               << Interval_err::msg_t("invalid interval: last < first")
+               << Interval_err::int1_t(first0)
+               << Interval_err::int2_t(last0)
+      );
+
+      return Interval(first0, last0 - first0 + 1);
+   }
+
+   /**
     @param first1 one-based interval starting position
     @param last1 one-based last position of interval
     */
@@ -70,23 +88,6 @@ public:
 
       return Interval(first1 - 1, last1 - first1 + 1);
    }
-
-   /**
-    @param first1 zero-based interval starting position
-    @param last1 zero-based last position of interval
-    */
-   static Interval first_last_0(const std::size_t first0, const std::size_t last0) {
-      if( last0 < first0 ) BOOST_THROW_EXCEPTION(
-               Interval_err()
-               << Interval_err::msg_t("invalid interval: last < first")
-               << Interval_err::int1_t(first0)
-               << Interval_err::int2_t(last0)
-      );
-
-      return Interval(first0, last0 - first0 + 1);
-   }
-
-   Interval() : pos_(0), len_(0) {}
 
    /**@return zero-based start position of interval */
    std::size_t pos_0() const {return pos_;}
@@ -119,6 +120,16 @@ private:
    value_type pos_;
    value_type len_;
 };
+
+/**
+*******************************************************************************/
+template<class ChT, class Tr, class T> inline
+std::basic_ostream<ChT,Tr>& operator<<(
+      std::basic_ostream<ChT,Tr>& os,
+      Interval<T> const& i
+) {
+   return os << "{pos0:" << i.pos_0() << " len:" << i.length() << '}';
+}
 
 /** interval with 65,536 max position and length */
 typedef Interval<boost::uint_least16_t> interval_short;

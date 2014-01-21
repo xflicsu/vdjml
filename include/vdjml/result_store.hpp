@@ -53,12 +53,8 @@ public:
    const_iterator begin() const {return v_.begin();}
    const_iterator end() const {return v_.end();}
    bool empty() const {return v_.empty();}
-
-//   Read_result const* find_id(std::string const* id) const;
-
    void insert(std::auto_ptr<Read_result> rr) {v_.push_back(rr);}
    void insert(Read_result const& rr) {v_.push_back(new Read_result(rr));}
-
    Results_meta const   & meta() const {return *rm_;}
    Results_meta         & meta()       {return *rm_;}
 

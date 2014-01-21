@@ -30,16 +30,16 @@ public:
      def_numsys_(def_numsys)
    {}
 
-   void set_default_gl_database(const Gl_db_id def_gldb) {def_gldb_ = def_gldb;}
-   void set_default_aligner(const Aligner_id def_aligner) {def_aligner_ = def_aligner;}
-   void set_default_num_system(const Numsys_id def_numsys) {def_numsys_ = def_numsys;}
-
    Gl_db_id get_default_gl_database() const;
    Aligner_id get_default_aligner() const;
    Numsys_id get_default_num_system() const {return def_numsys_;}
 
    Results_meta const   & meta() const {return rm_;}
    Results_meta         & meta()       {return rm_;}
+
+   void set_default_gl_database(const Gl_db_id def_gldb) {def_gldb_ = def_gldb;}
+   void set_default_aligner(const Aligner_id def_aligner) {def_aligner_ = def_aligner;}
+   void set_default_num_system(const Numsys_id def_numsys) {def_numsys_ = def_numsys;}
 
    Gl_db_id set_default_gl_database(
             std::string const& name,
@@ -66,7 +66,7 @@ private:
 
 }//namespace detail
 
-/**@brief Construct alignment results for one sequencing read segment match
+/**@brief Construct alignment results for a combination of germline gene segments
 *******************************************************************************/
 class VDJML_DECL Segment_combination_builder :
    public detail::Result_factory_impl {
@@ -79,17 +79,19 @@ public:
             Segment_combination const& sc
    );
 
+   /** add gene region alignment info */
    void add_region(
             std::string const& name,
-            interval_short read_range,
-            Match_metrics const& mm,
+            interval_short const& read_range,
+            Match_metrics const& metric,
             Numsys_id num_system = Numsys_id()
    );
 
+   /** add gene region alignment info */
    void add_region(
             const Region_id region,
             interval_short const& read_range,
-            Match_metrics const& mm,
+            Match_metrics const& metric,
             Numsys_id num_system = Numsys_id()
    );
 
@@ -105,10 +107,11 @@ class VDJML_DECL Segment_match_builder : public detail::Result_factory_impl {
 public:
    struct Err : public base_exception {};
 
-   Segment_match_builder(detail::Result_factory_impl& rf, Segment_match& sm)
-   : detail::Result_factory_impl(rf),
-     sm_(sm)
-   {}
+   Segment_match_builder(
+            detail::Result_factory_impl& rf,
+            Read_result& rr,
+            const Seg_match_id sm_id
+   );
 
    Gl_seg_match_id add_gl_segment(
             const Gl_seg_id gl_segment_id,
@@ -132,21 +135,22 @@ public:
             const unsigned read_pos,
             const char aa_from,
             const char aa_to,
-            Gl_seg_match_id gls_match,
-            const unsigned gl_pos
+            const unsigned gl_pos,
+            Gl_seg_match_id gls_match = Gl_seg_match_id()
    );
 
-   Segment_match const  & get() const  {return sm_;}
-   Segment_match        & get()        {return sm_;}
+   Segment_match const  & get() const  {return rr_[sm_id_];}
+   Segment_match        & get()        {return rr_[sm_id_];}
 
 private:
-   Segment_match& sm_;
+   Read_result& rr_;
+   Seg_match_id sm_id_;
+   Gl_seg_match_id last_gl_seg_;
 };
 
 /**@brief Construct alignment results for one sequencing read
 *******************************************************************************/
 class VDJML_DECL Result_builder : public detail::Result_factory_impl {
-//   typedef boost::shared_ptr<Read_result> result_ptr;
    typedef std::auto_ptr<Read_result> result_ptr;
 public:
    struct Err : public base_exception {};
@@ -199,7 +203,7 @@ private:
    result_ptr r_;
 };
 
-/**@brief Construct alignment results for one sequencing read
+/**@brief Construct alignment results for many sequencing reads
 *******************************************************************************/
 struct Result_factory : public detail::Result_factory_impl {
    Result_factory(Results_meta& meta) : detail::Result_factory_impl(meta) {}

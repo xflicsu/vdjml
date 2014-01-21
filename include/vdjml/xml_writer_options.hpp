@@ -9,7 +9,7 @@ part of vdjml project.
 
 namespace vdjml{
 
-/**@brief 
+/**@brief Options for XML output
 *******************************************************************************/
 struct Xml_writer_options {
 

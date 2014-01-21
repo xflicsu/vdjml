@@ -20,8 +20,8 @@ class Results_meta;
 /**@brief Analysis results of a single sequencing read
 *******************************************************************************/
 class VDJML_DECL Read_result {
-   typedef std::vector<Segment_combination> seg_comb_store;
 public:
+   typedef std::vector<Segment_combination> seg_comb_store;
 
    explicit Read_result(std::string const& id)
    : id_(id)
@@ -50,8 +50,8 @@ public:
 
    std::string const& id() const {return id_;}
 
-   Segment_match_map const & segment_match_map() const   {return smm_;}
-   Segment_match_map       & segment_match_map()         {return smm_;}
+   Segment_match_map const & segment_matches() const   {return smm_;}
+   Segment_match_map       & segment_matches()         {return smm_;}
    seg_comb_store const & segment_combinations() const   {return scm_;}
    seg_comb_store       & segment_combinations()         {return scm_;}
 

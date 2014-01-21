@@ -44,7 +44,7 @@ public:
    Read_result_writer(
             std::ostream& os,
             Results_meta const& rm,
-            Compression compr,
+            Compression compr = Uncompressed,
             const unsigned version = VDJML_CURRENT_VERSION,
             Xml_writer_options const& opts = Xml_writer_options()
    );

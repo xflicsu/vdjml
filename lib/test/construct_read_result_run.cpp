@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE( building ) {
             interval_short::first_last_1(22, 296),
             Match_metrics(264, 96.0, 0, 0, 11)
    );
-   smb1.add_aa_substitution(61, 'P', 'T', Gl_seg_match_id(1), 84);
+   smb1.add_aa_substitution(61, 'P', 'T', 84);
    const Seg_match_id smid1 = smb1.get().id();
 
    const Seg_match_id smid1a = rb1.add_segment_match(
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE( building ) {
             Match_metrics(264, 96.0, 0, 0, 11)
    ).get().id(); //this entry should be merged with previous
 
-   BOOST_CHECK_EQUAL(rb1.get().segment_match_map().size(), 1U);
+   BOOST_CHECK_EQUAL(rb1.get().segment_matches().size(), 1U);
    BOOST_CHECK_EQUAL(smid1, smid1a);
 
    Segment_match_builder smb2 =

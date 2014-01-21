@@ -15,4 +15,7 @@ import testing ;
 
 test-suite python :
    [ bpl-test test : test.py ]
+   [ bpl-test interval : interval.py ]
+   [ bpl-test write_result_store : write_result_store.py ]
+   [ bpl-test build_results : build_results.py ]
 ;
