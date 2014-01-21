@@ -56,8 +56,9 @@
 
 ## libxml2 library source
 ## http://xmlsoft.org/
-# constant LIBXML2 : "$(utils)/libxml2-2.9.0" 2.9.0 ;
+# constant LIBXML2 : "$(utils)/libxml2-2.9.1" 2.9.1 ;
 
 ## pre-built iconv library (required under MS Windows)
 ## http://www.zlatkovic.com/libxml.en.html
 # constant ICONV : "$(utils)/cpp/iconv-1.9.2.win32" 1.9.2 ;
+

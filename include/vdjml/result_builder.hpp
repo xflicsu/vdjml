@@ -83,7 +83,7 @@ public:
    void add_region(
             std::string const& name,
             interval_short const& read_range,
-            Match_metrics const& mm,
+            Match_metrics const& metric,
             Numsys_id num_system = Numsys_id()
    );
 
@@ -91,7 +91,7 @@ public:
    void add_region(
             const Region_id region,
             interval_short const& read_range,
-            Match_metrics const& mm,
+            Match_metrics const& metric,
             Numsys_id num_system = Numsys_id()
    );
 
@@ -107,11 +107,11 @@ class VDJML_DECL Segment_match_builder : public detail::Result_factory_impl {
 public:
    struct Err : public base_exception {};
 
-   Segment_match_builder(detail::Result_factory_impl& rf, Segment_match& sm)
-   : detail::Result_factory_impl(rf),
-     sm_(sm),
-     last_gl_seg_()
-   {}
+   Segment_match_builder(
+            detail::Result_factory_impl& rf,
+            Read_result& rr,
+            const Seg_match_id sm_id
+   );
 
    Gl_seg_match_id add_gl_segment(
             const Gl_seg_id gl_segment_id,
@@ -139,18 +139,18 @@ public:
             Gl_seg_match_id gls_match = Gl_seg_match_id()
    );
 
-   Segment_match const  & get() const  {return sm_;}
-   Segment_match        & get()        {return sm_;}
+   Segment_match const  & get() const  {return rr_[sm_id_];}
+   Segment_match        & get()        {return rr_[sm_id_];}
 
 private:
-   Segment_match& sm_;
+   Read_result& rr_;
+   Seg_match_id sm_id_;
    Gl_seg_match_id last_gl_seg_;
 };
 
 /**@brief Construct alignment results for one sequencing read
 *******************************************************************************/
 class VDJML_DECL Result_builder : public detail::Result_factory_impl {
-//   typedef boost::shared_ptr<Read_result> result_ptr;
    typedef std::auto_ptr<Read_result> result_ptr;
 public:
    struct Err : public base_exception {};

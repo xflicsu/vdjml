@@ -32,7 +32,13 @@ void export_result_builder() {
                         vdjml::Numsys_id num_system
                )
             >(&Segment_combination_builder::add_region),
-            "add gene region alignment info"
+            "add gene region alignment info",
+            (
+                     bp::arg("name"),
+                     bp::arg("read_range"),
+                     bp::arg("metric"),
+                     bp::arg("num_system") = vdjml::Numsys_id()
+            )
    )
    .def(
             "add_region",
@@ -44,7 +50,13 @@ void export_result_builder() {
                         vdjml::Numsys_id num_system
                )
             >(&Segment_combination_builder::add_region),
-            "add gene region alignment info"
+            "add gene region alignment info",
+            (
+                     bp::arg("region"),
+                     bp::arg("read_range"),
+                     bp::arg("metric"),
+                     bp::arg("num_system") = vdjml::Numsys_id()
+            )
    )
    ;
 
@@ -82,7 +94,27 @@ void export_result_builder() {
             >(&Segment_match_builder::add_gl_segment),
             "add germline segment alignment info"
    )
-   .def("add_aa_substitution", &Segment_match_builder::add_aa_substitution)
+   .def(
+            "add_aa_substitution",
+            &Segment_match_builder::add_aa_substitution,
+            "add amino acid substitution information",
+            (
+                     bp::arg("read_pos"),
+                     bp::arg("aa_from"),
+                     bp::arg("aa_to"),
+                     bp::arg("gl_pos"),
+                     bp::arg("gl_seg_match") = vdjml::Gl_seg_match_id()
+
+            )
+   )
+   .def(
+            "get",
+            static_cast<
+               vdjml::Segment_match const& (Segment_match_builder::*)() const
+            >(&Segment_match_builder::get),
+            bp::return_internal_reference<>(),
+            "get segment match structure"
+   )
    ;
 
    /**  */
@@ -101,7 +133,19 @@ void export_result_builder() {
             bp::return_internal_reference<>(),
             "get result object"
    )
-   .def("add_segment_match", &Result_builder::add_segment_match)
+   .def(
+            "add_segment_match",
+            &Result_builder::add_segment_match,
+            "add new segment match",
+            (
+                     bp::arg("btop"),
+                     bp::arg("read_range"),
+                     bp::arg("vdj"),
+                     bp::arg("seg_name"),
+                     bp::arg("gl_range"),
+                     bp::arg("mm")
+            )
+   )
    .def(
             "add_segment_combination",
             &Result_builder::add_segment_combination,
