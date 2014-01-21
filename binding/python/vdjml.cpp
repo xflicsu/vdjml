@@ -14,6 +14,7 @@ void export_results_meta();
 void export_result_writer();
 void export_segment_match();
 void export_segment_combination();
+void export_result_builder();
 
 BOOST_PYTHON_MODULE(_vdjml_py) {
    bp::object package = bp::scope();
@@ -26,4 +27,5 @@ BOOST_PYTHON_MODULE(_vdjml_py) {
    export_result_writer();
    export_segment_match();
    export_segment_combination();
+   export_result_builder();
 }

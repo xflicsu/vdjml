@@ -30,16 +30,16 @@ public:
      def_numsys_(def_numsys)
    {}
 
-   void set_default_gl_database(const Gl_db_id def_gldb) {def_gldb_ = def_gldb;}
-   void set_default_aligner(const Aligner_id def_aligner) {def_aligner_ = def_aligner;}
-   void set_default_num_system(const Numsys_id def_numsys) {def_numsys_ = def_numsys;}
-
    Gl_db_id get_default_gl_database() const;
    Aligner_id get_default_aligner() const;
    Numsys_id get_default_num_system() const {return def_numsys_;}
 
    Results_meta const   & meta() const {return rm_;}
    Results_meta         & meta()       {return rm_;}
+
+   void set_default_gl_database(const Gl_db_id def_gldb) {def_gldb_ = def_gldb;}
+   void set_default_aligner(const Aligner_id def_aligner) {def_aligner_ = def_aligner;}
+   void set_default_num_system(const Numsys_id def_numsys) {def_numsys_ = def_numsys;}
 
    Gl_db_id set_default_gl_database(
             std::string const& name,
@@ -199,7 +199,7 @@ private:
    result_ptr r_;
 };
 
-/**@brief Construct alignment results for one sequencing read
+/**@brief Construct alignment results for many sequencing reads
 *******************************************************************************/
 struct Result_factory : public detail::Result_factory_impl {
    Result_factory(Results_meta& meta) : detail::Result_factory_impl(meta) {}

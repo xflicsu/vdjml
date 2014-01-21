@@ -11,6 +11,7 @@ namespace bp = boost::python;
 using vdjml::Read_result;
 
 void export_read_result() {
+
    bp::class_<Read_result, std::auto_ptr<Read_result> >(
             "Read_result",
             "Analysis results for one sequencing read",
