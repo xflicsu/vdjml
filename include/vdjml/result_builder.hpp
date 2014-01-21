@@ -66,7 +66,7 @@ private:
 
 }//namespace detail
 
-/**@brief Construct alignment results for one sequencing read segment match
+/**@brief Construct alignment results for a combination of germline gene segments
 *******************************************************************************/
 class VDJML_DECL Segment_combination_builder :
    public detail::Result_factory_impl {
@@ -79,13 +79,15 @@ public:
             Segment_combination const& sc
    );
 
+   /** add gene region alignment info */
    void add_region(
             std::string const& name,
-            interval_short read_range,
+            interval_short const& read_range,
             Match_metrics const& mm,
             Numsys_id num_system = Numsys_id()
    );
 
+   /** add gene region alignment info */
    void add_region(
             const Region_id region,
             interval_short const& read_range,
@@ -107,7 +109,8 @@ public:
 
    Segment_match_builder(detail::Result_factory_impl& rf, Segment_match& sm)
    : detail::Result_factory_impl(rf),
-     sm_(sm)
+     sm_(sm),
+     last_gl_seg_()
    {}
 
    Gl_seg_match_id add_gl_segment(
@@ -132,8 +135,8 @@ public:
             const unsigned read_pos,
             const char aa_from,
             const char aa_to,
-            Gl_seg_match_id gls_match,
-            const unsigned gl_pos
+            const unsigned gl_pos,
+            Gl_seg_match_id gls_match = Gl_seg_match_id()
    );
 
    Segment_match const  & get() const  {return sm_;}
@@ -141,6 +144,7 @@ public:
 
 private:
    Segment_match& sm_;
+   Gl_seg_match_id last_gl_seg_;
 };
 
 /**@brief Construct alignment results for one sequencing read

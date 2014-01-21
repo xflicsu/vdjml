@@ -12,9 +12,43 @@ using vdjml::Result_factory;
 using vdjml::Result_builder;
 using vdjml::Seg_match_id;
 using vdjml::Segment_match_builder;
+using vdjml::Segment_combination_builder;
 
 void export_result_builder() {
 
+   /**  */
+   bp::class_<Segment_combination_builder>(
+            "Segment_combination_builder",
+            "Construct alignment results for a combination of germline gene segments",
+            bp::no_init
+   )
+   .def(
+            "add_region",
+            static_cast<
+               void (Segment_combination_builder::*)(
+                        std::string const&,
+                        vdjml::interval_short const&,
+                        vdjml::Match_metrics const&,
+                        vdjml::Numsys_id num_system
+               )
+            >(&Segment_combination_builder::add_region),
+            "add gene region alignment info"
+   )
+   .def(
+            "add_region",
+            static_cast<
+               void (Segment_combination_builder::*)(
+                        const vdjml::Region_id,
+                        vdjml::interval_short const&,
+                        vdjml::Match_metrics const&,
+                        vdjml::Numsys_id num_system
+               )
+            >(&Segment_combination_builder::add_region),
+            "add gene region alignment info"
+   )
+   ;
+
+   /**  */
    bp::class_<Segment_match_builder>(
             "Segment_match_builder",
             "Construct alignment results for one sequencing read segment match",
@@ -51,6 +85,7 @@ void export_result_builder() {
    .def("add_aa_substitution", &Segment_match_builder::add_aa_substitution)
    ;
 
+   /**  */
    bp::class_<Result_builder>(
             "Result_builder",
             "Construct alignment results for one sequencing read",
@@ -80,6 +115,7 @@ void export_result_builder() {
    )
    ;
 
+   /**  */
    bp::class_<Result_factory>(
             "Result_factory",
             "Construct alignment results for many sequencing reads",
