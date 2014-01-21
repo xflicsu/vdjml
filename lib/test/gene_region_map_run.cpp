@@ -16,8 +16,7 @@ BOOST_GLOBAL_FIXTURE( Exception_fixture );
 *******************************************************************************/
 BOOST_AUTO_TEST_CASE( case01 ) {
    Gene_region_map grm;
-   BOOST_CHECK_EQUAL(Gene_region_map::fr1().second, "FR1");
-   BOOST_CHECK_EQUAL(grm[Gene_region_map::fr1().first], "FR1");
+   BOOST_CHECK_EQUAL(grm[Gene_region_type::fr1], "FR1");
 }
 
 }//namespace test

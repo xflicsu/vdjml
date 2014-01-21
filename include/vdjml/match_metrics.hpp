@@ -30,7 +30,7 @@ class Match_metrics {
 public:
    Match_metrics(
             const int score,
-            const float identity,
+            const double identity,
             const unsigned insertions,
             const unsigned deletions,
             const unsigned substitutions,

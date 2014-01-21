@@ -10,6 +10,7 @@ part of vdjml project.
 #include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/config.hpp"
 #include "vdjml/object_ids.hpp"
+#include "vdjml/detail/comparison_operators_macro.hpp"
 
 namespace vdjml{
 class Germline_db_map;
@@ -47,15 +48,23 @@ public:
    std::string const& species() const {return species_;}
    std::string const& uri() const {return uri_;}
 
-   bool operator==(Gl_db_info const& ai) const {
+   bool operator==(Gl_db_info const& gdi) const {
       return
-               name() == ai.name() &&
-               version() == ai.version() &&
-               species() == ai.species()
+               name() == gdi.name() &&
+               version() == gdi.version() &&
+               species() == gdi.species()
                ;
    }
 
-   bool operator!= (Gl_db_info const& ai) const {return !(*this == ai);}
+   bool operator<(Gl_db_info const& gdi) const {
+      if( name() < gdi.name() ) return true;
+      if( gdi.name() < name() ) return false;
+      if( version() < gdi.version() ) return true;
+      if( gdi.version() < version() ) return false;
+      return species() < gdi.species();
+   }
+
+   VDJML_COMPARISON_OPERATOR_MEMBERS(Gl_db_info)
 
 private:
    Gl_db_id id_;

@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE( case01 ) {
             );
    rs.meta().add_gl_db("IGHV", "123-0", "Mus musculus", "http://www.imgt.org");
 
-   Aligner_id aid1 = rs.meta().add_aligner("V-QUEST", " 3.2.32", "", 0);
+   Aligner_id aid1 = rs.meta().add_aligner("V-QUEST", "3.2.32", "", 0);
 
    const Gl_seg_id seg_id1 = rs.meta().add_segment(dbid1, 'V', "IGHV3-21*01");
    const Gl_seg_id seg_id2 = rs.meta().add_segment(dbid1, 'V', "IGHV3-21*02");
@@ -79,19 +79,19 @@ BOOST_AUTO_TEST_CASE( case01 ) {
    Segment_combination sc1(sm_id1, sm_id2, sm_id3);
    sc1.insert_region(
                      Num_system::imgt,
-                     Gene_region_map::fr1().first,
+                     Gene_region_type::fr1,
                      interval_short::first_last_1(1,54),
                      Match_metrics(54, 100, 0, 0, 0)
    );
    sc1.insert_region(
                      Num_system::imgt,
-                     Gene_region_map::cdr1().first,
+                     Gene_region_type::cdr1,
                      interval_short::first_last_1(55,78),
                      Match_metrics(24, 83.3, 0, 0, 4)
    );
    sc1.insert_region(
                      Num_system::imgt,
-                     Gene_region_map::fr2().first,
+                     Gene_region_type::fr2,
                      interval_short::first_last_1(79,129),
                      Match_metrics(59, 98, 0, 0, 1)
    );

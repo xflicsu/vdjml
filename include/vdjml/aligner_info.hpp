@@ -10,6 +10,7 @@ part of vdjml project.
 #include "vdjml/config.hpp"
 #include "vdjml/object_ids.hpp"
 #include "vdjml/vdjml_current_version.hpp"
+#include "vdjml/detail/comparison_operators_macro.hpp"
 
 namespace vdjml{
 class Aligner_map;
@@ -55,7 +56,15 @@ public:
                ;
    }
 
-   bool operator!= (Aligner_info const& ai) const {return !(*this == ai);}
+   bool operator<(Aligner_info const& ai) const {
+      if( name() < ai.name() ) return true;
+      if( ai.name() < name() ) return false;
+      if( version() < ai.version() ) return true;
+      if( ai.version() < version() ) return false;
+      return parameters() < ai.parameters();
+   }
+
+   VDJML_COMPARISON_OPERATOR_MEMBERS(Aligner_info)
 
 private:
    Aligner_id id_;

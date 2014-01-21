@@ -17,28 +17,28 @@ BOOST_GLOBAL_FIXTURE( Exception_fixture );
 BOOST_AUTO_TEST_CASE( case01 ) {
    Match_metrics mm1(-1, 42.2, 0, 0, 0);
    BOOST_CHECK_EQUAL(mm1.score(), -1);
-   BOOST_CHECK_EQUAL(mm1.identity().f_, 42.2f);
+   BOOST_CHECK_EQUAL(mm1.identity().percent(), 42.2f);
    BOOST_CHECK( ! mm1.stop_codon() );
    BOOST_CHECK( ! mm1.mutated_invariant() );
    BOOST_CHECK( ! mm1.is_inverted() );
 
    Match_metrics mm2(-1, 42.2, 0, 0, 0, true);
    BOOST_CHECK_EQUAL(mm2.score(), -1);
-   BOOST_CHECK_EQUAL(mm2.identity().f_, 42.2f);
+   BOOST_CHECK_EQUAL(mm2.identity().percent(), 42.2f);
    BOOST_CHECK(   mm2.stop_codon() );
    BOOST_CHECK( ! mm2.mutated_invariant() );
    BOOST_CHECK( ! mm2.is_inverted() );
 
    Match_metrics mm3(-1, 42.2, 0, 0, 0, false, true);
    BOOST_CHECK_EQUAL(mm3.score(), -1);
-   BOOST_CHECK_EQUAL(mm3.identity().f_, 42.2f);
+   BOOST_CHECK_EQUAL(mm3.identity().percent(), 42.2f);
    BOOST_CHECK( ! mm3.stop_codon() );
    BOOST_CHECK(   mm3.mutated_invariant() );
    BOOST_CHECK( ! mm3.is_inverted() );
 
    Match_metrics mm4(-1, 42.2, 0, 0, 0, false, true, true);
    BOOST_CHECK_EQUAL(mm4.score(), -1);
-   BOOST_CHECK_EQUAL(mm4.identity().f_, 42.2f);
+   BOOST_CHECK_EQUAL(mm4.identity().percent(), 42.2f);
    BOOST_CHECK( ! mm4.stop_codon() );
    BOOST_CHECK(   mm4.mutated_invariant() );
    BOOST_CHECK(   mm4.is_inverted() );

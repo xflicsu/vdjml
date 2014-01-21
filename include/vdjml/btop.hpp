@@ -6,6 +6,7 @@ part of vdjml project.
 #ifndef BTOP_HPP_
 #define BTOP_HPP_
 #include <string>
+#include <iosfwd>
 #include "boost/algorithm/string/case_conv.hpp"
 #include "vdjml/detail/comparison_operators_macro.hpp"
 
@@ -30,6 +31,16 @@ public:
 private:
    std::string val_;
 };
+
+/**
+*******************************************************************************/
+template<class ChT, class Tr> inline
+std::basic_ostream<ChT,Tr>& operator<<(
+      std::basic_ostream<ChT,Tr>& os,
+      Btop const& btop
+) {
+   return os << btop.str();
+}
 
 }//namespace vdjml
 #endif /* BTOP_HPP_ */
