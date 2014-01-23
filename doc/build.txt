@@ -30,10 +30,11 @@ Libraries required by VDJML are listed in file "vdjml/doc/user-config.jam".
    For details see "vdjml/doc/user-config.jam" file.
 
 6. Run Boost.Build executable in directory vdjml.  Examples:
-        b2 release
-        b2 debug test
-        b2 --toolset=msvc release
-        b2 autodoc
+        b2 release                  #build release version
+        b2 debug test               #run unit tests in debug mode
+        b2 --toolset=msvc release   #release build with MS Visual Studio
+        b2 autodoc                  #generates Doxygen documentation
+        b2 make-release-py          #make a release archive
    The output will be generated in directory vdjml/out, e.g.,
    vdjml/out/bin/gcc-4.5.2/release/link-static/threading-multi/lib_vdjml.a
    vdjml/out/html/api.html

@@ -14,9 +14,16 @@ project vdjml/binding/python
     : requirements 
 ;
 
-import python ;
+import python modules notfile ;
 
-python-extension _vdjml_py 
+python_extension_name = _vdjml_py ;
+
+switch [ modules.peek : OS ] {
+    case NT : python_lib_name = $(python_extension_name).pyd ;
+    case *  : python_lib_name = $(python_extension_name).so ;
+}
+
+python-extension $(python_extension_name)
    : 
       [ glob *.cpp ]
       boost_python_dyn boost_iostreams_dyn boost_filesystem_dyn
@@ -25,19 +32,58 @@ python-extension _vdjml_py
    : 
 ;
 
-install install
+install stage_lib
    : 
-      _vdjml_py
+      $(python_extension_name)
    : 
       <location>$(PYTHON_OUT)/vdjml
       <install-type>LIB
       <dependency>__init__.py
+      <dependency>setup.py
 ;
 
 make __init__.py : : @init_py : <location>$(PYTHON_OUT)/vdjml ;
 actions init_py {
     @($(STDOUT):E=#!/usr/bin/env python
-from _vdjml_py import *
+from $(python_extension_name) import *
 ) > "$(<)"
 echo $(<)
 }
+
+v = [ process_version_string $(VDJML_VERSION) ] ;
+make setup.py : : @setup_py : <location>$(PYTHON_OUT) ;
+actions setup_py {
+    @($(STDOUT):E=#!/usr/bin/env python
+
+from distutils.core import setup
+from distutils.command.install_data import install_data
+
+class smart_install_data(install_data):
+    def run(self):
+        install_cmd = self.get_finalized_command('install')
+        self.install_dir = getattr(install_cmd, 'install_lib')
+        return install_data.run(self)
+
+setup(
+    name='VDJMLpy',
+    version='$(v[1]).$(v[2]).$(v[3])',
+    description='$(VDJML_DESCRIPTION)',
+    long_description='$(VDJML_DESCRIPTION)',
+    license='$(VDJML_LICENSE)',
+    author='Mikhail K. Levin',
+    author_email='mlevin@svarnetics.org',
+    url='https://github.com/VDJML/vdjml',
+    packages=['vdjml'],
+    cmdclass = {'install_data':smart_install_data},
+    data_files=[('vdjml', ['vdjml/$(python_lib_name)'])]
+)
+) > "$(<)"
+echo $(<)
+}
+
+make make-release-py : stage_lib : @release-py ;
+actions release-py {
+    cd $(PYTHON_OUT)
+    python setup.py sdist -d $(OUT)
+}
+

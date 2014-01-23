@@ -17,7 +17,7 @@ import build/version ;
 constant VDJML_NAME : "libVDJML" ;
 constant VDJML_VERSION : [ git_describe $(GIT_PATH) ] ;
 constant VDJML_DESCRIPTION : "serializes and parses results of immune receptor sequence alignment in VDJML format" ;
-constant VDJML_LICENSE : "the Boost Software License, Version 1.0" ;
+constant VDJML_LICENSE : "The Boost Software License, Version 1.0" ;
 
 constant LIB_REQUIREMENTS :
    <toolset>gcc,<target-os>linux:<cflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
@@ -64,8 +64,11 @@ alias libxml2 : external//libxml2 ;
 alias apps : ./apps ;
 alias libvdjml : lib//vdjml ;
 
-alias vdjml-py : binding/python//install ;
+alias vdjml-py : binding/python//stage_lib ;
 explicit vdjml-py ;
+
+alias make-release-py : binding/python//make-release-py : <variant>release ;
+explicit make-release-py ;
 
 if [ modules.peek doxygen : .initialized ] {
    

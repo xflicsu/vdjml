@@ -7,7 +7,7 @@ project vdjml/binding/python/test
     : requirements
       #path-constant does not expand correctly under WIN
       <pythonpath>../../../out/binding/python
-      <dependency>..//install
+      <dependency>..//stage_lib
 ;
 
 import python ;
