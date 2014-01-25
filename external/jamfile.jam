@@ -9,6 +9,9 @@ project external ;
 ## On MS Windows, this requires pre-built iconv library.
 ## On Linux, iconv is integrated into the system and is expected to be available.
 
+import os ;
+
+if [ os.name ] = NT {
 if ! $(LIBXML2) { 
    EXIT "
    ERROR:
@@ -19,3 +22,6 @@ if ! $(LIBXML2) {
 
 using ext/libxml2 : $(LIBXML2[2]) : $(LIBXML2[1]) ;
 alias libxml2 : /ext/libxml2//libxml2 ;
+} else {
+    lib libxml2 : : <name>xml2 : : <include>"/usr/include/libxml2/" ;
+}
