@@ -8,14 +8,9 @@ project vdjml/binding/python
     : requirements 
 ;
 
-import python modules path ;
+import python modules ;
 
 python_extension_name = _vdjml_py ;
-
-switch [ modules.peek : OS ] {
-    case NT : python_lib_name = $(python_extension_name).pyd ;
-    case *  : python_lib_name = $(python_extension_name).so ;
-}
 
 python-extension $(python_extension_name)
    : 
@@ -46,55 +41,56 @@ actions init_py {
     @($(STDOUT):E=#!/usr/bin/env python
 from $(python_extension_name) import *
 ) > "$(<)"
-echo $(<)
 }
 
-local required_libs = 
-    [ path.glob $(PYTHON_OUT)/vdjml/ : _vdjml_py.* libvdjml.* libboost_* ] ;
+make setup.py : stage_lib : @setup_py : <location>$(PYTHON_OUT) ;
 
-ln = "[" ;
-for local name in $(required_libs) {
-    name = [ path.basename $(name) ] ;
-    ln +=  "
-'vdjml/"$(name)"'," ;
+rule setup_py ( targets * : sources * : properties * ) {
+    local data_files = "       'vdjml/"$(sources:G=)"'," ;
+    
+    local platform = [ modules.peek : OS ] ;
+    local v = [ process_version_string $(VDJML_VERSION) ] ;
+    
+    local src = 
+        "#!/usr/bin/env python"
+        ""
+        "from distutils.core import setup"
+        "from distutils.command.install_data import install_data"
+        ""
+        "class smart_install_data(install_data):"
+        "    def run(self):"
+        "        install_cmd = self.get_finalized_command('install')"
+        "        self.install_dir = getattr(install_cmd, 'install_lib')"
+        "        return install_data.run(self)"
+        "" 
+        "setup("
+        "    name='VDJMLpy',"
+        "    version='$(v[1]).$(v[2]).$(v[3])',"
+        "    description='$(VDJML_DESCRIPTION)',"
+        "    long_description='$(VDJML_DESCRIPTION)',"
+        "    license='$(VDJML_LICENSE)',"
+        "    author='Mikhail K. Levin',"
+        "    author_email='mlevin@svarnetics.org',"
+        "    url='https://github.com/VDJML/vdjml',"
+        "    packages=['vdjml'],"
+        "    cmdclass = {'install_data' : smart_install_data},"
+        "    platforms= ['$(platform)'],"
+        "    data_files= [('vdjml', [" 
+        $(data_files) 
+        "       ] )]"
+        ")"
+        ""
+    ;
+    src = $(src:J="
+") ;
+
+    STR on $(<) = $(src) ;
 }
-ln += "]" ;
+actions setup_py { @($(STDOUT):E=$(STR)) > "$(<)" }
 
-v = [ process_version_string $(VDJML_VERSION) ] ;
-make setup.py : : @setup_py : <location>$(PYTHON_OUT) ;
-actions setup_py {
-    @($(STDOUT):E=#!/usr/bin/env python
-
-from distutils.core import setup
-from distutils.command.install_data import install_data
-
-class smart_install_data(install_data):
-    def run(self):
-        install_cmd = self.get_finalized_command('install')
-        self.install_dir = getattr(install_cmd, 'install_lib')
-        return install_data.run(self)
-
-setup(
-    name='VDJMLpy',
-    version='$(v[1]).$(v[2]).$(v[3])',
-    description='$(VDJML_DESCRIPTION)',
-    long_description='$(VDJML_DESCRIPTION)',
-    license='$(VDJML_LICENSE)',
-    author='Mikhail K. Levin',
-    author_email='mlevin@svarnetics.org',
-    url='https://github.com/VDJML/vdjml',
-    packages=['vdjml'],
-    cmdclass = {'install_data':smart_install_data},
-    platforms= ['linux'],
-    data_files=[('vdjml', $(ln) )]
-)
-) > "$(<)"
-echo $(<)
-}
-
-make make-release-py : stage_lib : @release-py : <dependency>setup.py ;
+make distro-bindings : setup.py : @release-py ;
 actions release-py {
     cd $(PYTHON_OUT)
-    python setup.py sdist -d $(OUT)
+    python $(>) sdist -d $(OUT)
 }
 

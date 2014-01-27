@@ -1,6 +1,6 @@
 File vdjml/doc/build.txt, part of VDJML project.
 Distributed under the Boost Software License, Version 1.0; see doc/license.txt.
-Author Mikhail K Levin 2013
+Author Mikhail K Levin 2013-4
 
 Instructions for building VDJML
 
@@ -30,11 +30,14 @@ Libraries required by VDJML are listed in file "vdjml/doc/user-config.jam".
    For details see "vdjml/doc/user-config.jam" file.
 
 6. Run Boost.Build executable in directory vdjml.  Examples:
-        b2 release                  #build release version
-        b2 debug test               #run unit tests in debug mode
-        b2 --toolset=msvc release   #release build with MS Visual Studio
-        b2 autodoc                  #generates Doxygen documentation
-        b2 make-release-py          #make Python bindings distutils release
+        b2 release              #build release version of libVDJML
+        b2 debug test           #build and run unit tests in debug mode
+        b2 -j12 debug test      #same as previous, using 12 parallel processes
+        b2 autodoc              #generate Doxygen documentation
+        b2 bindings-py          #build libVDJML Python bindings
+        b2 test-py              #run unit tests for Python bindings
+        b2 distro-bindings-py   #make distribution module for Python bindings
+        
    The output will be generated in directory vdjml/out, e.g.,
    vdjml/out/bin/gcc-4.5.2/release/link-static/threading-multi/lib_vdjml.a
    vdjml/out/html/api.html

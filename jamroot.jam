@@ -62,14 +62,11 @@ use-project /vdjml : . ;
 import build/singleton-target ;
 alias libxml2 : external//libxml2 ;
 
-alias apps : ./apps ;
+#alias apps : ./apps ;
 alias libvdjml : lib//vdjml ;
-
-alias vdjml-py : binding/python//stage_lib ;
-explicit vdjml-py ;
-
-alias make-release-py : binding/python//make-release-py : <variant>release ;
-explicit make-release-py ;
+alias bindings-py : binding/python//stage_lib ;
+alias distro-bindings-py : binding/python//distro-bindings : <variant>release ;
+explicit bindings-py distro-bindings-py ;
 
 if [ modules.peek doxygen : .initialized ] {
    
