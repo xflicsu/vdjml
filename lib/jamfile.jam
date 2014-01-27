@@ -21,14 +21,16 @@ local defs =
    "VDJML_VERSION_3=$(v[3])"
    "VDJML_VERSION_EXTRA=\"$(v[4])\""
    "VDJML_VERSION_DIRTY=\"$(v[5])\""
-; 
+;
+import modules ;
+LIBXML_INCLUDE = [ modules.peek Jamfile<$(PROJ_ROOT)/external> : LIBXML_INCLUDE ] ;
 
 obj lib_info 
    : #sources
       lib_info.cpp 
    : #requirements
       <define>$(defs)
-      <include>$(GENERATED_INCLUDE)
+      <include>$(LIBXML_INCLUDE)
       <link>shared:<define>VDJML_DYN_LINK
    :  #default build options
    :  #usage requirements

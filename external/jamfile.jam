@@ -12,16 +12,21 @@ project external ;
 import os ;
 
 if [ os.name ] = NT {
-if ! $(LIBXML2) { 
-   EXIT "
-   ERROR:
-   Please set variable LIBXML2 to location of libxml2 library source.
-   See doc/user-config.jam
-   " ;
-}
-
-using ext/libxml2 : $(LIBXML2[2]) : $(LIBXML2[1]) ;
-alias libxml2 : /ext/libxml2//libxml2 ;
+   if ! $(LIBXML2) { 
+      EXIT "
+      ERROR:
+      Please set variable LIBXML2 to location of libxml2 library source.
+      See doc/user-config.jam
+      " ;
+   }
+   
+   using ext/libxml2 : $(LIBXML2[2]) : $(LIBXML2[1]) ;
+   alias libxml2 : /ext/libxml2//libxml2 ;
+   LIBXML_INCLUDE = $(GENERATED_INCLUDE) ;
+   
 } else {
-    lib libxml2 : : <name>xml2 : : <include>"/usr/include/libxml2/" ;
+
+   LIBXML_INCLUDE = /usr/include/libxml2/ ;
+   lib libxml2 : : <name>xml2 : : <include>$(LIBXML_INCLUDE) ;
+   
 }

@@ -24,6 +24,7 @@ python-extension $(python_extension_name)
       /vdjml//libxml2 
       /vdjml//libvdjml
    :
+    $(LIB_REQUIREMENTS)
     #enable runtime linking from same directory
     <toolset>gcc,<target-os>linux:<linkflags>"-Wl,-R'$ORIGIN/'"
     <toolset>clang,<target-os>linux:<linkflags>"-Wl,-R'$ORIGIN/'"
@@ -38,7 +39,6 @@ install stage_lib
       <install-dependencies>on
       <install-type>LIB
       <dependency>__init__.py
-      <dependency>setup.py
 ;
 
 make __init__.py : : @init_py : <location>$(PYTHON_OUT)/vdjml ;
@@ -92,7 +92,7 @@ setup(
 echo $(<)
 }
 
-make make-release-py : stage_lib : @release-py ;
+make make-release-py : stage_lib : @release-py : <dependency>setup.py ;
 actions release-py {
     cd $(PYTHON_OUT)
     python setup.py sdist -d $(OUT)
