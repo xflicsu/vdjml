@@ -21,6 +21,7 @@ constant VDJML_LICENSE : "The Boost Software License, Version 1.0" ;
 
 constant LIB_REQUIREMENTS :
    <toolset>gcc,<target-os>linux:<cflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
+   <toolset>gcc:<cflags>"-Wno-unused-local-typedefs" #disable warnings in Boost 1.55.0
    <toolset>clang,<target-os>linux:<cflags>"-fvisibility=hidden -fvisibility-inlines-hidden"
    <toolset>msvc:<cxxflags>/Gy
 ;
@@ -131,11 +132,3 @@ if [ modules.peek doxygen : .initialized ] {
 " ] ;
 }
 explicit autodoc ;
-
-import feature : feature ;
-import toolset ;
-feature pic : off on : propagated ;
-toolset.flags gcc.compile.c USER_OPTIONS <pic>on : -fPIC : unchecked ;
-toolset.flags gcc.compile.c++ USER_OPTIONS <pic>on : -fPIC : unchecked ;
-toolset.flags clang-linux.compile.c USER_OPTIONS <pic>on : -fPIC : unchecked ;
-toolset.flags clang-linux.compile.c++ USER_OPTIONS <pic>on : -fPIC : unchecked ;

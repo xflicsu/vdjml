@@ -139,6 +139,10 @@ inline char to_capital(const Aminoacid n) {
    case Tyr: return 'Y';
    case Stop: return '*';
    }
+   BOOST_THROW_EXCEPTION(
+            base_exception()
+            << base_exception::msg_t("invalid amino acid index")
+   );
 }
 
 /**@brief

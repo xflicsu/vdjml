@@ -30,7 +30,7 @@ test-suite simple_tests
     :
         [ 
          run-all [ glob *_run.cpp ] 
-            : <library>/vdjml//libvdjml
+            : <library>/vdjml//libvdjml $(LIB_REQUIREMENTS)
         ]
 ;
 

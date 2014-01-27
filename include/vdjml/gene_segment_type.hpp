@@ -47,6 +47,10 @@ inline char segment_type(const Gs_type gst) {
    case D_gs: return 'D';
    case J_gs: return 'J';
    }
+   BOOST_THROW_EXCEPTION(
+            base_exception()
+            << base_exception::msg_t("invalid germline segment type")
+   );
 }
 
 /**@brief Gene segment types
