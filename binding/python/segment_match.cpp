@@ -41,17 +41,17 @@ void export_segment_match() {
    )
    .def_readonly(
             "read_pos_",
-            &Aa_substitution::read_pos_,
+            &Aa_substitution::read_pos_0_,
             "0-based position of first nucleotide in the read"
    )
    .def_readonly(
             "from_",
-            &Aa_substitution::from_,
+            &Aa_substitution::aa_read_,
             "amino acid in germline"
    )
    .def_readonly(
             "to_",
-            &Aa_substitution::to_,
+            &Aa_substitution::aa_gl_,
             "amino acid in read"
    )
    ;

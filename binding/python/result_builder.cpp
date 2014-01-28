@@ -99,10 +99,10 @@ void export_result_builder() {
             &Segment_match_builder::add_aa_substitution,
             "add amino acid substitution information",
             (
-                     bp::arg("read_pos"),
-                     bp::arg("aa_from"),
-                     bp::arg("aa_to"),
-                     bp::arg("gl_pos"),
+                     bp::arg("read_pos_0"),
+                     bp::arg("aa_read"),
+                     bp::arg("aa_gl"),
+                     bp::arg("gl_pos_0"),
                      bp::arg("gl_seg_match") = vdjml::Gl_seg_match_id()
 
             )
@@ -143,7 +143,7 @@ void export_result_builder() {
                      bp::arg("vdj"),
                      bp::arg("seg_name"),
                      bp::arg("gl_range"),
-                     bp::arg("mm")
+                     bp::arg("metric")
             )
    )
    .def(
@@ -165,7 +165,12 @@ void export_result_builder() {
             "Construct alignment results for many sequencing reads",
             bp::init<vdjml::Results_meta&>()
    )
-   .def("new_result", &Result_factory::new_result, "new result builder")
+   .def(
+            "new_result",
+            &Result_factory::new_result,
+            "new result builder",
+            (bp::arg("read_id"))
+   )
    .def(
             "set_default_gl_database",
             static_cast<

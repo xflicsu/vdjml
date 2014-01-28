@@ -163,9 +163,9 @@ void export_misc_types() {
                (
                         bp::arg("score"),
                         bp::arg("identity"),
-                        bp::arg("insertions"),
-                        bp::arg("deletions"),
-                        bp::arg("substitutions"),
+                        bp::arg("insertions") = 0,
+                        bp::arg("deletions") = 0,
+                        bp::arg("substitutions") = 0,
                         bp::arg("stop_codon") = false,
                         bp::arg("mutated_invariant") = false,
                         bp::arg("is_inverted") = false

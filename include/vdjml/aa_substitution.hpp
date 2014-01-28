@@ -36,28 +36,33 @@ todo: compact storage
 struct Aa_substitution {
    struct Err : public base_exception {};
 
+   /**
+    @param read_pos_0 0-based position of first nucleotide in the read
+    @param aa_read amino acid in read
+    @param aa_gl amino acid in germline
+    */
    Aa_substitution(
-            const unsigned read_pos,
-            const char aa_from,
-            const char aa_to
+            const unsigned read_pos_0,
+            const char aa_read,
+            const char aa_gl
    )
-   : read_pos_(read_pos),
-     from_(aminoacid_index(aa_from)),
-     to_(aminoacid_index(aa_to))
+   : read_pos_0_(read_pos_0),
+     aa_read_(aminoacid_index(aa_read)),
+     aa_gl_(aminoacid_index(aa_gl))
    {
    }
 
    bool operator<(Aa_substitution const& aas) const {
-      return read_pos_ < aas.read_pos_;
+      return read_pos_0_ < aas.read_pos_0_;
    }
 
    void insert(Gl_position const& gp) {
       gl_pos_.insert(gp);
    }
 
-   unsigned read_pos_; /**< 0-based position of first nucleotide in the read */
-   Aminoacid from_; /**< amino acid in germline */
-   Aminoacid to_; /**< amino acid in read */
+   unsigned read_pos_0_;   /**< 0-based position of first nucleotide in the read */
+   Aminoacid aa_read_;     /**< amino acid in read */
+   Aminoacid aa_gl_;       /**< amino acid in germline */
    detail::Vector_set<Gl_position> gl_pos_;
 };
 
