@@ -7,9 +7,14 @@ part of vdjml project.
 #define VDJML_SOURCE
 #endif
 #include "vdjml/match_metrics.hpp"
+
+#include <limits>
+
 #include "vdjml/xml_writer.hpp"
 
 namespace vdjml {
+
+const int Match_metrics::unscore = std::numeric_limits<score_t>::max();
 
 /*
 *******************************************************************************/
@@ -18,23 +23,14 @@ void write(
          Match_metrics const& mm,
          const unsigned version
 ) {
-   xw.node("score", ATTR, mm.score());
    xw.node("identity", ATTR, mm.identity());
-   xw.node("insertions", ATTR, mm.insertions());
-   xw.node("deletions", ATTR, mm.deletions());
-   xw.node("substitutions", ATTR, mm.substitutions());
-
-   if( mm.stop_codon() ) {
-      xw.node("stop_codon", ATTR, mm.stop_codon());
-   }
-
-   if( mm.mutated_invariant() ) {
-      xw.node("mutated_invariant", ATTR, mm.mutated_invariant());
-   }
-
-   if( mm.is_inverted() ) {
-      xw.node("is_inverted", ATTR, mm.is_inverted());
-   }
+   if( mm.score() != Match_metrics::unscore ) xw.node("score", ATTR, mm.score());
+   if( mm.insertions() ) xw.node("insertions", ATTR, mm.insertions());
+   if( mm.deletions() ) xw.node("deletions", ATTR, mm.deletions());
+   if( mm.substitutions() ) xw.node("substitutions", ATTR, mm.substitutions());
+   if( mm.stop_codon() ) xw.node("stop_codon", ATTR, mm.stop_codon());
+   if( mm.mutated_invariant() ) xw.node("mutated_invariant", ATTR, mm.mutated_invariant());
+   if( mm.is_inverted() ) xw.node("is_inverted", ATTR, mm.is_inverted());
 
 }
 

@@ -29,7 +29,7 @@ class Test(unittest.TestCase):
                                       aligner, 
                                       seg_id1,
                                       vdjml.Interval.first_last_1(22, 296),
-                                      vdjml.Match_metrics(264, 96.0, 0, 0, 11)
+                                      vdjml.Match_metrics(96.0, 264, 11)
                                       )
         sm1.insert(gsm1)
         
@@ -38,7 +38,7 @@ class Test(unittest.TestCase):
                                       aligner, 
                                       seg_id2,
                                       vdjml.Interval.first_last_1(22, 296),
-                                      vdjml.Match_metrics(264, 96.0, 0, 0, 11)
+                                      vdjml.Match_metrics(96.0, 264, 11)
                                       )
         sm1.insert(gsm2)
         sm_id1 = rr1.insert(sm1)
@@ -49,7 +49,7 @@ class Test(unittest.TestCase):
                                       aligner, 
                                       seg_id3,
                                       vdjml.Interval.first_last_1(11, 31),
-                                      vdjml.Match_metrics(22, 100, 0, 0, 0)
+                                      vdjml.Match_metrics(100, 22)
                                       )
         sm2.insert(gsm3)
         sm_id2 = rr1.insert(sm2)
@@ -60,7 +60,7 @@ class Test(unittest.TestCase):
                                       aligner, 
                                       seg_id3,
                                       vdjml.Interval.first_last_1(7, 47),
-                                      vdjml.Match_metrics(40, 97.6, 0, 0, 1)
+                                      vdjml.Match_metrics(97.6, 40, 1)
                                       )
         sm3.insert(gsm4)
         sm_id3 = rr1.insert(sm2)
@@ -70,19 +70,19 @@ class Test(unittest.TestCase):
                           vdjml.Num_system.imgt,
                           vdjml.Gene_region_type.fr1,
                           vdjml.Interval.first_last_1(1,54),
-                          vdjml.Match_metrics(54, 100, 0, 0, 0)
+                          vdjml.Match_metrics(100, 54)
                           )
         sc1.insert_region(
                           vdjml.Num_system.imgt,
                           vdjml.Gene_region_type.cdr1,
                           vdjml.Interval.first_last_1(55,78),
-                          vdjml.Match_metrics(24, 83.3, 0, 0, 4)
+                          vdjml.Match_metrics(83.3, 24, 4)
                           )
         sc1.insert_region(
                           vdjml.Num_system.imgt,
                           vdjml.Gene_region_type.fr2,
-                          vdjml.Interval.first_last_1(79,129),
-                          vdjml.Match_metrics(59, 98, 0, 0, 1)
+                          vdjml.Interval.first_last_1(79, 129),
+                          vdjml.Match_metrics(98, 59, 1)
                           )
         
         rr1.insert(sc1)

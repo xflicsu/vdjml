@@ -147,12 +147,12 @@ void export_misc_types() {
    .def("fraction", &Percent::fraction)
    ;
 
-   bp::class_<Match_metrics>(
+   bp::object mm = bp::class_<Match_metrics>(
       "Match_metrics",
       "Metrics of sequence alignment",
       bp::init<
-         const int,
          const double,
+         const int,
          const unsigned,
          const unsigned,
          const unsigned,
@@ -160,27 +160,48 @@ void export_misc_types() {
          const bool,
          const bool
       >(
-               (
-                        bp::arg("score"),
-                        bp::arg("identity"),
-                        bp::arg("insertions") = 0,
-                        bp::arg("deletions") = 0,
-                        bp::arg("substitutions") = 0,
-                        bp::arg("stop_codon") = false,
-                        bp::arg("mutated_invariant") = false,
-                        bp::arg("is_inverted") = false
-               )
+         (
+            bp::arg("identity"),
+            bp::arg("score")              = Match_metrics::unscore,
+            bp::arg("substitutions")      = 0,
+            bp::arg("insertions")         = 0,
+            bp::arg("deletions")          = 0,
+            bp::arg("stop_codon")         = false,
+            bp::arg("mutated_invariant")  = false,
+            bp::arg("is_inverted")        = false
+         )
       )
    )
-   .def("score", &Match_metrics::score)
-   .def("identity", &Match_metrics::identity)
-   .def("insertions", &Match_metrics::insertions)
-   .def("deletions", &Match_metrics::deletions)
-   .def("substitutions", &Match_metrics::stop_codon)
-   .def("stop_codon", &Match_metrics::score)
-   .def("mutated_invariant", &Match_metrics::mutated_invariant)
-   .def("is_inverted", &Match_metrics::is_inverted)
+   .def("score", &Match_metrics::score, "alignment score")
+   .def("identity", &Match_metrics::identity, "percent identity")
+   .def(
+            "insertions",
+            &Match_metrics::insertions,
+            "number of bases inserted in the read"
+   )
+   .def(
+            "deletions",
+            &Match_metrics::deletions,
+            "number of bases deleted in the read"
+   )
+   .def(
+            "substitutions",
+            &Match_metrics::substitutions,
+            "number of base substitutions"
+   )
+   .def("stop_codon", &Match_metrics::stop_codon, "is stop codon present")
+   .def(
+            "mutated_invariant",
+            &Match_metrics::mutated_invariant,
+            "is invariant amino acid mutated"
+   )
+   .def(
+            "is_inverted",
+            &Match_metrics::is_inverted,
+            "is sequence inverted"
+   )
    ;
+   mm.attr("unscore") = Match_metrics::unscore;
 
    bp::object ns = bp::class_<Num_system>("Num_system", bp::no_init);
    ns.attr("imgt") = Num_system::imgt;

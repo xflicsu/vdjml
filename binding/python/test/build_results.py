@@ -43,11 +43,14 @@ class Test(unittest.TestCase):
                                     seg_name='IGHV3-21*01',
                                     gl_range=vdjml.Interval.first_last_1(22, 296),
                                     metric=vdjml.Match_metrics(
+                                                               identity=96.0,
                                                                score=264, 
-                                                               identity=96.0, 
+                                                               substitutions=11,
                                                                insertions=0, 
-                                                               deletions=0, 
-                                                               substitutions=11
+                                                               deletions=0,
+                                                               stop_codon=False,
+                                                               mutated_invariant=False,
+                                                               is_inverted=False
                                                                )
                                      )
         smb1.add_aa_substitution(
@@ -64,8 +67,8 @@ class Test(unittest.TestCase):
                                     seg_name='IGHV3-21*02',
                                     gl_range=vdjml.Interval.first_last_1(22, 296),
                                     metric=vdjml.Match_metrics(
-                                                               score=264, 
-                                                               identity=96.0, 
+                                                               identity=96.0,
+                                                               score=264,
                                                                substitutions=11
                                                                )
                                      )
@@ -79,7 +82,7 @@ class Test(unittest.TestCase):
                                      vdj='D', 
                                      seg_name='IGHD3-22*01',
                                      gl_range=vdjml.Interval.first_last_1(11, 31),
-                                     metric=vdjml.Match_metrics(22, 100)
+                                     metric=vdjml.Match_metrics(100, 22)
                                      )
         
         smb3 = rb1.add_segment_match(
@@ -88,7 +91,7 @@ class Test(unittest.TestCase):
                                      vdj='J', 
                                      seg_name='IGHJ4*02',
                                      gl_range=vdjml.Interval.first_last_1(7, 47),
-                                     metric=vdjml.Match_metrics(40, 97.6, 0, 0, 1)
+                                     metric=vdjml.Match_metrics(97.6, 40, 1)
                                      )
         
         scb = rb1.add_segment_combination(
@@ -99,17 +102,17 @@ class Test(unittest.TestCase):
         scb.add_region(
                         name='FR1',
                         read_range=vdjml.Interval.first_last_1(1,54),
-                        metric=vdjml.Match_metrics(54, 100, 0, 0, 0)
+                        metric=vdjml.Match_metrics(100.0, 54)
                        )
         scb.add_region(
                         name='CDR1',
                         read_range=vdjml.Interval.first_last_1(55,78),
-                        metric=vdjml.Match_metrics(24, 83.3, 0, 0, 4)
+                        metric=vdjml.Match_metrics(83.3, 24, 4)
                        )
         scb.add_region(
                         name='FR2',
                         read_range=vdjml.Interval.first_last_1(79,129),
-                        metric=vdjml.Match_metrics(59, 98, 0, 0, 1)
+                        metric=vdjml.Match_metrics(98, 59, 1)
                        )
         
         rrw1 = vdjml.Result_writer('out/temp/py_out_2.vdjml', meta)
