@@ -10,6 +10,7 @@ namespace bp = boost::python;
 #include "vdjml/results_meta.hpp"
 using vdjml::Result_factory;
 using vdjml::Result_builder;
+using vdjml::Read_result;
 using vdjml::Seg_match_id;
 using vdjml::Segment_match_builder;
 using vdjml::Segment_combination_builder;
@@ -128,10 +129,16 @@ void export_result_builder() {
    .def(
             "get",
             static_cast<
-               vdjml::Read_result const& (Result_builder::*)() const
+               Read_result const& (Result_builder::*)() const
             >(&Result_builder::get),
             bp::return_internal_reference<>(),
-            "get result object"
+            "get result object (internal reference)"
+   )
+   .def(
+            "release",
+            &Result_builder::release,
+            "get final result object (independent copy); "
+            "Result_builder object cannot be used anymore"
    )
    .def(
             "add_segment_match",
