@@ -127,12 +127,13 @@ class Test(unittest.TestCase):
         
         #make read result writer
         rrw = vdjml.Result_writer('out/temp/py_out_3.vdjml', meta)
-        #write compressed VDJML
-#         rrw = vdjml.Result_writer('out/temp/py_out_3.vdjml.gz', meta)
+        #alternatively, write compressed VDJML
+        #rrw = vdjml.Result_writer('out/temp/py_out_3.vdjml.gz', meta)
+        #rrw = vdjml.Result_writer('out/temp/py_out_3.vdjml.bz2', meta)
         
         for result in get_results(fact, 10):
+            #write out the result
             rrw(result)
-            
-#         self.assertTrue(False)
+            # or do anything else with it
     
 if __name__ == '__main__': unittest.main()
