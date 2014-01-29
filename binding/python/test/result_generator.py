@@ -127,13 +127,15 @@ class Test(unittest.TestCase):
         
         #make read result writer
         rrw = vdjml.Result_writer('out/temp/py_out_3.vdjml', meta)
-        #alternatively, write compressed VDJML
+        #write compressed VDJML
         #rrw = vdjml.Result_writer('out/temp/py_out_3.vdjml.gz', meta)
         #rrw = vdjml.Result_writer('out/temp/py_out_3.vdjml.bz2', meta)
         
+        result_store = vdjml.Result_store(meta)
+        
         for result in get_results(fact, 10):
-            #write out the result
-            rrw(result)
-            # or do anything else with it
+            rrw(result)                 #write out the result
+            result_store.insert(result) #or store it in results store
+            pass                        #or do something else
     
 if __name__ == '__main__': unittest.main()
