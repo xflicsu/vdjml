@@ -8,7 +8,7 @@ project vdjml/binding/python
     : requirements 
 ;
 
-import python modules ;
+import python modules path common ;
 
 python_extension_name = _vdjml_py ;
 
@@ -36,10 +36,13 @@ install stage_lib
       <dependency>__init__.py
 ;
 
+version = [ process_version_string $(VDJML_VERSION) ] ;
+
 make __init__.py : : @init_py : <location>$(PYTHON_OUT)/vdjml ;
 actions init_py {
     @($(STDOUT):E=#!/usr/bin/env python
 from $(python_extension_name) import *
+__version__ = '$(version[1]).$(version[2]).$(version[3])'
 ) > "$(<)"
 }
 
@@ -49,7 +52,6 @@ rule setup_py ( targets * : sources * : properties * ) {
     local data_files = "       'vdjml/"$(sources:G=)"'," ;
     
     local platform = [ modules.peek : OS ] ;
-    local v = [ process_version_string $(VDJML_VERSION) ] ;
     
     local src = 
         "#!/usr/bin/env python"
@@ -64,20 +66,18 @@ rule setup_py ( targets * : sources * : properties * ) {
         "        return install_data.run(self)"
         "" 
         "setup("
-        "    name='VDJMLpy',"
-        "    version='$(v[1]).$(v[2]).$(v[3])',"
-        "    description='$(VDJML_DESCRIPTION)',"
-        "    long_description='$(VDJML_DESCRIPTION)',"
-        "    license='$(VDJML_LICENSE)',"
-        "    author='Mikhail K. Levin',"
-        "    author_email='mlevin@svarnetics.org',"
-        "    url='https://github.com/VDJML/vdjml',"
-        "    packages=['vdjml'],"
-        "    cmdclass = {'install_data' : smart_install_data},"
-        "    platforms= ['$(platform)'],"
-        "    data_files= [('vdjml', [" 
-        $(data_files) 
-        "       ] )]"
+        "    name = 'VDJMLpy',"
+        "    version            = '$(version[1]).$(version[2]).$(version[3])',"
+        "    description        = '$(VDJML_DESCRIPTION)',"
+        "    long_description   = '$(VDJML_DESCRIPTION)',"
+        "    license            = '$(VDJML_LICENSE)',"
+        "    author             = 'Mikhail K. Levin',"
+        "    author_email       = 'mlevin@svarnetics.org',"
+        "    url                = 'https://github.com/VDJML/vdjml',"
+        "    packages           = ['vdjml'],"
+        "    cmdclass           = {'install_data' : smart_install_data},"
+        "    platforms          = ['$(platform)'],"
+        "    data_files         = [('vdjml', [" $(data_files) "    ] )]"
         ")"
         ""
     ;
@@ -88,9 +88,22 @@ rule setup_py ( targets * : sources * : properties * ) {
 }
 actions setup_py { @($(STDOUT):E=$(STR)) > "$(<)" }
 
-make distro-bindings : setup.py : @release-py ;
+make MANIFEST.in : stage_lib : @manifest_in : <location>$(PYTHON_OUT) ;
+rule manifest_in ( targets * : sources * : properties * ) {
+    local src = 
+        "recursive-include test *.py"
+        "recursive-include doc *"
+    ;
+    src = $(src:J="
+") ;
+
+    STR on $(<) = $(src) ;
+}
+actions manifest_in { @($(STDOUT):E=$(STR)) > "$(<)" }
+
+make distro-bindings : setup.py : @release-py : <dependency>MANIFEST.in ;
 actions release-py {
     cd $(PYTHON_OUT)
+    python $(PROJ_ROOT)/build/distro_bindings.py $(PROJ_ROOT)
     python $(>) sdist -d $(OUT)
 }
-

@@ -17,7 +17,11 @@ void export_read_result() {
             "Analysis results for one sequencing read",
             bp::init<std::string>()
    )
-   .def("id", &Read_result::id, bp::return_internal_reference<>(), "read ID string")
+   .def(
+            "id",
+            &Read_result::id, bp::return_value_policy<bp::copy_const_reference>(),
+            "read ID string"
+   )
    .def(
             "__getitem__",
             static_cast<

@@ -224,10 +224,10 @@ Gl_seg_match_id Segment_match_builder::add_gl_segment(
 /*
 *******************************************************************************/
 void Segment_match_builder::add_aa_substitution(
-         const unsigned read_pos,
-         const char aa_from,
-         const char aa_to,
-         const unsigned gl_pos,
+         const unsigned read_pos_0,
+         const char aa_read,
+         const char aa_gl,
+         const unsigned gl_pos_0,
          Gl_seg_match_id gls_match
 ) {
    if( ! gls_match ) gls_match = last_gl_seg_;
@@ -236,8 +236,8 @@ void Segment_match_builder::add_aa_substitution(
             << Err::msg_t("germline segment match ID needs to be provided")
    );
 
-   Aa_substitution aas(read_pos, aa_from, aa_to);
-   aas.insert(Gl_position(gls_match, gl_pos));
+   Aa_substitution aas(read_pos_0, aa_read, aa_gl);
+   aas.insert(Gl_position(gls_match, gl_pos_0));
    get().insert(aas);
 }
 

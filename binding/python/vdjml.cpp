@@ -28,9 +28,17 @@ void exception_translator(boost::exception const& e) {
 }//anonymous namespace
 
 BOOST_PYTHON_MODULE(_vdjml_py) {
+   bp::docstring_options doc_opts(
+            true, //show_user_defined
+            true, //show_py_signatures
+            false //show_cpp_signatures
+   );
+
    bp::register_exception_translator<boost::exception>(&exception_translator);
+
    bp::object package = bp::scope();
    package.attr("__path__") = "_vdjml_py";
+
    export_ids();
    export_misc_types();
    export_read_result();

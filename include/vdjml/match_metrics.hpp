@@ -5,6 +5,7 @@ part of vdjml project.
 *******************************************************************************/
 #ifndef MATCH_METRICS_HPP_
 #define MATCH_METRICS_HPP_
+#include "boost/cstdint.hpp"
 #include "vdjml/config.hpp"
 #include "vdjml/vdjml_current_version.hpp"
 #include "vdjml/percent.hpp"
@@ -14,7 +15,7 @@ class Xml_writer;
 
 /**@brief 
 *******************************************************************************/
-class Match_metrics {
+class VDJML_DECL Match_metrics {
    static unsigned char set(
             const bool stop_codon,
             const bool mutated_invariant,
@@ -27,26 +28,33 @@ class Match_metrics {
                ;
    }
 
+   typedef boost::int_least16_t score_t;
+
 public:
+   static const int unscore;
+
+   /**
+    @param score
+    */
    Match_metrics(
-            const int score,
             const double identity,
-            const unsigned insertions,
-            const unsigned deletions,
-            const unsigned substitutions,
-            const bool stop_codon = false,
-            const bool mutated_invariant = false,
-            const bool is_inverted = false
+            const int score               = unscore,
+            const unsigned substitutions  = 0,
+            const unsigned insertions     = 0,
+            const unsigned deletions      = 0,
+            const bool stop_codon         = false,
+            const bool mutated_invariant  = false,
+            const bool is_inverted        = false
    )
-   : score_(score),
-   identity_(identity),
-   insertions_(),
-   deletions_(),
-   substitutions_(),
-   v_(set(stop_codon, mutated_invariant, is_inverted))
+   : identity_(identity),
+     score_(score),
+     substitutions_(substitutions),
+     insertions_(insertions),
+     deletions_(deletions),
+     v_(set(stop_codon, mutated_invariant, is_inverted))
    {}
 
-   int score() const {return score_;}
+   score_t score() const {return score_;}
    Percent identity() const {return identity_;}
    unsigned insertions() const {return insertions_;}
    unsigned deletions() const {return deletions_;}
@@ -56,11 +64,11 @@ public:
    bool is_inverted() const {return v_ & 1;}
 
 private:
-   int score_;
    Percent identity_;
+   score_t score_;
+   unsigned char substitutions_;
    unsigned char insertions_;
    unsigned char deletions_;
-   unsigned char substitutions_;
    unsigned char v_;
 };
 

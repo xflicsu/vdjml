@@ -22,13 +22,13 @@ void write(
          const unsigned version
 ) {
    xw.open("aa_substitution", ELEM);
-   xw.node("read_pos", ATTR, aas.read_pos_);
-   xw.node("from", ATTR, to_capital(aas.from_));
-   xw.node("to", ATTR, to_capital(aas.to_));
+   xw.node("read_pos", ATTR, aas.read_pos_0_);
+   xw.node("aa_read", ATTR, to_capital(aas.aa_read_));
+   xw.node("aa_gl", ATTR, to_capital(aas.aa_gl_));
    BOOST_FOREACH(Gl_position const& gp, aas.gl_pos_) {
       xw.open("germline_position", ELEM);
-      xw.node("germline_segment_id", ATTR, gp.gsm_);
-      xw.node("germline_pos", ATTR, gp.gl_pos_);
+      xw.node("segment", ATTR, gp.gsm_);
+      xw.node("pos", ATTR, gp.gl_pos_);
       xw.close(); //"germline_position", ELEM
    }
    xw.close(); //"aa_substitution", ELEM
