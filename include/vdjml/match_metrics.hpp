@@ -31,6 +31,7 @@ class VDJML_DECL Match_metrics {
    typedef boost::int_least16_t score_t;
 
 public:
+   /** alignment score value indicating that it is undefined */
    static const int unscore;
 
    /**
