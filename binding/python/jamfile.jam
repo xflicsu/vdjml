@@ -41,6 +41,12 @@ version = [ process_version_string $(VDJML_VERSION) ] ;
 make __init__.py : : @init_py : <location>$(PYTHON_OUT)/vdjml ;
 actions init_py {
     @($(STDOUT):E=#!/usr/bin/env python
+'''
+.. automodule:: vdjml._vdjml_py
+   :members:
+   :undoc-members:
+
+'''
 from $(python_extension_name) import *
 __version__ = '$(version[1]).$(version[2]).$(version[3])'
 ) > "$(<)"
