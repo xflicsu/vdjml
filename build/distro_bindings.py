@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 
-import sys, shutil, os
+import sys, shutil, os, sphinx, glob
+
+def mkdir(d0, *d):
+    if d: dir = os.path.join(d0, *d)
+    else: dir = d0
+    if not os.path.exists(dir): os.makedirs(dir)
+    return dir
 
 root_dir = os.path.abspath(sys.argv[1])
 dir_from_py_test = os.path.join(root_dir, 'binding', 'python', 'test')
@@ -15,5 +21,21 @@ shutil.copytree(
 
 shutil.copy(os.path.join(root_dir, 'README.txt'), dir_to_py)
 dir_to_py_doc = os.path.join(dir_to_py, 'doc')
-if not os.path.exists(dir_to_py_doc): os.mkdir(dir_to_py_doc)
-shutil.copy(os.path.join(root_dir, 'doc', 'license.txt'), dir_to_py_doc)
+dir_to_py_doc_src = mkdir(dir_to_py_doc, 'src')
+shutil.copy(
+            os.path.join(root_dir, 'doc', 'py_index.txt'), 
+            os.path.join(dir_to_py_doc_src, 'index.rst')
+            )
+shutil.copy(
+            os.path.join(root_dir, 'doc', 'license.txt'), 
+            os.path.join(dir_to_py_doc_src, 'license.rst')
+            )
+mkdir(dir_to_py_doc_src, '_static')
+mkdir(dir_to_py_doc_src, '_templates')
+shutil.copy(
+            os.path.join(root_dir, 'build', 'sphinx_config.py'), 
+            os.path.join(dir_to_py_doc_src, 'conf.py')
+            )
+
+sphinx.main(['', '-a', '-b', 'html', 'doc/src', 'doc/html'])
+
