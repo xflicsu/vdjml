@@ -32,10 +32,6 @@ shutil.copy(
             )
 mkdir(dir_to_py_doc_src, '_static')
 mkdir(dir_to_py_doc_src, '_templates')
-shutil.copy(
-            os.path.join(root_dir, 'build', 'sphinx_config.py'), 
-            os.path.join(dir_to_py_doc_src, 'conf.py')
-            )
 
-sphinx.main(['', '-a', '-b', 'html', 'doc/src', 'doc/html'])
+sphinx.main(['', '-a', '-b', 'html', 'doc/src', 'doc'])
 
