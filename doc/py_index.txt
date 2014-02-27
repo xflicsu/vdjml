@@ -1,0 +1,27 @@
+.. vdjml documentation master file
+
+vdjml documentation
+===================
+
+Contents:
+
+.. toctree::
+   :maxdepth: 3
+   
+.. autosummary:: vdjml
+
+.. automodule:: vdjml
+   :members:
+   :undoc-members:
+
+Overview
+--------
+
+.. todo
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

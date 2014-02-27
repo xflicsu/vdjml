@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE( building ) {
             'V',
             "IGHV3-21*01",
             interval_short::first_last_1(22, 296),
-            Match_metrics(264, 96.0, 0, 0, 11)
+            Match_metrics(96.0, 264, 0, 0, 11)
    );
    smb1.add_aa_substitution(61, 'P', 'T', 84);
    const Seg_match_id smid1 = smb1.get().id();
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE( building ) {
             'V',
             "IGHV3-21*02",
             interval_short::first_last_1(22, 296),
-            Match_metrics(264, 96.0, 0, 0, 11)
+            Match_metrics(96.0, 264, 0, 0, 11)
    ).get().id(); //this entry should be merged with previous
 
    BOOST_CHECK_EQUAL(rb1.get().segment_matches().size(), 1U);
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE( building ) {
                      "20", interval_short::first_last_1(275, 295),
                      'D', "IGHD3-22*01",
                      interval_short::first_last_1(11, 31),
-                     Match_metrics(22, 100, 0, 0, 0)
+                     Match_metrics(100, 22, 0, 0, 0)
    );
 
    Segment_match_builder smb3 =
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE( building ) {
                      "5AC35", interval_short::first_last_1(311, 351),
                      'J', "IGHJ4*02",
                      interval_short::first_last_1(7, 47),
-                     Match_metrics(40, 97.6, 0, 0, 1)
+                     Match_metrics(97.6, 40, 0, 0, 1)
    );
 
    Segment_combination_builder scb =
@@ -90,19 +90,19 @@ BOOST_AUTO_TEST_CASE( building ) {
    scb.add_region(
             "FR1",
             interval_short::first_last_1(1,54),
-            Match_metrics(54, 100, 0, 0, 0)
+            Match_metrics(100, 54, 0, 0, 0)
    );
 
    scb.add_region(
             "CDR1",
             interval_short::first_last_1(55,78),
-            Match_metrics(24, 83.3, 0, 0, 4)
+            Match_metrics(83.3, 24, 0, 0, 4)
    );
 
    scb.add_region(
             "FR2",
             interval_short::first_last_1(79,129),
-            Match_metrics(59, 98, 0, 0, 1)
+            Match_metrics(98, 59, 0, 0, 1)
    );
 
    Read_result_writer rrw1(temp_file_path("out2.vdjml"), rm);

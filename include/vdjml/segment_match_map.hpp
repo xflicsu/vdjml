@@ -9,7 +9,6 @@ part of vdjml project.
 #include "vdjml/segment_match.hpp"
 #include "vdjml/object_ids.hpp"
 #include "vdjml/detail/id_map.hpp"
-#include "vdjml/detail/id_iterator.hpp"
 #include "vdjml/config.hpp"
 
 namespace vdjml{

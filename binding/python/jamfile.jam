@@ -8,8 +8,11 @@ project vdjml/binding/python
     : requirements 
 ;
 
-import python modules path common ;
+import python modules path common regex ;
 
+author = "Mikhail K. Levin" ;
+email = "mlevin@svarnetics.org" ;
+proj_url = "https://github.com/VDJML/vdjml" ;
 python_extension_name = _vdjml_py ;
 
 python-extension $(python_extension_name)
@@ -34,20 +37,32 @@ install stage_lib
       <install-dependencies>on
       <install-type>LIB
       <dependency>__init__.py
+      <dependency>setup.py
+      <dependency>MANIFEST.in
+      <dependency>conf.py
 ;
 
 version = [ process_version_string $(VDJML_VERSION) ] ;
 
+## 
+################################################################################
 make __init__.py : : @init_py : <location>$(PYTHON_OUT)/vdjml ;
 actions init_py {
     @($(STDOUT):E=#!/usr/bin/env python
+'''
+.. automodule:: vdjml._vdjml_py
+   :members:
+   :undoc-members:
+
+'''
 from $(python_extension_name) import *
 __version__ = '$(version[1]).$(version[2]).$(version[3])'
 ) > "$(<)"
 }
 
-make setup.py : stage_lib : @setup_py : <location>$(PYTHON_OUT) ;
-
+## 
+################################################################################
+make setup.py : : @setup_py : <location>$(PYTHON_OUT) ;
 rule setup_py ( targets * : sources * : properties * ) {
     local data_files = "       'vdjml/"$(sources:G=)"'," ;
     
@@ -71,9 +86,9 @@ rule setup_py ( targets * : sources * : properties * ) {
         "    description        = '$(VDJML_DESCRIPTION)',"
         "    long_description   = '$(VDJML_DESCRIPTION)',"
         "    license            = '$(VDJML_LICENSE)',"
-        "    author             = 'Mikhail K. Levin',"
-        "    author_email       = 'mlevin@svarnetics.org',"
-        "    url                = 'https://github.com/VDJML/vdjml',"
+        "    author             = '$(author)',"
+        "    author_email       = '$(email)',"
+        "    url                = '$(proj_url)',"
         "    packages           = ['vdjml'],"
         "    cmdclass           = {'install_data' : smart_install_data},"
         "    platforms          = ['$(platform)'],"
@@ -88,7 +103,22 @@ rule setup_py ( targets * : sources * : properties * ) {
 }
 actions setup_py { @($(STDOUT):E=$(STR)) > "$(<)" }
 
-make MANIFEST.in : stage_lib : @manifest_in : <location>$(PYTHON_OUT) ;
+## 
+################################################################################
+make conf.py : : @sphinx_conf : <location>$(PYTHON_OUT)/doc/src ;
+rule sphinx_conf ( targets * : sources * : properties * ) {
+   local src = [ read_file $(PROJ_ROOT)/build/sphinx_config.py ] ;
+   src = [ regex.replace $(src) "__PROJECT__" "VDJML" ] ;
+   src = [ regex.replace $(src) "__AUTHOR__" $(author) ] ;
+   src = [ regex.replace $(src) "__DESCRIPTION__" $(VDJML_DESCRIPTION) ] ;
+   src = [ regex.replace $(src) "__VERSION__" $(version[1]).$(version[2]).$(version[3]) ] ;
+   STR on $(<) = $(src) ;
+}
+actions sphinx_conf { @($(STDOUT):E=$(STR)) > "$(<)" }
+
+## 
+################################################################################
+make MANIFEST.in : : @manifest_in : <location>$(PYTHON_OUT) ;
 rule manifest_in ( targets * : sources * : properties * ) {
     local src = 
         "recursive-include test *.py"
@@ -101,7 +131,9 @@ rule manifest_in ( targets * : sources * : properties * ) {
 }
 actions manifest_in { @($(STDOUT):E=$(STR)) > "$(<)" }
 
-make distro-bindings : setup.py : @release-py : <dependency>MANIFEST.in ;
+## 
+################################################################################
+make distro-bindings : setup.py : @release-py : <dependency>stage_lib ;
 actions release-py {
     cd $(PYTHON_OUT)
     python $(PROJ_ROOT)/build/distro_bindings.py $(PROJ_ROOT)
