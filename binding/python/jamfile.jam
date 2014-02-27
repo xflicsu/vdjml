@@ -37,9 +37,6 @@ install stage_lib
       <install-dependencies>on
       <install-type>LIB
       <dependency>__init__.py
-      <dependency>setup.py
-      <dependency>MANIFEST.in
-      <dependency>conf.py
 ;
 
 version = [ process_version_string $(VDJML_VERSION) ] ;
@@ -62,9 +59,9 @@ __version__ = '$(version[1]).$(version[2]).$(version[3])'
 
 ## 
 ################################################################################
-make setup.py : : @setup_py : <location>$(PYTHON_OUT) ;
+make setup.py : stage_lib : @setup_py : <location>$(PYTHON_OUT) ;
 rule setup_py ( targets * : sources * : properties * ) {
-    local data_files = "       'vdjml/"$(sources:G=)"'," ;
+    data_files = "       'vdjml/"$(sources:G=)"'," ;
     
     local platform = [ modules.peek : OS ] ;
     
@@ -133,7 +130,11 @@ actions manifest_in { @($(STDOUT):E=$(STR)) > "$(<)" }
 
 ## 
 ################################################################################
-make distro-bindings : setup.py : @release-py : <dependency>stage_lib ;
+make distro-bindings 
+   : setup.py 
+   : @release-py 
+   : <dependency>MANIFEST.in <dependency>conf.py
+;
 actions release-py {
     cd $(PYTHON_OUT)
     python $(PROJ_ROOT)/build/distro_bindings.py $(PROJ_ROOT)
